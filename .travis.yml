@@ -1,21 +1,18 @@
 # Config file for automatic testing at travis-ci.org
 
 language: python
-
-python:
-  - "3.5"
-  - "3.4"
-  - "3.3"
-  - "2.7"
-
-before_install:
-  - pip install codecov
-
-# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -r requirements-test.txt
-
-# command to run tests using coverage, e.g. python setup.py test
-script: coverage run --source django_functest runtests.py
-
-after_success:
-  - codecov
+python: 3.5  # this is needed to fool travis to have python3.5 as well
+# See tox.ini for env list
+# This list should be generated using tox -l
+env:
+- TOXENV=py27-django17
+- TOXENV=py27-django18
+- TOXENV=py33-django17
+- TOXENV=py33-django18
+- TOXENV=py34-django17
+- TOXENV=py34-django18
+install:
+- pip install tox>=2.1
+script:
+- tox
+sudo: false
