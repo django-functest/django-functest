@@ -17,6 +17,9 @@ class FirefoxBase(FuncSeleniumMixin, LiveServerTestCase):
     pass
 
 
+# Chrome/ChromeDriver don't work on Travis
+# https://github.com/travis-ci/travis-ci/issues/272
+@unittest.skipIf(os.environ.get('TRAVIS'), "Skipping Chrome tests")
 class ChromeBase(FuncSeleniumMixin, LiveServerTestCase):
     @classmethod
     def get_driver_name(cls):
@@ -51,8 +54,5 @@ class TestFuncSeleniumCommonFirefox(TestFuncSeleniumCommonBase, FirefoxBase):
     pass
 
 
-# Chrome/ChromeDriver don't work on Travis
-# https://github.com/travis-ci/travis-ci/issues/272
-@unittest.skipIf(os.environ.get('SKIP_CHROME_TESTS'), "Skipping Chrome tests")
 class TestFuncSeleniumCommonChrome(TestFuncSeleniumCommonBase, ChromeBase):
     pass

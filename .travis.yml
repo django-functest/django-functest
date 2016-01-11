@@ -14,5 +14,5 @@ env:
 install:
 - pip install tox>=2.1
 script:
-- SKIP_CHROME_TESTS=true tox
+- tox
 sudo: false
