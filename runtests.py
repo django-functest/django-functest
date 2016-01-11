@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os.path
 import sys
 
 from django.conf import settings
@@ -32,6 +33,7 @@ settings.configure(
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
     ],
     STATIC_URL="/static/",
+    STATIC_ROOT=os.path.join(os.path.abspath(os.path.dirname(__file__)), "/tmp_static/"),
 )
 
 try:

@@ -44,6 +44,8 @@ setup(
     include_package_data=True,
     install_requires=[
         'django-webtest>=1.7.8',
+        'selenium>=2.48.0',
+        'PyVirtualDisplay>=0.1.2',
     ],
     license="BSD",
     zip_safe=False,
