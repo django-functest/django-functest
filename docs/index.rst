@@ -9,6 +9,7 @@ Contents:
 
    installation
    usage
+   common
    contributing
    authors
    history

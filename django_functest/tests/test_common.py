@@ -13,7 +13,9 @@ class TestCommonBase(object):
 
     def test_get_url(self):
         self.get_url('admin:login')
-        self.assertTrue(self.current_url.endswith("/admin/login/"))
+        url = self.current_url
+        self.assertTrue(url.endswith("/admin/login/"))
+        self.assertTrue(url.startswith("http://"))
 
 
 class TestFuncWebTestCommon(TestCommonBase, FuncWebTestMixin, TestCase):
