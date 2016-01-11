@@ -4,14 +4,12 @@
 import os
 import sys
 
-import django_functest
-
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
 
-version = django_functest.__version__
+version = "0.1.0"
 
 if sys.argv[-1] == 'publish':
     try:
@@ -45,6 +43,7 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
+        'django-webtest>=1.7.8',
     ],
     license="BSD",
     zip_safe=False,
@@ -62,6 +61,5 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',        
     ],
 )
