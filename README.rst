@@ -7,8 +7,8 @@ WORK IN PROGRESS!
 This project is in the process of being open-sourced from an internal project.
 Only the skeleton is here at the moment!
 
-.. image:: https://travis-ci.org/spookylukey/django-functest.png?branch=master
-    :target: https://travis-ci.org/spookylukey/django-functest
+.. image:: https://travis-ci.org/django-functest/django-functest.png?branch=master
+    :target: https://travis-ci.org/django-functest/django-functest
 
 Helpers for creating high-level functional tests in Django, with a unified API
 for WebTest and Selenium tests.

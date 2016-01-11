@@ -37,7 +37,7 @@ setup(
     long_description=readme + '\n\n' + history,
     author='Luke Plant',
     author_email='L.Plant.98@cantab.net',
-    url='https://github.com/spookylukey/django-functest',
+    url='https://github.com/django-functest/django-functest',
     packages=[
         'django_functest',
     ],
