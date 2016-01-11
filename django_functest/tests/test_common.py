@@ -1,6 +1,9 @@
+import os
+import unittest
+
 from django.test import LiveServerTestCase, TestCase
 
-from django_functest import FuncWebTestMixin, FuncSeleniumMixin
+from django_functest import FuncSeleniumMixin, FuncWebTestMixin
 from django_functest.tests.models import Thing
 
 
@@ -48,5 +51,8 @@ class TestFuncSeleniumCommonFirefox(TestFuncSeleniumCommonBase, FirefoxBase):
     pass
 
 
+# Chrome/ChromeDriver don't work on Travis
+# https://github.com/travis-ci/travis-ci/issues/272
+@unittest.skipIf(os.environ.get('SKIP_CHROME_TESTS'), "Skipping Chrome tests")
 class TestFuncSeleniumCommonChrome(TestFuncSeleniumCommonBase, ChromeBase):
     pass
