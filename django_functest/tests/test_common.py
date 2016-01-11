@@ -3,7 +3,21 @@ from django.test import LiveServerTestCase, TestCase
 from django_functest import FuncWebTestMixin, FuncSeleniumMixin
 from django_functest.tests.models import Thing
 
+
 # We use the Django admin for most tests, since it is very easy to create
+
+class WebTestBase(FuncWebTestMixin, TestCase):
+    pass
+
+
+class FirefoxBase(FuncSeleniumMixin, LiveServerTestCase):
+    pass
+
+
+class ChromeBase(FuncSeleniumMixin, LiveServerTestCase):
+    @classmethod
+    def get_driver_name(cls):
+        return "Chrome"
 
 
 class TestCommonBase(object):
@@ -18,13 +32,21 @@ class TestCommonBase(object):
         self.assertTrue(url.startswith("http://"))
 
 
-class TestFuncWebTestCommon(TestCommonBase, FuncWebTestMixin, TestCase):
+class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
 
     def test_is_full_browser_attribute(self):
         self.assertEqual(self.is_full_browser_test, False)
 
 
-class TestFuncSeleniumCommon(TestCommonBase, FuncSeleniumMixin, LiveServerTestCase):
+class TestFuncSeleniumCommonBase(TestCommonBase):
 
     def test_is_full_browser_attribute(self):
         self.assertEqual(self.is_full_browser_test, True)
+
+
+class TestFuncSeleniumCommonFirefox(TestFuncSeleniumCommonBase, FirefoxBase):
+    pass
+
+
+class TestFuncSeleniumCommonChrome(TestFuncSeleniumCommonBase, ChromeBase):
+    pass
