@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os
 import os.path
 import sys
 
@@ -47,13 +48,17 @@ else:
 
 if __name__ == '__main__':
 
-    argv = [sys.argv[0], "test"]
-    if len(sys.argv) == 1:
-        # Nothing following 'runtests.py':
-        argv.extend(["django_functest.tests"])
+    if len(sys.argv) > 1 and sys.argv[1] == "updatemigration":
+        os.unlink("django_functest/tests/migrations/0001_initial.py")
+        argv = [sys.argv[0], "makemigrations", "tests"] + sys.argv[2:]
     else:
-        # Allow tests to be specified:
-        argv.extend(sys.argv[1:])
+        argv = [sys.argv[0], "test"]
+        if len(sys.argv) == 1:
+            # Nothing following 'runtests.py':
+            argv.extend(["django_functest.tests"])
+        else:
+            # Allow tests to be specified:
+            argv.extend(sys.argv[1:])
 
     # Run like 'manage.py', so we can get the options it has.
     execute_from_command_line(argv)
