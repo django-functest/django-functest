@@ -1,9 +1,13 @@
+from __future__ import unicode_literals
+
+import six
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django_webtest import WebTestMixin
+from six import text_type
 from six.moves import http_cookiejar
 
-from .utils import get_session_store, CommonMixin
+from .utils import CommonMixin, get_session_store
 
 
 class FuncWebTestMixin(WebTestMixin, CommonMixin):
@@ -34,10 +38,14 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
 
         # We don't use self.app.set_cookie since it has undesirable behaviour
         # with domain and value fields that causes issues.
+        value = cookie_dict['value']
+        if six.PY2:
+            value = value.encode('utf-8')
+
         cookie = http_cookiejar.Cookie(
             version=0,
             name=cookie_dict['name'],
-            value=cookie_dict['value'].encode('utf-8'),
+            value=value,
             port=None,
             port_specified=False,
             domain='localhost.local',
@@ -57,7 +65,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
     def set_session_vars(self, item_dict):
         session = self.get_session()
         for name, value in item_dict.items():
-            session[name] = unicode(value)
+            session[name] = text_type(value)
         session.save()
 
     def get_session(self):

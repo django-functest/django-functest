@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
+from six import text_type
 
 from .utils import CommonMixin, get_session_store
 
@@ -108,11 +109,11 @@ class FuncSeleniumMixin(CommonMixin):
 
         session = self.get_session()
         for name, value in item_dict.items():
-            session[name] = unicode(value)
+            session[name] = text_type(value)
         session.save()
 
         s2 = self.get_session()
-        if all(s2.get(name) == unicode(value) for name, value in item_dict.items()):
+        if all(s2.get(name) == text_type(value) for name, value in item_dict.items()):
             return
 
         raise RuntimeError("Session not saved correctly")
