@@ -1,9 +1,14 @@
-from furl import furl
 from django.conf import settings
 from django.contrib.auth import BACKEND_SESSION_KEY as AUTH_BACKEND_SESSION_KEY
 from django.contrib.auth import HASH_SESSION_KEY as AUTH_HASH_SESSION_KEY
 from django.contrib.auth import SESSION_KEY as AUTH_ID_SESSION_KEY
 from django.contrib.auth import authenticate
+from furl import furl
+
+try:
+    from importlib import import_module
+except:
+    from django.utils.importlib import import_module
 
 
 class ShortcutLoginMixin(object):
@@ -23,7 +28,6 @@ class ShortcutLoginMixin(object):
 
 
 def get_session_store(session_key=None):
-    from django.utils.importlib import import_module
     engine = import_module(settings.SESSION_ENGINE)
     # Implement a database session store object that will contain the session key.
     store = engine.SessionStore(session_key=session_key)
