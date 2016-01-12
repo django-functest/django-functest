@@ -70,7 +70,8 @@ specific to your project as needed:
 yourproject.tests.base::
 
 
-  from django.test import LiveServerTestCase, TestCase
+  from django.test import TestCase
+  from django.contrib.staticfiles.testing import StaticLiveServerTestCase
   from django_functest import FuncSeleniumMixin, FuncWebTestMixin
 
   class WebTestBase(FuncWebTestMixin, TestCase):
@@ -78,12 +79,16 @@ yourproject.tests.base::
           super(WebTestBase, self).setUp()  # Remember to call this!
           # Your custom stuff here etc.
 
-  class SeleniumTestBase(FuncSeleniumMixin, LiveServerTestCase):
+  class SeleniumTestBase(FuncSeleniumMixin, StaticLiveServerTestCase):
       pass  # etc.
 
-django-functest deliberately does not provide these base classes, only the
-mixins, to make life easier especially in the case where you already have
-another base class you want to inherit from.
+Normally ``StaticLiveServerTestCase`` will be better than
+``LiveServerTestCase``.
+
+django-functest deliberately does not provide the base classes as above, only
+the mixins, to make life easier especially in the case where you already have
+another base class you want to inherit from (for example, if you have custom
+needs instead of using ``StaticLiveServerTestCase``).
 
 Then:
 

@@ -4,7 +4,9 @@ from django.http import HttpResponse
 
 
 def emptypage(request):
-    return HttpResponse('')  # Minimal page needed for some tests
+    # Minimal page needed for some tests
+    return HttpResponse('<html><body></body></html>')
+
 
 urlpatterns = [
     url(r'^__emptypage/$', emptypage, name='django_functest.emptypage'),
