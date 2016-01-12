@@ -8,7 +8,13 @@ This project is in the process of being open-sourced from an internal project.
 Only the skeleton is here at the moment!
 
 .. image:: https://travis-ci.org/django-functest/django-functest.png?branch=master
-    :target: https://travis-ci.org/django-functest/django-functest
+   :target: https://travis-ci.org/django-functest/django-functest
+
+.. image:: https://coveralls.io/repos/django-functest/django-functest/badge.svg?branch=master&service=github
+   :target: https://coveralls.io/github/django-functest/django-functest?branch=master
+
+.. image:: https://readthedocs.org/projects/pip/badge/?version=latest
+   :target: https://django-functest.readthedocs.org/en/latest/
 
 Helpers for creating high-level functional tests in Django, with a unified API
 for WebTest and Selenium tests.
