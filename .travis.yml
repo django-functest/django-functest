@@ -15,6 +15,9 @@ env:
 - TOXENV=py27-django19
 - TOXENV=py34-django19
 - TOXENV=py35-django19
+- TOXENV=checkmanifest
+- TOXENV=isort-check
+- TOXENV=flake8-check
 install:
 - pip install tox>=2.1
 - pip install coveralls
