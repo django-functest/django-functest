@@ -14,6 +14,13 @@ class TestCommonBase(object):
         self.assertTrue(url.endswith("/admin/login/"))
         self.assertTrue(url.startswith("http://"))
 
+    def test_assert_url(self):
+        self.get_url('admin:login')
+        self.assertRaises(AssertionError, lambda: self.assertUrlEquals("foo"))
+        self.assertRaises(AssertionError, lambda: self.assertUrlEquals("/login/"))
+        self.assertRaises(AssertionError, lambda: self.assertUrlEquals("/admin/login/?x=y"))
+        self.assertUrlEquals("/admin/login/")
+
 
 class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
 

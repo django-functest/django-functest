@@ -2,11 +2,12 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from pyvirtualdisplay import Display
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
 
-from .utils import get_session_store
+from .utils import CommonMixin, get_session_store
 
 
-class FuncSeleniumMixin(object):
+class FuncSeleniumMixin(CommonMixin):
 
     @classmethod
     def setUpClass(cls):
@@ -54,8 +55,8 @@ class FuncSeleniumMixin(object):
         """
         kwargs.pop('expect_errors', None)
         self.get_literal_url(reverse(name, args=args, kwargs=kwargs))
+        self.wait_until_loaded('body')
         # TODO - need tests
-        # self.wait_until_loaded('body')
         # self.wait_for_ajax()
 
     def get_literal_url(self, url):
@@ -129,3 +130,26 @@ class FuncSeleniumMixin(object):
         else:
             session = get_session_store(session_key=session_cookie['value'])
         return session
+
+    def wait_until_loaded(self, selector, timeout=None):
+        """
+        Helper function that blocks until the element with the given tag name
+        is found on the page.
+        """
+        if timeout is None:
+            timeout = self.get_default_timeout()
+        self.wait_until(
+            lambda driver: driver.find_element_by_css_selector(selector),
+            timeout
+        )
+
+    def wait_until(self, callback, timeout=None):
+        """
+        Helper function that blocks the execution of the tests until the
+        specified callback returns a value that is not falsy. This function can
+        be called, for example, after clicking a link or submitting a form.
+        See the other public methods that call this function for more details.
+        """
+        if timeout is None:
+            timeout = self.get_default_timeout()
+        WebDriverWait(self._driver, timeout).until(callback)

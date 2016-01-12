@@ -11,6 +11,7 @@ Contents:
    usage
    common
    selenium
+   utils
    contributing
    authors
    history

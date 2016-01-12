@@ -12,6 +12,7 @@ settings.configure(
     DATABASES={
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
+            "NAME": "tests.db",
         }
     },
     ROOT_URLCONF="django_functest.tests.urls",

@@ -3,10 +3,10 @@ from django.core.urlresolvers import reverse
 from django_webtest import WebTestMixin
 from six.moves import http_cookiejar
 
-from .utils import get_session_store
+from .utils import get_session_store, CommonMixin
 
 
-class FuncWebTestMixin(WebTestMixin):
+class FuncWebTestMixin(WebTestMixin, CommonMixin):
 
     # Public Common API
     is_full_browser_test = False

@@ -47,6 +47,7 @@ setup(
         'selenium>=2.48.0',
         'PyVirtualDisplay>=0.1.2',
         'six>=1.10.0',
+        'furl>=0.4.9',
     ],
     license="BSD",
     zip_safe=False,
