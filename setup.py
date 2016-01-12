@@ -46,6 +46,7 @@ setup(
         'django-webtest>=1.7.8',
         'selenium>=2.48.0',
         'PyVirtualDisplay>=0.1.2',
+        'six>=1.10.0',
     ],
     license="BSD",
     zip_safe=False,

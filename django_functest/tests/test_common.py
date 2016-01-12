@@ -1,27 +1,6 @@
-import os
-import unittest
-
-from django.test import LiveServerTestCase, TestCase
-
-from django_functest import FuncSeleniumMixin, FuncWebTestMixin
 from django_functest.tests.models import Thing
 
-
-# We use the Django admin for most tests, since it is very easy to create
-
-class WebTestBase(FuncWebTestMixin, TestCase):
-    pass
-
-
-class FirefoxBase(FuncSeleniumMixin, LiveServerTestCase):
-    driver_name = "Firefox"
-
-
-# Chrome/ChromeDriver don't work on Travis
-# https://github.com/travis-ci/travis-ci/issues/272
-@unittest.skipIf(os.environ.get('TRAVIS'), "Skipping Chrome tests")
-class ChromeBase(FuncSeleniumMixin, LiveServerTestCase):
-    driver_name = "Chrome"
+from .base import ChromeBase, FirefoxBase, WebTestBase
 
 
 class TestCommonBase(object):

@@ -1,6 +1,9 @@
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from pyvirtualdisplay import Display
 from selenium import webdriver
+
+from .utils import get_session_store
 
 
 class FuncSeleniumMixin(object):
@@ -36,6 +39,11 @@ class FuncSeleniumMixin(object):
             cls._driver.quit()
             cls.__display.stop()
         super(FuncSeleniumMixin, cls).tearDownClass()
+
+    def setUp(self):
+        self._have_visited_page = False
+        super(FuncSeleniumMixin, self).setUp()
+        self._driver.delete_all_cookies()
 
     # Common API:
     is_full_browser_test = True
@@ -88,3 +96,36 @@ class FuncSeleniumMixin(object):
         """
         self._have_visited_page = True
         self._driver.get(url)
+
+    def add_cookie(self, cookie_dict):
+        self._driver.add_cookie(cookie_dict)
+
+    def set_session_vars(self, item_dict):
+        # Cookies don't work unless we visit a page first
+        if not self._have_visited_page:
+            self.get_url('django_functest.emptypage')
+
+        session = self.get_session()
+        for name, value in item_dict.items():
+            session[name] = unicode(value)
+        session.save()
+
+        s2 = self.get_session()
+        if all(s2.get(name) == unicode(value) for name, value in item_dict.items()):
+            return
+
+        raise RuntimeError("Session not saved correctly")
+
+    def get_session(self):
+        session_cookie = self._driver.get_cookie(settings.SESSION_COOKIE_NAME)
+        if session_cookie is None:
+            # Create new
+            session = get_session_store()
+            self.add_cookie({'name': settings.SESSION_COOKIE_NAME,
+                             'value': session.session_key,
+                             'path': '/',
+                             'secure': False,
+                             })
+        else:
+            session = get_session_store(session_key=session_cookie['value'])
+        return session
