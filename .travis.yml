@@ -6,14 +6,15 @@ python: 3.5  # this is needed to fool travis to have python3.5 as well
 # This list should be generated using tox -l
 env:
 - TOXENV=py27-django17
-- TOXENV=py27-django18
-- TOXENV=py27-django19
 - TOXENV=py33-django17
-- TOXENV=py33-django18
-- TOXENV=py33-django19
 - TOXENV=py34-django17
+- TOXENV=py27-django18
+- TOXENV=py33-django18
 - TOXENV=py34-django18
+- TOXENV=py35-django18
+- TOXENV=py27-django19
 - TOXENV=py34-django19
+- TOXENV=py35-django19
 install:
 - pip install tox>=2.1
 - pip install coveralls
