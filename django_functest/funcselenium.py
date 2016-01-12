@@ -37,7 +37,6 @@ class FuncSeleniumMixin(object):
             cls.__display.stop()
         super(FuncSeleniumMixin, cls).tearDownClass()
 
-
     # Common API:
     is_full_browser_test = True
 
@@ -48,8 +47,8 @@ class FuncSeleniumMixin(object):
         kwargs.pop('expect_errors', None)
         self.get_literal_url(reverse(name, args=args, kwargs=kwargs))
         # TODO - need tests
-        #self.wait_until_loaded('body')
-        #self.wait_for_ajax()
+        # self.wait_until_loaded('body')
+        # self.wait_for_ajax()
 
     def get_literal_url(self, url):
         """
@@ -62,7 +61,6 @@ class FuncSeleniumMixin(object):
         return self._driver.current_url
 
     # Full browser specific:
-
 
     # Configuration:
     display = False  # Display browser window or not?

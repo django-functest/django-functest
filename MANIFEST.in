@@ -3,5 +3,13 @@ include CONTRIBUTING.rst
 include HISTORY.rst
 include LICENSE
 include README.rst
-recursive-include docs *.rst
+include .coveragerc
+include .editorconfig
+include Makefile
+include tox.ini
+include *.py
+recursive-include docs *
 recursive-include django_functest *.html *.js *.css *.py
+
+prune docs/_build
+global-exclude *~

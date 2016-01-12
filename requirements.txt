@@ -1,2 +1,0 @@
-django>=1.8.0
-# Additional requirements go here
