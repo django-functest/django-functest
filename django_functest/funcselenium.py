@@ -8,7 +8,7 @@ class FuncSeleniumMixin(object):
     @classmethod
     def setUpClass(cls):
 
-        if not cls.show_browser():
+        if not cls.display_browser_window():
             cls.__display = Display(visible=False)
             cls.__display.start()
         driver_name = cls.get_driver_name()
@@ -32,7 +32,7 @@ class FuncSeleniumMixin(object):
 
     @classmethod
     def tearDownClass(cls):
-        if not cls.show_browser():
+        if not cls.display_browser_window():
             cls._driver.quit()
             cls.__display.stop()
         super(FuncSeleniumMixin, cls).tearDownClass()
@@ -65,7 +65,7 @@ class FuncSeleniumMixin(object):
 
 
     # Configuration:
-    display = False
+    display = False  # Display browser window or not?
 
     driver_name = "Firefox"  # Sensible default, works most places
 
@@ -80,7 +80,7 @@ class FuncSeleniumMixin(object):
         return cls.default_timeout
 
     @classmethod
-    def show_browser(cls):
+    def display_browser_window(cls):
         return cls.display
 
     # Implementation methods - private
