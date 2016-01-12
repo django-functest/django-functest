@@ -14,16 +14,14 @@ class WebTestBase(FuncWebTestMixin, TestCase):
 
 
 class FirefoxBase(FuncSeleniumMixin, LiveServerTestCase):
-    pass
+    driver_name = "Firefox"
 
 
 # Chrome/ChromeDriver don't work on Travis
 # https://github.com/travis-ci/travis-ci/issues/272
 @unittest.skipIf(os.environ.get('TRAVIS'), "Skipping Chrome tests")
 class ChromeBase(FuncSeleniumMixin, LiveServerTestCase):
-    @classmethod
-    def get_driver_name(cls):
-        return "Chrome"
+    driver_name = "Chrome"
 
 
 class TestCommonBase(object):

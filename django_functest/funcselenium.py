@@ -67,13 +67,17 @@ class FuncSeleniumMixin(object):
     # Configuration:
     display = False
 
+    driver_name = "Firefox"  # Sensible default, works most places
+
+    default_timeout = 10  # seconds
+
     @classmethod
     def get_driver_name(cls):
-        return "Firefox"  # Sensible default
+        return cls.driver_name
 
     @classmethod
     def get_default_timeout(cls):
-        return 10  # seconds
+        return cls.default_timeout
 
     @classmethod
     def show_browser(cls):
