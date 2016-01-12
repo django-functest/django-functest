@@ -10,6 +10,7 @@ Contents:
    installation
    usage
    common
+   selenium
    contributing
    authors
    history

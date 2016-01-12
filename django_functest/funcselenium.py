@@ -65,21 +65,21 @@ class FuncSeleniumMixin(object):
     # Configuration:
     display = False  # Display browser window or not?
 
-    driver_name = "Firefox"  # Sensible default, works most places
-
     default_timeout = 10  # seconds
 
+    driver_name = "Firefox"  # Sensible default, works most places
+
     @classmethod
-    def get_driver_name(cls):
-        return cls.driver_name
+    def display_browser_window(cls):
+        return cls.display
 
     @classmethod
     def get_default_timeout(cls):
         return cls.default_timeout
 
     @classmethod
-    def display_browser_window(cls):
-        return cls.display
+    def get_driver_name(cls):
+        return cls.driver_name
 
     # Implementation methods - private
     def _get_url_raw(self, url):
