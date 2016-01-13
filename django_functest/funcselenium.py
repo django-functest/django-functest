@@ -31,7 +31,6 @@ class FuncSeleniumMixin(CommonMixin):
             # Firefix
             cls._driver.profile.set_preference('dom.forms.number', False)
         timeout = cls.get_default_timeout()
-        cls._driver.implicitly_wait(timeout)
         cls._driver.set_page_load_timeout(timeout)
 
         super(FuncSeleniumMixin, cls).setUpClass()
@@ -144,11 +143,9 @@ class FuncSeleniumMixin(CommonMixin):
         Helper function that blocks until the element with the given tag name
         is found on the page.
         """
-        if timeout is None:
-            timeout = self.get_default_timeout()
         self.wait_until(
             lambda driver: driver.find_element_by_css_selector(selector),
-            timeout
+            timeout=timeout
         )
 
     def wait_until(self, callback, timeout=None):
