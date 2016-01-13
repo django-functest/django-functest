@@ -31,12 +31,14 @@ class TestCommonBase(object):
     def test_assertUrlsEqual_host(self):
         self.assertUrlsEqual("/foo/", "//example.com/foo/")
         self.assertUrlsEqual("//example.com/foo/", "//example.com/foo/")
-        self.assertRaises(AssertionError, lambda: self.assertUrlsEqual("//example.com/foo/", "//other.com/foo/"))
+        self.assertRaises(AssertionError, lambda: self.assertUrlsEqual("//example.com/foo/",
+                                                                       "//other.com/foo/"))
 
     def test_assertUrlsEqual_protocol(self):
         self.assertUrlsEqual("http://example.com/foo/", "//example.com/foo/")
         self.assertUrlsEqual("http://example.com/foo/", "http://example.com/foo/")
-        self.assertRaises(AssertionError, lambda: self.assertUrlsEqual("http://example.com/foo/", "https://example.com/foo/"))
+        self.assertRaises(AssertionError, lambda: self.assertUrlsEqual("http://example.com/foo/",
+                                                                       "https://example.com/foo/"))
 
     def test_assertTextPresent(self):
         self.get_url('django_functest.test1')
