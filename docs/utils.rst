@@ -1,7 +1,7 @@
 Utilities
 =========
 
-.. class:: django_functest.utils.ShortcutLoginMixin
+.. class:: django_functest.ShortcutLoginMixin
 
    This provides a method for doing a login without actually doing HTTP calls,
    as far as possible.

@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 
-from django_functest.utils import ShortcutLoginMixin
+from django_functest import ShortcutLoginMixin
 
 from .base import ChromeBase, FirefoxBase, WebTestBase
 

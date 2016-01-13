@@ -1,10 +1,10 @@
 Common WebTest/Selenium API
 ===========================
 
-The following methods and attributes are common to ``FuncWebTestMixin`` and
-``FuncSeleniumMixin``:
+The following methods and attributes are common to :class:`django_functest.FuncWebTestMixin` and
+:class:`django_functest.FuncSeleniumMixin`:
 
-.. class:: FuncCommonApi
+.. class:: django_functest.FuncCommonApi
 
    .. attribute:: current_url
 

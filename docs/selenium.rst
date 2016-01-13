@@ -1,10 +1,10 @@
 Selenium wrapper
 ================
 
-The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods:
+The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods, as well as the :doc:`common`.
 
 
-.. class:: FuncSeleniumMixin
+.. class:: django_functest.FuncSeleniumMixin
 
    **Configuration**
 
