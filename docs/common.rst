@@ -23,6 +23,14 @@ followed the same pattern.
       URLs contain a domain name and/or protocol, these are also checked. This
       means that relative URLs can be used, or protocol-relative URLs.
 
+   .. method:: assertTextPresent(text)
+
+      Asserts that the text is present on the current page
+
+   .. method:: assertTextAbsent(text)
+
+      Asserts that the text is not present on the current page
+
    **Other methods and attributes**
 
    .. attribute:: current_url

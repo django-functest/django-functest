@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 import six
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.utils.html import escape
 from django_webtest import WebTestMixin
 from six import text_type
 from six.moves import http_cookiejar
@@ -30,6 +31,12 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
         Gets the passed in URL, as a literal relative URL, without using reverse.
         """
         return self._get_url_raw(url)
+
+    def assertTextPresent(self, text):
+        self.assertIn(escape(text), self.last_response.content.decode('utf-8'))
+
+    def assertTextAbsent(self, text):
+        self.assertNotIn(escape(text), self.last_response.content.decode('utf-8'))
 
     # Implementation methods - private
 

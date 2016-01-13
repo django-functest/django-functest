@@ -38,6 +38,19 @@ class TestCommonBase(object):
         self.assertUrlsEqual("http://example.com/foo/", "http://example.com/foo/")
         self.assertRaises(AssertionError, lambda: self.assertUrlsEqual("http://example.com/foo/", "https://example.com/foo/"))
 
+    def test_assertTextPresent(self):
+        self.get_url('django_functest.test1')
+        self.assertTextPresent("Hello world")
+        # Check escaping
+        self.assertTextPresent("from me & friends")
+        self.assertRaises(AssertionError, lambda: self.assertTextPresent("Something definitely not there"))
+
+    def test_assertTextAbsent(self):
+        self.get_url('django_functest.test1')
+        self.assertTextAbsent("Something definitely not there")
+        self.assertRaises(AssertionError, lambda: self.assertTextAbsent("Hello world"))
+        self.assertRaises(AssertionError, lambda: self.assertTextAbsent("from me & friends"))
+
 
 class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
 

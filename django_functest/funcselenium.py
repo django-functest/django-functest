@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.utils.html import escape
 from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -49,6 +50,12 @@ class FuncSeleniumMixin(CommonMixin):
 
     # Common API:
     is_full_browser_test = True
+
+    def assertTextPresent(self, text):
+        self.assertIn(escape(text), self.get_page_source())
+
+    def assertTextAbsent(self, text):
+        self.assertNotIn(escape(text), self.get_page_source())
 
     def get_url(self, name, *args, **kwargs):
         """
@@ -154,3 +161,6 @@ class FuncSeleniumMixin(CommonMixin):
         if timeout is None:
             timeout = self.get_default_timeout()
         WebDriverWait(self._driver, timeout).until(callback)
+
+    def get_page_source(self):
+        return self._driver.page_source
