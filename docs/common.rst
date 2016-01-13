@@ -1,10 +1,29 @@
 Common WebTest/Selenium API
 ===========================
 
-The following methods and attributes are common to :class:`django_functest.FuncWebTestMixin` and
-:class:`django_functest.FuncSeleniumMixin`:
+This page documents the methods and attributes that are provided by both
+:class:`django_functest.FuncWebTestMixin` and
+:class:`django_functest.FuncSeleniumMixin`.
+
+Conventions:
+
+unittest provides assertion methods that are ``camelCased``. Django follows
+suite with assertion methods, but for other things defaults to the PEP8
+recommendation of ``name_with_underscores`` e.g. ``live_server_url``. We have
+followed the same pattern.
 
 .. class:: django_functest.FuncCommonApi
+
+   **Assertion methods**
+
+   .. method:: assertUrlsEqual(url, other_url=None)
+
+      Checks that the URLs are equal, with ``other_url`` defaulting to the
+      current URL if not passed. The path and query are checked, and if both
+      URLs contain a domain name and/or protocol, these are also checked. This
+      means that relative URLs can be used, or protocol-relative URLs.
+
+   **Other methods and attributes**
 
    .. attribute:: current_url
 

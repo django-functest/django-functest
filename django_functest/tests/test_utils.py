@@ -15,7 +15,7 @@ class TestShortcutLoginBase(ShortcutLoginMixin):
     def test_login_succeeds(self):
         self.shortcut_login(username=self.user.username, password="password")
         self.get_url("admin:index")
-        self.assertUrlEquals("/admin/")
+        self.assertUrlsEqual("/admin/")
 
     def test_login_raises_exception_with_wrong_password(self):
         self.assertRaises(ValueError, lambda: self.shortcut_login(username=self.user.username, password="foo"))

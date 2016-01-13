@@ -14,12 +14,29 @@ class TestCommonBase(object):
         self.assertTrue(url.endswith("/admin/login/"))
         self.assertTrue(url.startswith("http://"))
 
-    def test_assert_url(self):
+    def test_assertUrlsEqual_default(self):
         self.get_url('admin:login')
-        self.assertRaises(AssertionError, lambda: self.assertUrlEquals("foo"))
-        self.assertRaises(AssertionError, lambda: self.assertUrlEquals("/login/"))
-        self.assertRaises(AssertionError, lambda: self.assertUrlEquals("/admin/login/?x=y"))
-        self.assertUrlEquals("/admin/login/")
+        self.assertRaises(AssertionError, lambda: self.assertUrlsEqual("foo"))
+        self.assertUrlsEqual("/admin/login/")
+
+    def test_assertUrlsEqual_path(self):
+        self.assertRaises(AssertionError, lambda: self.assertUrlsEqual("/login/", "/admin/login/"))
+        self.assertUrlsEqual("/login/", "/login/")
+
+    def test_assertUrlsEqual_query(self):
+        self.assertRaises(AssertionError, lambda: self.assertUrlsEqual("/foo/?q=1", "/foo/"))
+        self.assertRaises(AssertionError, lambda: self.assertUrlsEqual("/foo/?q=1", "/foo/?q=2"))
+        self.assertUrlsEqual("/foo/?q=1", "/foo/?q=1")
+
+    def test_assertUrlsEqual_host(self):
+        self.assertUrlsEqual("/foo/", "//example.com/foo/")
+        self.assertUrlsEqual("//example.com/foo/", "//example.com/foo/")
+        self.assertRaises(AssertionError, lambda: self.assertUrlsEqual("//example.com/foo/", "//other.com/foo/"))
+
+    def test_assertUrlsEqual_protocol(self):
+        self.assertUrlsEqual("http://example.com/foo/", "//example.com/foo/")
+        self.assertUrlsEqual("http://example.com/foo/", "http://example.com/foo/")
+        self.assertRaises(AssertionError, lambda: self.assertUrlsEqual("http://example.com/foo/", "https://example.com/foo/"))
 
 
 class TestFuncWebTestCommon(TestCommonBase, WebTestBase):

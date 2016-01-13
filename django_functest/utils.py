@@ -40,13 +40,17 @@ def get_session_store(session_key=None):
 
 class CommonMixin(object):
 
-    def assertUrlEquals(self, relative_url, current_url=None):
+    def assertUrlsEqual(self, url, other_url=None):
         """
-        Asserts that the current URL matches the given relative URL exactly.
+        Asserts that the URLs match. Empty protocol or domain are ignored.
         """
-        if current_url is None:
-            current_url = self.current_url
-        url1 = furl(relative_url)
-        url2 = furl(current_url)
+        if other_url is None:
+            other_url = self.current_url
+        url1 = furl(url)
+        url2 = furl(other_url)
         self.assertEqual(url1.path, url2.path)
         self.assertEqual(url1.query, url2.query)
+        if url1.netloc and url2.netloc:
+            self.assertEqual(url1.netloc, url2.netloc)
+        if url1.scheme and url2.scheme:
+            self.assertEqual(url1.scheme, url2.scheme)
