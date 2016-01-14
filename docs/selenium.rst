@@ -17,35 +17,35 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
    project, to be used as a base-class for your tests, and set these
    configuration values on it.
 
-   .. method:: display_browser_window
+   .. attribute:: default_timeout
 
-      Returns boolean that determines if the browser window should be shown. Defaults to ``cls.display``.
+      Controls Selenium timeouts, defaults to ``10`` (seconds).
 
    .. attribute:: display
 
-      Defaults to ``False``
-
-   .. method:: get_default_timeout
-
-      Returns the time in seconds for Selenium to wait for the browser to respond etc. Defaults to ``cls.default_timeout``
-
-   .. attribute:: default_timeout
-
-      Defaults to ``10``.
-
-   .. method:: get_driver_name
-
-      Returns the driver name i.e. the browser to use. Defaults to ``cls.driver_name``
+      Controls whether browser window is displayed or not, defaults to ``False``
 
    .. attribute:: driver_name
 
-      Defaults to ``"Firefox"``
+      Controls which Selenium 'driver' i.e. browser will be used. Defaults to ``"Firefox"``
 
-   ** Other attributes and methods **
+   .. method:: display_browser_window
+
+      Returns boolean that determines if the browser window should be shown. Defaults to :attr:`display`.
+
+   .. method:: get_default_timeout
+
+      Returns the time in seconds for Selenium to wait for the browser to respond etc. Defaults to :attr:`default_timeout`.
+
+   .. method:: get_driver_name
+
+      Returns the driver name i.e. the browser to use. Defaults to :attr:`driver_name`.
+
+   **Other attributes and methods**
 
    .. method:: is_element_displayed(css_selector)
 
       Returns ``True`` if the element specified by the CSS selector is both
-      present (see :meth:`~django_functest.FuncApiCommon.is_element_present`)
+      present (see :meth:`~django_functest.FuncCommonApi.is_element_present`)
       and visible on the page (e.g. does not have ``display: none;``),
       ``False`` otherwise.
