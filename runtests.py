@@ -1,10 +1,25 @@
 #!/usr/bin/env python
+import argparse
 import os
 import os.path
 import sys
 
 from django.conf import settings
 from django.core.management import execute_from_command_line
+
+
+parser = argparse.ArgumentParser(description="Run the test suite, or some tests. Also takes any options that can be passed to manage.py e.g. --failfast and --noinput")
+parser.add_argument("--show-browser", action='store_true',
+                    help="Show the browser when running Selenium tests")
+parser.add_argument("--update-migration", action='store_true',
+                    help="Don't run tests - just update the migration used for tests")
+
+
+known_args, remaining_args = parser.parse_known_args()
+
+remaining_options = [a for a in remaining_args if a.startswith('-')]
+test_args = [a for a in remaining_args if not a.startswith('-')]
+
 
 settings.configure(
     DEBUG=True,
@@ -49,20 +64,22 @@ except AttributeError:
 else:
     setup()
 
+if known_args.show_browser:
+    from django_functest.tests.base import HideBrowserMixin
+    HideBrowserMixin.display = True
 
-if __name__ == '__main__':
 
-    if len(sys.argv) > 1 and sys.argv[1] == "updatemigration":
-        os.unlink("django_functest/tests/migrations/0001_initial.py")
-        argv = [sys.argv[0], "makemigrations", "tests"] + sys.argv[2:]
+if known_args.update_migration:
+    os.unlink("django_functest/tests/migrations/0001_initial.py")
+    argv = [sys.argv[0], "makemigrations", "tests"] + sys.argv[2:]
+else:
+    argv = [sys.argv[0], "test"]
+    if len(test_args) == 0:
+        argv.extend(["django_functest.tests"])
     else:
-        argv = [sys.argv[0], "test"]
-        if len(sys.argv) == 1:
-            # Nothing following 'runtests.py':
-            argv.extend(["django_functest.tests"])
-        else:
-            # Allow tests to be specified:
-            argv.extend(sys.argv[1:])
+        argv.extend(test_args)
 
-    # Run like 'manage.py', so we can get the options it has.
-    execute_from_command_line(argv)
+    argv.extend(remaining_options)
+
+# Run like 'manage.py', so we can get the options it has.
+execute_from_command_line(argv)
