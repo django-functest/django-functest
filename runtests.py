@@ -17,7 +17,8 @@ settings.configure(
     },
     ROOT_URLCONF="django_functest.tests.urls",
     INSTALLED_APPS=[
-        "django.contrib.contenttypes",  # First, see http://stackoverflow.com/questions/18281137/selenium-django-gives-foreign-key-error/18292090#18292090
+        # First, see http://stackoverflow.com/questions/18281137/selenium-django-gives-foreign-key-error/18292090#18292090 # noqa
+        "django.contrib.contenttypes",
         "django.contrib.admin",
         "django.contrib.auth",
         "django.contrib.staticfiles",

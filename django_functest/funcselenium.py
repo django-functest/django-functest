@@ -20,7 +20,6 @@ class FuncSeleniumMixin(CommonMixin):
 
     @classmethod
     def setUpClass(cls):
-
         if not cls.display_browser_window():
             cls.__display = Display(visible=False)
             cls.__display.start()

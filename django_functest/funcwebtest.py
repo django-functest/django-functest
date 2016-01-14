@@ -48,7 +48,9 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
         return len(self._make_pq(self.last_response).find(css_selector)) > 0
 
     def submit(self, css_selector, wait_for_reload=None, auto_follow=True):
-        form, field_name = self._find_form_and_field_by_css_selector(self.last_response, css_selector, filter_selector="input[type=submit], button")
+        form, field_name = self._find_form_and_field_by_css_selector(self.last_response,
+                                                                     css_selector,
+                                                                     filter_selector="input[type=submit], button")
         response = form.submit(field_name)
         self.last_response = response
         if auto_follow:
