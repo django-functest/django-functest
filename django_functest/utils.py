@@ -12,6 +12,9 @@ except:
 
 
 class ShortcutLoginMixin(object):
+    """
+    A mixin that provides a fast way of logging in.
+    """
     def shortcut_login(self, **credentials):
         user = authenticate(**credentials)
         if not user:
@@ -25,6 +28,9 @@ class ShortcutLoginMixin(object):
         self.set_session_vars({AUTH_ID_SESSION_KEY: user.pk,
                                AUTH_HASH_SESSION_KEY: session_auth_hash,
                                AUTH_BACKEND_SESSION_KEY: user.backend})
+
+    def shortcut_logout(self):
+        self.set_session_vars({AUTH_BACKEND_SESSION_KEY: ''})
 
 
 def get_session_store(session_key=None):
@@ -54,3 +60,32 @@ class CommonMixin(object):
             self.assertEqual(url1.netloc, url2.netloc)
         if url1.scheme and url2.scheme:
             self.assertEqual(url1.scheme, url2.scheme)
+
+    def fill_by_id(self, data):
+        self.fill({'#' + k: v for k, v in data.items()})
+
+    def fill_by_name(self, fields, prefix=""):
+        self.fill({'[name="%s%s"]' % (prefix, k): v for k, v in fields.items()})
+
+
+class AdminLoginMixin(ShortcutLoginMixin):
+    """
+    A mixin that logs in via the normal admin login page
+    """
+    def do_login(self, username=None, password=None, shortcut=True):
+        if shortcut:
+            self.shortcut_login(username=username, password=password)
+            return
+
+        self.get_url('admin:index')
+        self.fill({'#id_username': username,
+                   '#id_password': password,
+                   })
+        self.submit("input[type=submit]")
+
+    def do_logout(self, shortcut=True):
+        if shortcut:
+            self.shortcut_logout()
+            return
+
+        self.get_url('admin:logout')

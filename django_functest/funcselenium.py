@@ -1,12 +1,19 @@
+import logging
+import time
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.html import escape
 from pyvirtualdisplay import Display
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchWindowException
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from six import text_type
 
 from .utils import CommonMixin, get_session_store
+
+logger = logging.getLogger(__name__)
 
 
 class FuncSeleniumMixin(CommonMixin):
@@ -76,6 +83,14 @@ class FuncSeleniumMixin(CommonMixin):
     def current_url(self):
         return self._driver.current_url
 
+    def fill(self, fields):
+        for k, v in fields.items():
+            e = self._find(k)
+            self.fill_input(e, v)
+
+    def submit(self, css_selector, wait_for_reload=True, auto_follow=None):
+        self.click(css_selector, wait_for_reload=wait_for_reload)
+
     # Full browser specific:
 
     # Configuration:
@@ -96,6 +111,34 @@ class FuncSeleniumMixin(CommonMixin):
     @classmethod
     def get_driver_name(cls):
         return cls.driver_name
+
+    # Utility methods:
+
+    def click(self, css_selector, wait_for_reload=False, double=False, scroll=True, wait_for_element=False):
+        if wait_for_reload:
+            self._driver.execute_script("document.pageReloadedYetFlag='notyet';")
+
+        if wait_for_element:
+            elem = self._find_with_timeout(css_selector)
+        else:
+            elem = self._find(css_selector)
+        if scroll:
+            self._scroll_into_view(elem)
+        time.sleep(0.2)
+        if double:
+            ActionChains(self._driver).double_click(on_element=elem).perform()
+        else:
+            elem.click()
+
+        if wait_for_reload:
+            def f(driver):
+                obj = driver.execute_script("return document.pageReloadedYetFlag;")
+
+                if obj is None or obj != "notyet":
+                    return True
+                return False
+            WebDriverWait(self._driver, self.get_default_timeout()).until(f)
+        self.wait_until_finished()
 
     # Implementation methods - private
     def _get_url_raw(self, url):
@@ -159,5 +202,104 @@ class FuncSeleniumMixin(CommonMixin):
             timeout = self.get_default_timeout()
         WebDriverWait(self._driver, timeout).until(callback)
 
+    def wait_for_page_load(self):
+        self.wait_until_loaded('body')
+        self.wait_for_document_ready()
+
+    def wait_for_document_ready(self):
+        self.wait_until(lambda driver: driver.execute_script("return document.readyState") == "complete")
+
+    def wait_until_finished(self):
+        try:
+            self.wait_for_page_load()
+        except NoSuchWindowException:
+            pass  # window can legitimately close e.g. for popups
+
     def get_page_source(self):
         return self._driver.page_source
+
+    def fill_input(self, elem, val):
+        if isinstance(elem, basestring):
+            elem = self._find(elem)
+        if elem.tag_name == 'select':
+            self._set_select_elem(elem, val)
+        elif elem.tag_name == 'input' and elem.get_attribute('type') == 'checkbox':
+            self._set_check_box(elem, val)
+        else:
+            self._scroll_into_view(elem)
+            elem.clear()
+            elem.send_keys(val)
+
+    def _find(self, css_selector):
+        return self._driver.find_element_by_css_selector(css_selector)
+
+    def _scroll_into_view(self, elem, attempts=0):
+        if self._is_visible(elem):
+            return
+
+        # Attempt to scroll to the center of the screen. This is the best
+        # location to avoid fixed navigation bars which tend to be at the
+        # top and bottom.
+        center_x, center_y, doc_width, doc_height = self._scroll_center_data()
+        elem_x, elem_y = elem.location['x'], elem.location['y']
+        elem_w, elem_h = elem.size['width'], elem.size['height']
+        scroll_to_x = elem_x + elem_w / 2 - center_x / 2
+        scroll_to_y = elem_y + elem_h / 2 - center_y / 2
+
+        def clip(val, min_val, max_val):
+            return max(min(val, max_val), min_val)
+
+        scroll_to_x = clip(scroll_to_x, 0, doc_width)
+        scroll_to_y = clip(scroll_to_y, 0, doc_height)
+
+        self._driver.execute_script("window.scrollTo({0}, {1});".format(
+            scroll_to_x, scroll_to_y))
+        x, y = self._scroll_position()
+        if (x, y) != (scroll_to_x, scroll_to_y):
+            if attempts < 10:
+                # Probably in the middle of another scroll
+                time.sleep(0.1)
+                self._scroll_into_view(elem, attempts=attempts + 1)
+            else:
+                logger.warning("Can't scroll to (%s, %s)", scroll_to_x, scroll_to_y)
+
+        if not self._is_visible(elem):
+            logger.warning("Element %s is not visible", elem)
+
+    def _scroll_center_data(self):
+        return self.execute_script("""return [document.documentElement.clientWidth,
+                                              document.documentElement.clientHeight,
+                                              document.documentElement.offsetWidth,
+                                              document.documentElement.offsetHeight];""")
+
+    def _scroll_position(self):
+        return self.execute_script("""return [document.documentElement.scrollTop,
+                                              document.documentElement.scrollLeft];""")
+
+    def _is_visible(self, elem):
+        # Thanks http://stackoverflow.com/a/15203639/182604
+        return self.execute_script("""return (function (el) {
+    var rect     = el.getBoundingClientRect(),
+        vWidth   = window.innerWidth || doc.documentElement.clientWidth,
+        vHeight  = window.innerHeight || doc.documentElement.clientHeight,
+        efp      = function (x, y) { return document.elementFromPoint(x, y) };
+
+    // Return false if it's not in the viewport
+    if (rect.right < 0 || rect.bottom < 0
+            || rect.left > vWidth || rect.top > vHeight)
+        return false;
+
+    // Return true if any of its four corners are visible
+    return (
+          el.contains(efp(rect.left,  rect.top))
+      ||  el.contains(efp(rect.right, rect.top))
+      ||  el.contains(efp(rect.right, rect.bottom))
+      ||  el.contains(efp(rect.left,  rect.bottom))
+    );
+})(arguments[0])""", elem)
+
+    def _is_checked(self, elem):
+        return elem.get_attribute('checked') == 'true'
+
+    def execute_script(self, script, *args):
+        return self._driver.execute_script(script, *args)

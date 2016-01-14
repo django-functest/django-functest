@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+import pyquery
 import six
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -37,6 +38,21 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
 
     def assertTextAbsent(self, text):
         self.assertNotIn(escape(text), self.last_response.content.decode('utf-8'))
+
+    def fill(self, data):
+        for selector, value in data.items():
+            form, field_name = self._find_form_and_field_by_css_selector(self.last_response, selector)
+            form[field_name] = value
+
+    def submit(self, css_selector, wait_for_reload=None, auto_follow=True):
+        form, field_name = self._find_form_and_field_by_css_selector(self.last_response, css_selector, filter_selector="input[type=submit], button")
+        response = form.submit(field_name)
+        self.last_response = response
+        if auto_follow:
+            is_redirect = lambda r: r.status_int >= 300 and r.status_int < 400
+            while is_redirect(response):
+                response = response.follow()
+        self.last_response = response
 
     # Implementation methods - private
 
@@ -92,3 +108,65 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
         """
         self.last_response = self.app.get(url, auto_follow=auto_follow, expect_errors=expect_errors)
         return self.last_response
+
+    def _find_form_and_field_by_css_selector(self, response, css_selector, filter_selector=None):
+        pq = self._make_pq(response)
+        items = pq.find(css_selector)
+
+        found = []
+        if filter_selector:
+            items = items.filter(filter_selector)
+        for item in items:
+            form_elem = self._find_parent_form(item)
+            if form_elem is None:
+                raise ValueError("Can't find form for input {0}.".format(css_selector))
+            form = self._match_form_elem_to_webtest_form(form_elem, response)
+            try:
+                field = item.name if hasattr(item, 'name') else item.attrib['name']
+            except KeyError:
+                raise ValueError("Element {0} needs 'name' attribute in order to use it".format(css_selector))
+            found.append((form, field))
+
+        if len(found) == 1:
+            return found[0]
+
+        if len(found) > 1:
+            raise ValueError("Multiple elements found matching '{0}'".format(css_selector))
+
+        raise ValueError("Can't find submit input matching {0} in response {1}.".format(css_selector, response))
+
+    def _find_parent_form(self, elem):
+        p = elem.getparent()
+        if p is None:
+            return None
+        if p.tag == 'form':
+            return p
+        return self._find_parent_form(p)
+
+    def _match_form_elem_to_webtest_form(self, form_elem, response):
+        pq = self._make_pq(response)
+        forms = pq('form')
+        form_index = forms.index(form_elem)
+        webtest_form = response.forms[form_index]
+        form_sig = {'action': form_elem.attrib.get('action', ''),
+                    'id': form_elem.attrib.get('id', ''),
+                    'method': form_elem.attrib.get('method', '').lower(),
+                    }
+        webtest_sig = {
+            'action': getattr(webtest_form, 'action', ''),
+            'id': getattr(webtest_form, 'id', ''),
+            'method': getattr(webtest_form, 'method', '').lower(),
+        }
+        webtest_sig = {k: v if v is not None else '' for k, v in webtest_sig.items()}
+        assert form_sig == webtest_sig
+        return webtest_form
+
+    def _make_pq(self, response):
+        # Cache to save parsing every time
+        if not hasattr(self, '_pq_cache'):
+            self._pq_cache = {}
+        if response in self._pq_cache:
+            return self._pq_cache[response]
+        pq = pyquery.PyQuery(response.content)
+        self._pq_cache[response] = pq
+        return pq
