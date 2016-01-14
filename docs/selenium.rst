@@ -40,3 +40,12 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
    .. attribute:: driver_name
 
       Defaults to ``"Firefox"``
+
+   ** Other attributes and methods **
+
+   .. method:: is_element_displayed(css_selector)
+
+      Returns ``True`` if the element specified by the CSS selector is both
+      present (see :meth:`~django_functest.FuncApiCommon.is_element_present`)
+      and visible on the page (e.g. does not have ``display: none;``),
+      ``False`` otherwise.

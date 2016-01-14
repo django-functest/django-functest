@@ -37,10 +37,6 @@ followed the same pattern.
 
       The current full URL
 
-   .. attribute:: is_full_browser_test
-
-      True for Selenium tests, False for WebTest tests.
-
    .. method:: get_url(name, *args, **kwargs)
 
       Gets the named URL, passing it through ``django.core.urlresolvers.reverse`` with ``*args`` and ``**kwargs``.
@@ -48,3 +44,12 @@ followed the same pattern.
    .. method:: get_literal_url(relative_url)
 
       Gets the URL given by the relative URL passed in.
+
+   .. method:: is_element_present(css_selector)
+
+      Returns ``True`` if the element specified by the CSS selector is present, ``False`` otherwise.
+      See also :meth:`~django_functest.FuncSeleniumMixin.is_element_displayed`.
+
+   .. attribute:: is_full_browser_test
+
+      True for Selenium tests, False for WebTest tests.

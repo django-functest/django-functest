@@ -53,6 +53,11 @@ class TestCommonBase(object):
         self.assertRaises(AssertionError, lambda: self.assertTextAbsent("Hello world"))
         self.assertRaises(AssertionError, lambda: self.assertTextAbsent("from me & friends"))
 
+    def test_is_element_present(self):
+        self.get_url('admin:login')
+        self.assertTrue(self.is_element_present('#id_username'))
+        self.assertFalse(self.is_element_present('#id_something_not_there'))
+
 
 class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
 

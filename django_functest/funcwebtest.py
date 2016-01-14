@@ -17,9 +17,20 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
     # Public Common API
     is_full_browser_test = False
 
+    def assertTextAbsent(self, text):
+        self.assertNotIn(escape(text), self.last_response.content.decode('utf-8'))
+
+    def assertTextPresent(self, text):
+        self.assertIn(escape(text), self.last_response.content.decode('utf-8'))
+
     @property
     def current_url(self):
         return self.last_response.request.url
+
+    def fill(self, data):
+        for selector, value in data.items():
+            form, field_name = self._find_form_and_field_by_css_selector(self.last_response, selector)
+            form[field_name] = value
 
     def get_url(self, name, *args, **kwargs):
         """
@@ -33,16 +44,8 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
         """
         return self._get_url_raw(url)
 
-    def assertTextPresent(self, text):
-        self.assertIn(escape(text), self.last_response.content.decode('utf-8'))
-
-    def assertTextAbsent(self, text):
-        self.assertNotIn(escape(text), self.last_response.content.decode('utf-8'))
-
-    def fill(self, data):
-        for selector, value in data.items():
-            form, field_name = self._find_form_and_field_by_css_selector(self.last_response, selector)
-            form[field_name] = value
+    def is_element_present(self, css_selector):
+        return len(self._make_pq(self.last_response).find(css_selector)) > 0
 
     def submit(self, css_selector, wait_for_reload=None, auto_follow=True):
         form, field_name = self._find_form_and_field_by_css_selector(self.last_response, css_selector, filter_selector="input[type=submit], button")

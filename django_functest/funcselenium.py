@@ -6,10 +6,10 @@ from django.core.urlresolvers import reverse
 from django.utils.html import escape
 from pyvirtualdisplay import Display
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchWindowException
+from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
-from six import text_type
+from six import string_types, text_type
 
 from .utils import CommonMixin, get_session_store
 
@@ -63,6 +63,15 @@ class FuncSeleniumMixin(CommonMixin):
     def assertTextAbsent(self, text):
         self.assertNotIn(escape(text), self.get_page_source())
 
+    @property
+    def current_url(self):
+        return self._driver.current_url
+
+    def fill(self, fields):
+        for k, v in fields.items():
+            e = self._find_with_timeout(k)
+            self.fill_input(e, v)
+
     def get_url(self, name, *args, **kwargs):
         """
         Gets the named URL, passing *args and **kwargs to Django's URL 'reverse' function.
@@ -79,14 +88,12 @@ class FuncSeleniumMixin(CommonMixin):
         """
         self._get_url_raw(self.live_server_url + url)
 
-    @property
-    def current_url(self):
-        return self._driver.current_url
-
-    def fill(self, fields):
-        for k, v in fields.items():
-            e = self._find(k)
-            self.fill_input(e, v)
+    def is_element_present(self, css_selector):
+        try:
+            self._driver.find_element_by_css_selector(css_selector)
+        except NoSuchElementException:
+            return False
+        return True
 
     def submit(self, css_selector, wait_for_reload=True, auto_follow=None):
         self.click(css_selector, wait_for_reload=wait_for_reload)
@@ -114,14 +121,11 @@ class FuncSeleniumMixin(CommonMixin):
 
     # Utility methods:
 
-    def click(self, css_selector, wait_for_reload=False, double=False, scroll=True, wait_for_element=False):
+    def click(self, css_selector, wait_for_reload=False, double=False, scroll=True):
         if wait_for_reload:
             self._driver.execute_script("document.pageReloadedYetFlag='notyet';")
 
-        if wait_for_element:
-            elem = self._find_with_timeout(css_selector)
-        else:
-            elem = self._find(css_selector)
+        elem = self._find_with_timeout(css_selector)
         if scroll:
             self._scroll_into_view(elem)
         time.sleep(0.2)
@@ -140,7 +144,15 @@ class FuncSeleniumMixin(CommonMixin):
             WebDriverWait(self._driver, self.get_default_timeout()).until(f)
         self.wait_until_finished()
 
+    def is_element_displayed(self, css_selector):
+        try:
+            elem = self._driver.find_element_by_css_selector(css_selector)
+        except NoSuchElementException:
+            return False
+        return elem.is_displayed()
+
     # Implementation methods - private
+
     def _get_url_raw(self, url):
         """
         'raw' method for getting URL - not compatible between FullBrowserTest and WebTestBase
@@ -219,8 +231,8 @@ class FuncSeleniumMixin(CommonMixin):
         return self._driver.page_source
 
     def fill_input(self, elem, val):
-        if isinstance(elem, basestring):
-            elem = self._find(elem)
+        if isinstance(elem, string_types):
+            elem = self._find_with_timeout(elem)
         if elem.tag_name == 'select':
             self._set_select_elem(elem, val)
         elif elem.tag_name == 'input' and elem.get_attribute('type') == 'checkbox':
@@ -232,6 +244,10 @@ class FuncSeleniumMixin(CommonMixin):
 
     def _find(self, css_selector):
         return self._driver.find_element_by_css_selector(css_selector)
+
+    def _find_with_timeout(self, css_selector, timeout=None):
+        self.wait_until_loaded(css_selector, timeout=timeout)
+        return self._find(css_selector)
 
     def _scroll_into_view(self, elem, attempts=0):
         if self._is_visible(elem):
