@@ -271,15 +271,15 @@ class FuncSeleniumMixin(CommonMixin):
             scroll_to_x, scroll_to_y))
         x, y = self._scroll_position()
         if (x, y) != (scroll_to_x, scroll_to_y):
+            # Probably in the middle of another scroll. Wait and try again.
             if attempts < 10:
-                # Probably in the middle of another scroll
                 time.sleep(0.1)
                 self._scroll_into_view(elem, attempts=attempts + 1)
             else:
                 logger.warning("Can't scroll to (%s, %s)", scroll_to_x, scroll_to_y)
 
-        if not self._is_visible(elem):
-            logger.warning("Element %s is not visible", elem)
+        if attempts == 0:
+            self.wait_until(lambda *_: self._is_visible(elem))
 
     def _scroll_center_data(self):
         return self.execute_script("""return [document.documentElement.clientWidth,
@@ -304,12 +304,13 @@ class FuncSeleniumMixin(CommonMixin):
             || rect.left > vWidth || rect.top > vHeight)
         return false;
 
-    // Return true if any of its four corners are visible
+    // Return true if any of its four corners or center are visible
     return (
           el.contains(efp(rect.left,  rect.top))
       ||  el.contains(efp(rect.right, rect.top))
       ||  el.contains(efp(rect.right, rect.bottom))
       ||  el.contains(efp(rect.left,  rect.bottom))
+      ||  el.contains(efp(rect.right - rect.width / 2, rect.bottom - rect.height / 2))
     );
 })(arguments[0])""", elem)
 
