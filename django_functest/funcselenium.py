@@ -255,11 +255,11 @@ class FuncSeleniumMixin(CommonMixin):
         # Attempt to scroll to the center of the screen. This is the best
         # location to avoid fixed navigation bars which tend to be at the
         # top and bottom.
-        center_x, center_y, doc_width, doc_height = self._scroll_center_data()
+        viewport_width, viewport_height, doc_width, doc_height = self._scroll_center_data()
         elem_x, elem_y = elem.location['x'], elem.location['y']
         elem_w, elem_h = elem.size['width'], elem.size['height']
-        scroll_to_x = elem_x + elem_w / 2 - center_x / 2
-        scroll_to_y = elem_y + elem_h / 2 - center_y / 2
+        scroll_to_x = elem_x + elem_w / 2 - viewport_width / 2
+        scroll_to_y = elem_y + elem_h / 2 - viewport_height / 2
 
         def clip(val, min_val, max_val):
             return max(min(val, max_val), min_val)
@@ -282,8 +282,8 @@ class FuncSeleniumMixin(CommonMixin):
             self.wait_until(lambda *_: self._is_visible(elem))
 
     def _scroll_center_data(self):
-        return self.execute_script("""return [document.documentElement.clientWidth,
-                                              document.documentElement.clientHeight,
+        return self.execute_script("""return [window.innerWidth,
+                                              window.innerHeight,
                                               document.documentElement.offsetWidth,
                                               document.documentElement.offsetHeight];""")
 

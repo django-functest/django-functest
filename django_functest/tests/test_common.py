@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from selenium.common.exceptions import TimeoutException
 
 from django_functest.exceptions import WebTestNoSuchElementException, WebTestMultipleElementsException, WebTestCantUseElement
@@ -136,6 +137,17 @@ class TestFuncSeleniumCommonBase(TestCommonBase):
 
     def test_is_full_browser_attribute(self):
         self.assertEqual(self.is_full_browser_test, True)
+
+    def test_fill_with_scrolling(self):
+        url = reverse('edit_thing', kwargs=dict(thing_id=self.thing.id)) + "?add_spacers=1"
+        self.get_literal_url(url)
+        self.fill({'#id_name': "New name",
+                   '#id_big': False,
+                   '#id_clever': True,
+                   '#id_element_type': Thing.ELEMENT_AIR
+                   })
+        self.submit('input[type=submit]', wait_for_reload=True)
+        self._assertThingChanged()
 
 
 class TestFuncSeleniumCommonFirefox(TestFuncSeleniumCommonBase, FirefoxBase):
