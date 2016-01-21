@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <title>Edit {{ thing.name }}</title>
+  </head>
+  <body>
+    <form action="" method="POST">
+      {% csrf_token %}
+      {{ thing_form.as_p }}
+      <input type="submit" name="submit" value="Change it">
+
+      {# For an error condition #}
+      <input type="text" style="display:none;" id="id_badinput1" value="Some value">
+    </form>
+
+    {# For an error condition #}
+    <input type="text" style="display:none;" name="badinput2" id="id_badinput2" value="Some value">
+
+  </body>
+</html>
