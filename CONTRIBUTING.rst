@@ -111,3 +111,10 @@ Tips
 To run a subset of tests::
 
     $ ./runtests.py  django_functest.tests.SomeTestCase
+
+Conduct
+-------
+
+Contributors of any kind are expected to act with politeness to all other
+contributors, in pull requests, issue trackers etc., and harassing behaviour
+will not be tolerated.
