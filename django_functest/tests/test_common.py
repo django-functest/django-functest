@@ -1,3 +1,6 @@
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
+
+from django_functest.exceptions import WebTestNoSuchElementException, WebTestMultipleElementsException
 from django_functest.tests.models import Thing
 
 from .base import ChromeBase, FirefoxBase, WebTestBase
@@ -6,7 +9,10 @@ from .base import ChromeBase, FirefoxBase, WebTestBase
 class TestCommonBase(object):
     def setUp(self):
         super(TestCommonBase, self).setUp()
-        self.thing = Thing.objects.create(name="Henrietta")
+        self.thing = Thing.objects.create(name="Rock",
+                                          big=True,
+                                          clever=False,
+                                          element_type=Thing.ELEMENT_EARTH)
 
     def test_get_url(self):
         self.get_url('admin:login')
@@ -58,14 +64,67 @@ class TestCommonBase(object):
         self.assertTrue(self.is_element_present('#id_username'))
         self.assertFalse(self.is_element_present('#id_something_not_there'))
 
+    def refresh_thing(self):
+        self.thing = Thing.objects.get(id=self.thing.id)
+        return self.thing
+
+    def test_fill(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.fill({'#id_name': "New name",
+                   '#id_big': False,
+                   '#id_clever': True,
+                   '#id_element_type': Thing.ELEMENT_AIR
+                   })
+        self.submit('input[type=submit]', wait_for_reload=True)
+        self._assertThingChanged()
+
+    def test_fill_by_id(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.fill_by_id({'id_name': "New name",
+                         'id_big': False,
+                         'id_clever': True,
+                         'id_element_type': Thing.ELEMENT_AIR
+                         })
+        self.submit('input[type=submit]', wait_for_reload=True)
+        self._assertThingChanged()
+
+    def test_fill_by_name(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.fill_by_name({'name': "New name",
+                           'big': False,
+                           'clever': True,
+                           'element_type': Thing.ELEMENT_AIR
+                           })
+        self.submit('input[type=submit]', wait_for_reload=True)
+        self._assertThingChanged()
+
+    def _assertThingChanged(self):
+        thing = self.refresh_thing()
+        self.assertEqual(thing.name, "New name")
+        self.assertEqual(thing.big, False)
+        self.assertEqual(thing.clever, True)
+        self.assertEqual(thing.element_type, Thing.ELEMENT_AIR)
+
+    def test_fill_no_element_error(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.assertRaises(self.ElementNotFoundException, lambda: self.fill({'#id_blahblah': "New name"}))
+
 
 class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
+
+    ElementNotFoundException = WebTestNoSuchElementException
 
     def test_is_full_browser_attribute(self):
         self.assertEqual(self.is_full_browser_test, False)
 
+    def test_fill_multiple_matches(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.assertRaises(WebTestMultipleElementsException, lambda: self.fill({'input[type=checkbox]': True}))
+
 
 class TestFuncSeleniumCommonBase(TestCommonBase):
+
+    ElementNotFoundException = TimeoutException
 
     def test_is_full_browser_attribute(self):
         self.assertEqual(self.is_full_browser_test, True)

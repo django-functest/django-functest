@@ -37,9 +37,37 @@ followed the same pattern.
 
       The current full URL
 
+   .. method:: fill(data_dict)
+
+      Fills form inputs using the values in ``data_dict``. The keys are CSS
+      selectors, and the values and the values for the inputs. Works for text
+      inputs, radio boxes, check boxes, and select fields. Checkbox values can
+      be specified using ``True`` and ``False``.
+
+      This will raise an exception if the fields can't be found. It will be a
+      timeout exception for Selenium tests, so you will want to avoid attempting
+      to fill in fields that don't exist.
+
+      If multiple fields match, you will get an exception for
+      :class:`django_functest.FuncWebTestMixin` but not for
+      :class:`django_functest.FuncSeleniumMixin` due to the way Selenium finds
+      elements.
+
+   .. method:: fill_by_id(data_dict)
+
+      Same as :meth:``fill`` except the keys are element IDs.
+
+   .. method:: fill_by_name(data_dict)
+
+      Same as :meth:``fill`` except the keys are input names.
+
    .. method:: get_url(name, *args, **kwargs)
 
       Gets the named URL, passing it through ``django.core.urlresolvers.reverse`` with ``*args`` and ``**kwargs``.
+
+      e.g.::
+
+        self.get_url('admin:auth_user_change', object_id=1)
 
    .. method:: get_literal_url(relative_url)
 

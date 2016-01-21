@@ -70,7 +70,9 @@ if known_args.show_browser:
 
 
 if known_args.update_migration:
-    os.unlink("django_functest/tests/migrations/0001_initial.py")
+    initial_migration = "django_functest/tests/migrations/0001_initial.py"
+    if os.path.exists(initial_migration):
+        os.unlink(initial_migration)
     argv = [sys.argv[0], "makemigrations", "tests"] + sys.argv[2:]
 else:
     argv = [sys.argv[0], "test"]

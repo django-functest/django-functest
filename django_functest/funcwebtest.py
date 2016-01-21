@@ -10,6 +10,7 @@ from six import text_type
 from six.moves import http_cookiejar
 
 from .utils import CommonMixin, get_session_store
+from .exceptions import WebTestNoSuchElementException, WebTestMultipleElementsException
 
 
 class FuncWebTestMixin(WebTestMixin, CommonMixin):
@@ -136,9 +137,9 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
             return found[0]
 
         if len(found) > 1:
-            raise ValueError("Multiple elements found matching '{0}'".format(css_selector))
+            raise WebTestMultipleElementsException("Multiple elements found matching '{0}'".format(css_selector))
 
-        raise ValueError("Can't find submit input matching {0} in response {1}.".format(css_selector, response))
+        raise WebTestNoSuchElementException("Can't find element matching {0} in response {1}.".format(css_selector, response))
 
     def _find_parent_form(self, elem):
         p = elem.getparent()

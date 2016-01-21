@@ -8,7 +8,7 @@ from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import Select, WebDriverWait
 from six import string_types, text_type
 
 from .utils import CommonMixin, get_session_store
@@ -318,3 +318,13 @@ class FuncSeleniumMixin(CommonMixin):
 
     def execute_script(self, script, *args):
         return self._driver.execute_script(script, *args)
+
+    def _set_check_box(self, elem, state):
+        if self._is_checked(elem) != state:
+            self._scroll_into_view(elem)
+            elem.click()
+
+    def _set_select_elem(self, elem, value):
+        self._scroll_into_view(elem)
+        s = Select(elem)
+        s.select_by_value(value)
