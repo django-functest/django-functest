@@ -51,6 +51,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
     def submit(self, css_selector, wait_for_reload=None, auto_follow=True):
         form, field_name = self._find_form_and_field_by_css_selector(self.last_response,
                                                                      css_selector,
+                                                                     require_name=False,
                                                                      filter_selector="input[type=submit], button")
         response = form.submit(field_name)
         self.last_response = response
@@ -115,7 +116,8 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
         self.last_response = self.app.get(url, auto_follow=auto_follow, expect_errors=expect_errors)
         return self.last_response
 
-    def _find_form_and_field_by_css_selector(self, response, css_selector, filter_selector=None):
+    def _find_form_and_field_by_css_selector(self, response, css_selector, filter_selector=None,
+                                             require_name=True):
         pq = self._make_pq(response)
         items = pq.find(css_selector)
 
@@ -128,7 +130,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
                 raise WebTestCantUseElement("Can't find form for input {0}.".format(css_selector))
             form = self._match_form_elem_to_webtest_form(form_elem, response)
             field = item.name
-            if field is None:
+            if field is None and require_name:
                 raise WebTestCantUseElement("Element {0} needs 'name' attribute in order to use it".format(css_selector))
             found.append((form, field))
 
