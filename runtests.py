@@ -8,7 +8,9 @@ from django.conf import settings
 from django.core.management import execute_from_command_line
 
 
-parser = argparse.ArgumentParser(description="Run the test suite, or some tests. Also takes any options that can be passed to manage.py e.g. --failfast and --noinput")
+parser = argparse.ArgumentParser(description="Run the test suite, or some tests. "
+                                 "Also takes any options that can be passed to manage.py"
+                                 " e.g. --failfast and --noinput")
 parser.add_argument("--show-browser", action='store_true',
                     help="Show the browser when running Selenium tests")
 parser.add_argument("--update-migration", action='store_true',

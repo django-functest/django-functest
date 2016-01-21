@@ -131,16 +131,19 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
             form = self._match_form_elem_to_webtest_form(form_elem, response)
             field = item.name
             if field is None and require_name:
-                raise WebTestCantUseElement("Element {0} needs 'name' attribute in order to use it".format(css_selector))
+                raise WebTestCantUseElement(
+                    "Element {0} needs 'name' attribute in order to use it".format(css_selector))
             found.append((form, field))
 
         if len(found) == 1:
             return found[0]
 
         if len(found) > 1:
-            raise WebTestMultipleElementsException("Multiple elements found matching '{0}'".format(css_selector))
+            raise WebTestMultipleElementsException(
+                "Multiple elements found matching '{0}'".format(css_selector))
 
-        raise WebTestNoSuchElementException("Can't find element matching {0} in response {1}.".format(css_selector, response))
+        raise WebTestNoSuchElementException(
+            "Can't find element matching {0} in response {1}.".format(css_selector, response))
 
     def _find_parent_form(self, elem):
         p = elem.getparent()

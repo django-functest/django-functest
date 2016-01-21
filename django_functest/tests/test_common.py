@@ -1,7 +1,9 @@
 from django.core.urlresolvers import reverse
 from selenium.common.exceptions import TimeoutException
 
-from django_functest.exceptions import WebTestNoSuchElementException, WebTestMultipleElementsException, WebTestCantUseElement
+from django_functest.exceptions import (
+    WebTestCantUseElement, WebTestMultipleElementsException, WebTestNoSuchElementException
+)
 from django_functest.tests.models import Thing
 
 from .base import ChromeBase, FirefoxBase, WebTestBase
