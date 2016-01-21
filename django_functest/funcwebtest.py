@@ -9,8 +9,8 @@ from django_webtest import WebTestMixin
 from six import text_type
 from six.moves import http_cookiejar
 
+from .exceptions import WebTestCantUseElement, WebTestMultipleElementsException, WebTestNoSuchElementException
 from .utils import CommonMixin, get_session_store
-from .exceptions import WebTestNoSuchElementException, WebTestMultipleElementsException, WebTestCantUseElement
 
 
 class FuncWebTestMixin(WebTestMixin, CommonMixin):

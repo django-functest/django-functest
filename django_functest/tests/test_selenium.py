@@ -1,4 +1,4 @@
-from .base import FirefoxBase, ChromeBase
+from .base import ChromeBase, FirefoxBase
 
 
 # Tests for Selenium specific methods

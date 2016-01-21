@@ -7,7 +7,6 @@ import sys
 from django.conf import settings
 from django.core.management import execute_from_command_line
 
-
 parser = argparse.ArgumentParser(description="Run the test suite, or some tests. "
                                  "Also takes any options that can be passed to manage.py"
                                  " e.g. --failfast and --noinput")
