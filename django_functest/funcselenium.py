@@ -282,6 +282,7 @@ class FuncSeleniumMixin(CommonMixin):
             self.wait_until(lambda *_: self._is_visible(elem))
 
     def _scroll_center_data(self):
+        # http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
         return self.execute_script("""return [window.innerWidth,
                                               window.innerHeight,
                                               document.documentElement.offsetWidth,
