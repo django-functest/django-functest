@@ -1,6 +1,6 @@
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import TimeoutException
 
-from django_functest.exceptions import WebTestNoSuchElementException, WebTestMultipleElementsException
+from django_functest.exceptions import WebTestNoSuchElementException, WebTestMultipleElementsException, WebTestCantUseElement
 from django_functest.tests.models import Thing
 
 from .base import ChromeBase, FirefoxBase, WebTestBase
@@ -120,6 +120,14 @@ class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
     def test_fill_multiple_matches(self):
         self.get_url('edit_thing', thing_id=self.thing.id)
         self.assertRaises(WebTestMultipleElementsException, lambda: self.fill({'input[type=checkbox]': True}))
+
+    def test_fill_element_without_name(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.assertRaises(WebTestCantUseElement, lambda: self.fill({'#id_badinput1': "Hello"}))
+
+    def test_fill_element_outside_form(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.assertRaises(WebTestCantUseElement, lambda: self.fill({'#id_badinput2': "Hello"}))
 
 
 class TestFuncSeleniumCommonBase(TestCommonBase):

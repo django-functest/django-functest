@@ -10,7 +10,7 @@ from six import text_type
 from six.moves import http_cookiejar
 
 from .utils import CommonMixin, get_session_store
-from .exceptions import WebTestNoSuchElementException, WebTestMultipleElementsException
+from .exceptions import WebTestNoSuchElementException, WebTestMultipleElementsException, WebTestCantUseElement
 
 
 class FuncWebTestMixin(WebTestMixin, CommonMixin):
@@ -125,12 +125,11 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
         for item in items:
             form_elem = self._find_parent_form(item)
             if form_elem is None:
-                raise ValueError("Can't find form for input {0}.".format(css_selector))
+                raise WebTestCantUseElement("Can't find form for input {0}.".format(css_selector))
             form = self._match_form_elem_to_webtest_form(form_elem, response)
-            try:
-                field = item.name if hasattr(item, 'name') else item.attrib['name']
-            except KeyError:
-                raise ValueError("Element {0} needs 'name' attribute in order to use it".format(css_selector))
+            field = item.name
+            if field is None:
+                raise WebTestCantUseElement("Element {0} needs 'name' attribute in order to use it".format(css_selector))
             found.append((form, field))
 
         if len(found) == 1:
