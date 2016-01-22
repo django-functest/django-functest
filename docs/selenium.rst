@@ -43,6 +43,22 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
 
    **Other attributes and methods**
 
+   .. method:: click(css_selector, wait_for_reload=False, double=False, scroll=True)
+
+      Clicks the button or control specified by the CSS selector.
+
+      It will attempt to scroll the window to make the element visible if
+      ``scroll=True`` is passed (the default) - this is usually necessary for browsers to click
+      controls correctly.
+
+      It will wait for the page to be reloaded if ``wait_for_reload=True`` is
+      passed (not the default).
+
+      If ``double=True`` is passed, a double click will be performed. Note, this
+      will simply be two clicks, like a user would, rather than the Selenium
+      ``double_click`` action chain, which doesn't actually trigger single click
+      events.
+
    .. method:: is_element_displayed(css_selector)
 
       Returns ``True`` if the element specified by the CSS selector is both

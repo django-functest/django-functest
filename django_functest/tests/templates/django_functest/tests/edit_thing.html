@@ -7,12 +7,15 @@
       {% csrf_token %}
       {{ thing_form.as_p }}
 
+      <div>
+        <input type="submit" name="change" value="Change it">
+
+        <input type="submit" name="clear" value="Clear all values">
+
+        <input type="submit" name="check" value="Check it's all OK" id="id_check_button">
+      </div>
+
       <div id="id_check_messages"></div>
-      <input type="submit" name="change" value="Change it">
-
-      <input type="submit" name="clear" value="Clear all values">
-
-      <input type="submit" name="check" value="Check it's all OK" id="id_check_button">
 
       {# For an error condition #}
       <input type="text" style="display:none;" id="id_badinput1" value="Some value">
@@ -23,9 +26,18 @@
 
 
     <script>
+      var clickCount = 0;
       document.getElementById("id_check_button").onclick = function (event) {
           event.preventDefault();
-          document.getElementById("id_check_messages").innerHTML = "Everything " + "is fine";
+          var emphasize = function (n) {
+              if (n <= 0) {
+                  return "";
+              }
+              return "really " + emphasize(n - 1);
+          }
+          event.preventDefault();
+          document.getElementById("id_check_messages").innerHTML = "Everything is " + emphasize(clickCount) + "fine";
+          clickCount++;
       };
     </script>
   </body>

@@ -128,9 +128,8 @@ class FuncSeleniumMixin(CommonMixin):
         if scroll:
             self._scroll_into_view(elem)
         time.sleep(0.2)
+        elem.click()
         if double:
-            ActionChains(self._driver).double_click(on_element=elem).perform()
-        else:
             elem.click()
 
         if wait_for_reload:
