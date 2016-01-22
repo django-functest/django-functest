@@ -83,13 +83,17 @@ own base class for tests.
 Running Tests
 --------------
 
-To run the tests:
+To run the tests::
 
-::
+  source <YOURVIRTUALENV>/bin/activate
+  (myenv) $ ./setup.py develop
+  (myenv) $ ./runtests.py
 
-    source <YOURVIRTUALENV>/bin/activate
-    (myenv) $ ./setup.py develop
-    (myenv) $ ./runtests.py
+Or, to run on all environments::
+
+  pip install tox
+  tox
+
 
 Credits
 -------
