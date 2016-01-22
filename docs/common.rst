@@ -8,7 +8,7 @@ This page documents the methods and attributes that are provided by both
 Conventions:
 
 unittest provides assertion methods that are ``camelCased``. Django follows
-suite with assertion methods, but for other things defaults to the PEP8
+suit with assertion methods, but for other things defaults to the PEP8
 recommendation of ``name_with_underscores`` e.g. ``live_server_url``. We have
 followed the same pattern.
 

@@ -64,11 +64,11 @@ Getting started
 ===============
 
 It is recommended for both Selenium and WebTest, you should create your own base
-classes. These can have configuration, helpers and functionality that is
-specific to your project as needed:
+classes. These can have :ref:`configuration <selenium-configuration>`, helpers
+and functionality that are specific to your project as needed:
 
 
-yourproject.tests.base::
+``yourproject.tests.base``::
 
 
   from django.test import TestCase
@@ -81,7 +81,8 @@ yourproject.tests.base::
           # Your custom stuff here etc.
 
   class SeleniumTestBase(FuncSeleniumMixin, StaticLiveServerTestCase):
-      pass  # etc.
+      driver_name = "Chrome"
+
 
 Normally ``StaticLiveServerTestCase`` will be better than
 ``LiveServerTestCase``.
@@ -93,7 +94,7 @@ needs instead of using ``StaticLiveServerTestCase``).
 
 Then:
 
-yourapp.tests::
+``yourapp.tests``::
 
     from yourproject.tests.base import SeleniumTestBase, WebTestBase
 
