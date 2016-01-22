@@ -25,6 +25,11 @@ class TestFuncSeleniumSpecificBase(object):
         self.click('input[name=check]')
         self.assertTextPresent("Everything is fine")
 
+    def test_click_xpath(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.click(xpath='//input[@name="check"]')
+        self.assertTextPresent("Everything is fine")
+
     def test_double_click(self):
         self.get_url('edit_thing', thing_id=self.thing.id)
         self.click('input[name=check]', double=True)

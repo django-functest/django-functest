@@ -120,11 +120,14 @@ class FuncSeleniumMixin(CommonMixin):
 
     # Utility methods:
 
-    def click(self, css_selector, wait_for_reload=False, double=False, scroll=True):
+    def click(self, css_selector=None, xpath=None, wait_for_reload=False, double=False, scroll=True):
         if wait_for_reload:
             self._driver.execute_script("document.pageReloadedYetFlag='notyet';")
 
-        elem = self._find_with_timeout(css_selector)
+        if xpath is not None:
+            elem = self._driver.find_element_by_xpath(xpath)
+        else:
+            elem = self._find_with_timeout(css_selector)
         if scroll:
             self._scroll_into_view(elem)
         time.sleep(0.2)

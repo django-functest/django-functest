@@ -43,13 +43,20 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
 
    **Other attributes and methods**
 
-   .. method:: click(css_selector, wait_for_reload=False, double=False, scroll=True)
+   .. method:: click(css_selector=None, xpath=None, wait_for_reload=False, double=False, scroll=True)
 
-      Clicks the button or control specified by the CSS selector.
+      Clicks the button or control specified by the CSS selector e.g.::
 
-      It will attempt to scroll the window to make the element visible if
-      ``scroll=True`` is passed (the default) - this is usually necessary for browsers to click
-      controls correctly.
+        self.click("input.default")
+
+      If ``xpath`` is specified instead, ``css_selector`` does not need to be
+      passed, and the element will be found using the XPath selector e.g.::
+
+        self.click(xpath='//a[contains(text(), "kitten")]'
+
+      This method will attempt to scroll the window to make the element visible
+      if ``scroll=True`` is passed (the default) - this is usually necessary for
+      browsers to click controls correctly.
 
       It will wait for the page to be reloaded if ``wait_for_reload=True`` is
       passed (not the default).
