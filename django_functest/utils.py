@@ -1,14 +1,11 @@
+from importlib import import_module
+
 from django.conf import settings
 from django.contrib.auth import BACKEND_SESSION_KEY as AUTH_BACKEND_SESSION_KEY
 from django.contrib.auth import HASH_SESSION_KEY as AUTH_HASH_SESSION_KEY
 from django.contrib.auth import SESSION_KEY as AUTH_ID_SESSION_KEY
 from django.contrib.auth import authenticate
 from furl import furl
-
-try:
-    from importlib import import_module
-except:
-    from django.utils.importlib import import_module
 
 
 class ShortcutLoginMixin(object):
