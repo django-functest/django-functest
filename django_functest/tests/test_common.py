@@ -78,7 +78,7 @@ class TestCommonBase(object):
                    '#id_clever': True,
                    '#id_element_type': Thing.ELEMENT_AIR
                    })
-        self.submit('input[type=submit]', wait_for_reload=True)
+        self.submit('input[name=change]')
         self._assertThingChanged()
 
     def test_fill_by_id(self):
@@ -88,7 +88,7 @@ class TestCommonBase(object):
                          'id_clever': True,
                          'id_element_type': Thing.ELEMENT_AIR
                          })
-        self.submit('input[type=submit]', wait_for_reload=True)
+        self.submit('input[name=change]')
         self._assertThingChanged()
 
     def test_fill_by_name(self):
@@ -98,7 +98,7 @@ class TestCommonBase(object):
                            'clever': True,
                            'element_type': Thing.ELEMENT_AIR
                            })
-        self.submit('input[type=submit]', wait_for_reload=True)
+        self.submit('input[name=change]')
         self._assertThingChanged()
 
     def _assertThingChanged(self):
@@ -111,6 +111,12 @@ class TestCommonBase(object):
     def test_fill_no_element_error(self):
         self.get_url('edit_thing', thing_id=self.thing.id)
         self.assertRaises(self.ElementNotFoundException, lambda: self.fill({'#id_blahblah': "New name"}))
+
+    def test_submit(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.submit('input[name=clear]')
+        thing = self.refresh_thing()
+        self.assertEqual(thing.name, "")
 
 
 class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
@@ -132,6 +138,11 @@ class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
         self.get_url('edit_thing', thing_id=self.thing.id)
         self.assertRaises(WebTestCantUseElement, lambda: self.fill({'#id_badinput2': "Hello"}))
 
+    def test_submit_no_auto_follow(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.submit('input[name=change]', auto_follow=False)
+        self.assertEqual(self.last_response.status_int, 302)
+
 
 class TestFuncSeleniumCommonBase(TestCommonBase):
 
@@ -148,8 +159,13 @@ class TestFuncSeleniumCommonBase(TestCommonBase):
                    '#id_clever': True,
                    '#id_element_type': Thing.ELEMENT_AIR
                    })
-        self.submit('input[type=submit]', wait_for_reload=True)
+        self.submit('input[name=change]')
         self._assertThingChanged()
+
+    def test_submit_no_wait_for_reload(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.submit('input[name=check]', wait_for_reload=False)
+        self.assertTextPresent("Everything is fine")
 
 
 class TestFuncSeleniumCommonFirefox(TestFuncSeleniumCommonBase, FirefoxBase):

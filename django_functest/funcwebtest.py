@@ -56,8 +56,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
         response = form.submit(field_name)
         self.last_response = response
         if auto_follow:
-            is_redirect = lambda r: r.status_int >= 300 and r.status_int < 400
-            while is_redirect(response):
+            while 300 <= response.status_int < 400:
                 response = response.follow()
         self.last_response = response
 

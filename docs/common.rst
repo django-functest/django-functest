@@ -81,3 +81,17 @@ followed the same pattern.
    .. attribute:: is_full_browser_test
 
       True for Selenium tests, False for WebTest tests.
+
+   .. method:: submit(css_selector, wait_for_reload=True, auto_follow=True)
+
+      Submits a form via the button specified in ``css_selector``.
+
+      For :class:`~django_functest.FuncSelenium`, ``wait_for_reload=True``
+      causes it to wait until a whole new page is loaded (which always happens
+      with :class:`~django_functest.FuncWebTest`). If you are expecting an AJAX
+      submission, or a Javascript error to stop a new page from actually being
+      loaded, pass ``wait_for_reload=False``.
+
+      For :class:`~django_functest.FuncWebTest`, ``auto_follow=True`` causes
+      redirects to be followed automatically (which always happens with
+      :class:`~django_functest.FuncSelenium`).

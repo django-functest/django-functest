@@ -33,12 +33,17 @@ def edit_thing(request, thing_id):
     thing = Thing.objects.get(id=int(thing_id))
     add_spacers = 'add_spacers' in request.GET
     if request.method == "POST":
-        thing_form = ThingForm(data=request.POST,
-                               instance=thing,
-                               add_spacers=add_spacers)
-        if thing_form.is_valid():
-            thing_form.save()
+        if 'clear' in request.POST:
+            thing = Thing(id=thing.id)
+            thing.save()
             return HttpResponseRedirect(reverse('edit_thing', kwargs={'thing_id': thing_id}))
+        else:
+            thing_form = ThingForm(data=request.POST,
+                                   instance=thing,
+                                   add_spacers=add_spacers)
+            if thing_form.is_valid():
+                thing_form.save()
+                return HttpResponseRedirect(reverse('edit_thing', kwargs={'thing_id': thing_id}))
     else:
         thing_form = ThingForm(instance=thing,
                                add_spacers=add_spacers)
