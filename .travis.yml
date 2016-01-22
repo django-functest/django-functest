@@ -20,7 +20,11 @@ env:
 - TOXENV=flake8-check
 install:
 - pip install tox>=2.1
-- pip install coveralls
+- pip install coveralls coverage
 script:
+- coverage erase
 - tox
+after_success:
+- coverage combine
+- coveralls
 sudo: false
