@@ -3,12 +3,12 @@
     <title>Edit {{ thing.name }}</title>
   </head>
   <body>
-    <form action="" method="POST">
+    <form id="id_form" action="" method="POST">
       {% csrf_token %}
       {{ thing_form.as_p }}
 
       <div>
-        <input type="submit" name="change" value="Change it">
+        <input type="submit" name="change" value="Change it" id="id_change">
 
         <input type="submit" name="clear" value="Clear all values">
 
@@ -40,5 +40,17 @@
           clickCount++;
       };
     </script>
+
+    {% if add_js_delay %}
+      <script>
+        document.getElementById('id_change').onclick = function (event) {
+            event.preventDefault();
+            window.setTimeout(function () {
+                document.getElementById('id_form').submit();
+            }, {{ add_js_delay }} * 1000);
+        }
+
+      </script>
+    {% endif %}
   </body>
 </html>

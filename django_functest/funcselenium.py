@@ -129,7 +129,6 @@ class FuncSeleniumMixin(CommonMixin):
             elem = self._find_with_timeout(css_selector)
         if scroll:
             self._scroll_into_view(elem)
-        time.sleep(0.2)
         elem.click()
         if double:
             elem.click()

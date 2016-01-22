@@ -32,6 +32,8 @@ class ThingForm(forms.ModelForm):
 def edit_thing(request, thing_id):
     thing = Thing.objects.get(id=int(thing_id))
     add_spacers = 'add_spacers' in request.GET
+    add_js_delay = int(request.GET.get('add_js_delay', '0'))
+
     if request.method == "POST":
         if 'clear' in request.POST:
             thing = Thing(id=thing.id)
@@ -51,4 +53,5 @@ def edit_thing(request, thing_id):
     return render(request, "django_functest/tests/edit_thing.html",
                   {'thing_form': thing_form,
                    'thing': thing,
+                   'add_js_delay': add_js_delay,
                    })

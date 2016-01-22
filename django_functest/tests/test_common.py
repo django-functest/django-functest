@@ -167,6 +167,17 @@ class TestFuncSeleniumCommonBase(TestCommonBase):
         self.submit('input[name=check]', wait_for_reload=False)
         self.assertTextPresent("Everything is fine")
 
+    def test_submit_slow_page(self):
+        url = reverse('edit_thing', kwargs=dict(thing_id=self.thing.id)) + "?add_js_delay=5"
+        self.get_literal_url(url)
+        self.fill({'#id_name': "New name",
+                   '#id_big': False,
+                   '#id_clever': True,
+                   '#id_element_type': Thing.ELEMENT_AIR
+                   })
+        self.submit('input[name=change]')
+        self._assertThingChanged()
+
 
 class TestFuncSeleniumCommonFirefox(TestFuncSeleniumCommonBase, FirefoxBase):
     pass
