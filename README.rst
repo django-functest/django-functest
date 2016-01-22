@@ -14,7 +14,8 @@ django-functest
 WORK IN PROGRESS!
 
 This project is in the process of being open-sourced from an internal project.
-Only the skeleton is here at the moment!
+More to come soon!
+
 
 Helpers for creating high-level functional tests in Django, with a unified API
 for WebTest and Selenium tests.
@@ -55,8 +56,8 @@ In your tests.py::
 
         def test_contact_form(self):
             self.get_url('contact_form')
-            self.fill_by_id({'id_name': 'Joe',
-                             'id_message': 'Hello'})
+            self.fill({'#id_name': 'Joe',
+                       '#id_message': 'Hello'})
             self.submit('input[type=submit]')
             self.assertTextPresent("Thanks for your message")
 
@@ -68,14 +69,15 @@ In your tests.py::
 
 In this way, you can write a single test with a high-level API, and run it in
 two way - using a fast, WSGI-based method with emulates typical HTTP usage of a
-browser, and using a full browser that actually executes Javascript etc.
+browser, and using a full browser that actually executes Javascript (if present)
+etc.
 
 Under the hood, the WSGI-based method uses and builds upon `WebTest
 <http://webtest.pythonpaste.org/en/latest/>`_ and `django-webtest
 <https://pypi.python.org/pypi/django-webtest>`_.
 
 django-functest provides its functionality as mixins, so that you can have your
-own base class for tests and not get in the way.
+own base class for tests.
 
 
 Running Tests
