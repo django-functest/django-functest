@@ -230,8 +230,6 @@ class FuncSeleniumMixin(CommonMixin):
         return self._driver.page_source
 
     def fill_input(self, elem, val):
-        if isinstance(elem, string_types):
-            elem = self._find_with_timeout(elem)
         if elem.tag_name == 'select':
             self._set_select_elem(elem, val)
         elif elem.tag_name == 'input' and elem.get_attribute('type') == 'checkbox':
