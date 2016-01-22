@@ -55,11 +55,11 @@ followed the same pattern.
 
    .. method:: fill_by_id(data_dict)
 
-      Same as :meth:``fill`` except the keys are element IDs.
+      Same as :meth:`fill` except the keys are element IDs.
 
    .. method:: fill_by_name(data_dict)
 
-      Same as :meth:``fill`` except the keys are input names.
+      Same as :meth:`fill` except the keys are input names.
 
    .. method:: get_url(name, *args, **kwargs)
 
@@ -86,12 +86,12 @@ followed the same pattern.
 
       Submits a form via the button specified in ``css_selector``.
 
-      For :class:`~django_functest.FuncSelenium`, ``wait_for_reload=True``
+      For :class:`~django_functest.FuncSeleniumMixin`, ``wait_for_reload=True``
       causes it to wait until a whole new page is loaded (which always happens
-      with :class:`~django_functest.FuncWebTest`). If you are expecting an AJAX
+      with :class:`~django_functest.FuncWebTestMixin`). If you are expecting an AJAX
       submission, or a Javascript error to stop a new page from actually being
       loaded, pass ``wait_for_reload=False``.
 
-      For :class:`~django_functest.FuncWebTest`, ``auto_follow=True`` causes
+      For :class:`~django_functest.FuncWebTestMixin`, ``auto_follow=True`` causes
       redirects to be followed automatically (which always happens with
-      :class:`~django_functest.FuncSelenium`).
+      :class:`~django_functest.FuncSeleniumMixin`).

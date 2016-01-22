@@ -52,7 +52,7 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
       If ``xpath`` is specified instead, ``css_selector`` does not need to be
       passed, and the element will be found using the XPath selector e.g.::
 
-        self.click(xpath='//a[contains(text(), "kitten")]'
+        self.click(xpath='//a[contains(text(), "kitten")]')
 
       This method will attempt to scroll the window to make the element visible
       if ``scroll=True`` is passed (the default) - this is usually necessary for

@@ -49,14 +49,15 @@ There are two main ideas behind django-functest:
 
 In addition, django-functest provides various helps to smooth things along:
 
-* ``get_url`` has Django URL reversing built-in, covering the common case
+* :meth:`~django_functest.FuncCommonApi.get_url` has Django URL reversing
+  built-in, covering the common case.
 
 * short-cuts for putting things into the session so that you can skip steps.
 
 * For both Selenium and WebTest helpers, there are additional methods. For
-  example, there is ``FuncSeleniumMixin.click()``, which does element clicking in
-  a browser, but takes care of many details like scrolling elements into view,
-  using battle-hardened strategies.
+  example, there is :meth:`~django_functest.FuncSeleniumMixin.click`, which does
+  element clicking in a browser, but takes care of many details like scrolling
+  elements into view, using battle-hardened strategies.
 
 
 Getting started
