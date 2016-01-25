@@ -36,13 +36,22 @@ class TestFuncSeleniumSpecificBase(object):
         self.assertTextPresent("Everything is really fine")
 
     def test_execute_script(self):
-        self.get_url('django_functest.test1')
+        self.get_url('django_functest.test_misc')
         self.assertEqual(self.execute_script("return 1 + 1;"), 2)
 
     def test_execute_script_with_args(self):
-        self.get_url('django_functest.test1')
+        self.get_url('django_functest.test_misc')
         retval = self.execute_script("return arguments[0] + arguments[1];", 1, 2)
         self.assertEqual(retval, 3)
+
+    def test_hover(self):
+        self.get_url('django_functest.test_misc')
+        get_style = "return document.defaultView.getComputedStyle(document.querySelector('#hoverable'))['font-style']"
+        self.assertEqual(self.execute_script(get_style),
+                         "normal")
+        self.hover('#hoverable')
+        self.assertEqual(self.execute_script(get_style),
+                         "italic")
 
 
 class TestFuncSeleniumSpecificFirefox(TestFuncSeleniumSpecificBase, FirefoxBase):

@@ -7,6 +7,7 @@ from django.utils.html import escape
 from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from six import text_type
 
@@ -148,6 +149,11 @@ class FuncSeleniumMixin(CommonMixin):
 
     def execute_script(self, script, *args):
         return self._driver.execute_script(script, *args)
+
+    def hover(self, css_selector):
+        elem = self._find(css_selector)
+        self._scroll_into_view(elem)
+        ActionChains(self._driver).move_to_element(elem).perform()
 
     def is_element_displayed(self, css_selector):
         try:

@@ -7,8 +7,8 @@ from django.utils.html import mark_safe
 from .models import Thing
 
 
-def test1(request):
-    return render(request, "django_functest/tests/test1.html", {})
+def test_misc(request):
+    return render(request, "django_functest/tests/test_misc.html", {})
 
 
 class ThingForm(forms.ModelForm):
