@@ -1,12 +1,16 @@
 import unittest
 
+from django.contrib.auth import get_user_model
+
+from django_functest import AdminLoginMixin
+
 from .base import ChromeBase, FirefoxBase
 from .models import Thing
 
 
 # Tests for Selenium specific methods
 
-class TestFuncSeleniumSpecificBase(object):
+class TestFuncSeleniumSpecificBase(AdminLoginMixin):
 
     def setUp(self):
         super(TestFuncSeleniumSpecificBase, self).setUp()
@@ -14,6 +18,8 @@ class TestFuncSeleniumSpecificBase(object):
                                           big=True,
                                           clever=False,
                                           element_type=Thing.ELEMENT_EARTH)
+        User = get_user_model()
+        self.user = User.objects.create_superuser("admin", "admin@example.com", "password")
 
     def test_is_element_displayed(self):
         self.get_url('admin:login')
@@ -54,6 +60,25 @@ class TestFuncSeleniumSpecificBase(object):
         self.hover('#hoverable')
         self.assertEqual(self.execute_script(get_style),
                          "italic")
+
+    def test_switch_window(self):
+        self.do_login(username="admin", password="password")
+        self.get_url("admin:auth_user_change", self.user.id)
+        self.click('#add_id_groups')
+        old_window, new_window = self.switch_window()
+        self.fill({'#id_name': 'My new group'})
+        self.switch_window(old_window)
+        self.fill({'#id_first_name': 'My first name'})
+        self.switch_window(new_window)
+        self.submit('input[name=_save]')
+        self.switch_window(old_window)
+        self.submit('input[name=_save]')
+
+        User = get_user_model()
+        user = User.objects.get(id=self.user.id)
+        self.assertEqual([g.name for g in user.groups.all()],
+                         ["My new group"])
+        self.assertEqual(user.first_name, "My first name")
 
 
 class TestFuncSeleniumSpecificFirefox(TestFuncSeleniumSpecificBase, FirefoxBase):

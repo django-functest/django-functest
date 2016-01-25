@@ -106,6 +106,16 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
 
       Sets the browser window size to the specified width and height in pixels.
 
+   .. method:: switch_window(handle=None)
+
+      Switches the browser window that has focus.
+
+      If there are only 2 windows, it can work out which window to switch to.
+      Otherwise, you must pass in the window handle as the ``handle`` kwarg.
+
+      The method returns a tuple of ``(old_window_handle, new_window_handle)``
+      which can be used in subsequent calls to ``switch_window``.
+
    .. method:: wait_for_page_load()
 
       Waits until the page has finished loading. You may want to override this

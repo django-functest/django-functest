@@ -175,7 +175,11 @@ class FuncSeleniumMixin(CommonMixin):
                 if obj is None or obj != "notyet":
                     return True
                 return False
-            WebDriverWait(self._driver, self.get_default_timeout()).until(f)
+            try:
+                WebDriverWait(self._driver, self.get_default_timeout()).until(f)
+            except NoSuchWindowException:
+                # legitimate sometimes e.g. when window closes
+                pass
         self._wait_until_finished()
 
     def execute_script(self, script, *args):
@@ -205,6 +209,33 @@ class FuncSeleniumMixin(CommonMixin):
             t += PAUSE
             time.sleep(PAUSE)
         logger.warning("Browser window was not resized to (%s, %s) after waiting %s seconds.", width, height, timeout)
+
+    def switch_window(self, handle=None):
+        """
+        Switches window.
+
+        If there are only 2 windows, it can work out which window to switch to.
+        Otherwise, you should pass in the window handle as `handle` kwarg.
+
+        Returns a tuple (old_window_handle, new_window_handle)
+        """
+        try:
+            current_window_handle = self._driver.current_window_handle
+        except NoSuchWindowException:
+            # Window closed recently
+            current_window_handle = None
+        window_handles = self._driver.window_handles
+        if handle is None:
+            possible_window_handles = [h for h in window_handles
+                                       if h != current_window_handle]
+
+            if len(possible_window_handles) > 1:
+                raise AssertionError("Don't know which window to switch to!")
+            else:
+                handle = possible_window_handles[0]
+
+        self._driver.switch_to_window(handle)
+        return current_window_handle, handle
 
     def wait_for_page_load(self):
         self.wait_until_loaded('body')
