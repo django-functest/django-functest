@@ -31,7 +31,7 @@ readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 if sys.version_info < (3, 3):
-    extra_requires = 'faulthandler>=2.4'
+    extra_requires = ['faulthandler>=2.4']
 else:
     extra_requires = []
 
