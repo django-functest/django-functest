@@ -114,8 +114,8 @@ class FuncSeleniumMixin(CommonMixin):
 
         raise RuntimeError("Session not saved correctly")
 
-    def submit(self, css_selector, wait_for_reload=True, auto_follow=None):
-        self.click(css_selector, wait_for_reload=wait_for_reload)
+    def submit(self, css_selector, wait_for_reload=True, auto_follow=None, window_closes=False):
+        self.click(css_selector, wait_for_reload=wait_for_reload, window_closes=window_closes)
 
     def value(self, css_selector):
         elem = self._find(css_selector)
@@ -154,7 +154,9 @@ class FuncSeleniumMixin(CommonMixin):
 
     # Runtime methods:
 
-    def click(self, css_selector=None, xpath=None, wait_for_reload=False, double=False, scroll=True):
+    def click(self, css_selector=None, xpath=None, wait_for_reload=False, double=False, scroll=True, window_closes=False):
+        if window_closes:
+            wait_for_reload = False
         if wait_for_reload:
             self._driver.execute_script("document.pageReloadedYetFlag='notyet';")
 
@@ -180,7 +182,8 @@ class FuncSeleniumMixin(CommonMixin):
             except NoSuchWindowException:
                 # legitimate sometimes e.g. when window closes
                 pass
-        self._wait_until_finished()
+        if not window_closes:
+            self._wait_until_finished()
 
     def execute_script(self, script, *args):
         return self._driver.execute_script(script, *args)

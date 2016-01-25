@@ -49,6 +49,7 @@ setup(
         'six>=1.10.0',
         'furl>=0.4.9',
         'pyquery>=1.2.10',
+        'faulthandler>=2.4',
     ],
     license="BSD",
     zip_safe=False,

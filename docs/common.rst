@@ -110,15 +110,22 @@ followed the same pattern.
       Set data directly into the Django session from the supplied dictionary.
       This is useful for implementing setup/shortcuts needed for specific views.
 
-   .. method:: submit(css_selector, wait_for_reload=True, auto_follow=True)
+   .. method:: submit(css_selector, wait_for_reload=True, auto_follow=True, window_closes=False)
 
       Submits a form via the button specified in ``css_selector``.
 
       For :class:`~django_functest.FuncSeleniumMixin`, ``wait_for_reload=True``
       causes it to wait until a whole new page is loaded (which always happens
-      with :class:`~django_functest.FuncWebTestMixin`). If you are expecting an AJAX
-      submission, or a Javascript error to stop a new page from actually being
-      loaded, pass ``wait_for_reload=False``.
+      with :class:`~django_functest.FuncWebTestMixin`). If you are expecting an
+      AJAX submission or Javascript code to stop a new page from actually
+      being loaded, pass ``wait_for_reload=False``.
+
+      For Selenium tests, if you are expecting the window to close, pass
+      ``window_closes=False`` and then use
+      :meth:`~django_functest.FuncSeleniumMixin.switch_window`, or you may
+      experience long timeouts with Chrome. This implies
+      ``wait_for_reload=False`` and other tweaks. It does nothing when running
+      WebTest tests.
 
       For :class:`~django_functest.FuncWebTestMixin`, ``auto_follow=True`` causes
       redirects to be followed automatically (which always happens with

@@ -70,7 +70,7 @@ class TestFuncSeleniumSpecificBase(AdminLoginMixin):
         self.switch_window(old_window)
         self.fill({'#id_first_name': 'My first name'})
         self.switch_window(new_window)
-        self.submit('input[name=_save]')
+        self.submit('input[name=_save]', window_closes=True)
         self.switch_window(old_window)
         self.submit('input[name=_save]')
 

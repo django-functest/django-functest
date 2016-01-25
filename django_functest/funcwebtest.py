@@ -88,7 +88,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
             session[name] = text_type(value)
         session.save()
 
-    def submit(self, css_selector, wait_for_reload=None, auto_follow=True):
+    def submit(self, css_selector, wait_for_reload=None, auto_follow=True, window_closes=None):
         form, field_name = self._find_form_and_field_by_css_selector(self.last_response,
                                                                      css_selector,
                                                                      require_name=False,
