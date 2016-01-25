@@ -37,6 +37,16 @@ followed the same pattern.
 
       The current full URL
 
+   .. method:: follow_link(css_selector)
+
+      Follows the link specified in the CSS selector.
+
+      You will get an exception if no links match.
+
+      For :class:`django_functest.FuncWebTestMixin`, you will get an exception if multiple
+      links match and they don't have the same href.
+
+
    .. method:: fill(data_dict)
 
       Fills form inputs using the values in ``data_dict``. The keys are CSS

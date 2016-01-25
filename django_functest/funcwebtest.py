@@ -28,6 +28,27 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
     def current_url(self):
         return self.last_response.request.url
 
+    def follow_link(self, css_selector):
+        """
+        Follow the link described by the given CSS selector
+        """
+        elems = self._make_pq(self.last_response).find(css_selector)
+        if len(elems) == 0:
+            raise WebTestNoSuchElementException("Can't find element matching '{0}'".format(css_selector))
+
+        hrefs = []
+        for e in elems:
+            if 'href' in e.attrib:
+                hrefs.append(e.attrib['href'])
+
+        if not hrefs:
+            raise WebTestCantUseElement("No href attribute found for '{0}'".format(css_selector))
+
+        if not all(h == hrefs[0] for h in hrefs):
+            raise WebTestMultipleElementsException("Different href values for links '{0}': '{1}'"
+                                                   .format(css_selector, ' ,'.join(hrefs)))
+        self.get_literal_url(hrefs[0])
+
     def fill(self, data):
         for selector, value in data.items():
             form, field_name = self._find_form_and_field_by_css_selector(self.last_response, selector)

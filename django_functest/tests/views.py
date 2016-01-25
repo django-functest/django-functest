@@ -55,3 +55,8 @@ def edit_thing(request, thing_id):
                    'thing': thing,
                    'add_js_delay': add_js_delay,
                    })
+
+
+def list_things(request):
+    return render(request, "django_functest/tests/list_things.html",
+                  {'things': Thing.objects.all()})

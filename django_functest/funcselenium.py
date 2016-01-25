@@ -54,6 +54,9 @@ class FuncSeleniumMixin(CommonMixin):
     def current_url(self):
         return self._driver.current_url
 
+    def follow_link(self, css_selector):
+        return self.click(css_selector, wait_for_reload=True)
+
     def fill(self, fields):
         for k, v in fields.items():
             e = self._find_with_timeout(k)

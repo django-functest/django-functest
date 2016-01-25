@@ -123,6 +123,15 @@ class TestCommonBase(object):
         thing = self.refresh_thing()
         self.assertEqual(thing.name, "")
 
+    def test_follow_link(self):
+        self.get_url('list_things')
+        self.follow_link('a.edit')
+        self.assertUrlsEqual(reverse('edit_thing', kwargs={'thing_id': self.thing.id}))
+
+    def test_follow_link_not_found(self):
+        self.get_url('list_things')
+        self.assertRaises(self.ElementNotFoundException, lambda: self.follow_link('a.foobar'))
+
 
 class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
 
@@ -147,6 +156,15 @@ class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
         self.get_url('edit_thing', thing_id=self.thing.id)
         self.submit('input[name=change]', auto_follow=False)
         self.assertEqual(self.last_response.status_int, 302)
+
+    def test_follow_link_multiple_matches(self):
+        Thing.objects.create(name="Another")
+        self.get_url('list_things')
+        self.assertRaises(WebTestMultipleElementsException, lambda: self.follow_link('a.edit'))
+
+    def test_follow_link_no_href(self):
+        self.get_url('list_things')
+        self.assertRaises(WebTestCantUseElement, lambda: self.follow_link('a.javascriptonly'))
 
 
 class TestFuncSeleniumCommonBase(TestCommonBase):
