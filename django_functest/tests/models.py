@@ -20,3 +20,4 @@ class Thing(models.Model):
     clever = models.BooleanField(default=False)
     element_type = models.CharField(max_length=1,
                                     choices=ELEMENT_CHOICES)
+    count = models.IntegerField(default=0)

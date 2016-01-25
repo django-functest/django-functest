@@ -17,6 +17,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=255)),
                 ('big', models.BooleanField(default=False)),
                 ('clever', models.BooleanField(default=False)),
+                ('count', models.IntegerField(default=0)),
                 ('element_type', models.CharField(max_length=1, choices=[(b'e', b'Earth'), (b'w', b'Water'), (b'a', b'Air'), (b'f', b'Fire')])),
             ],
             options={

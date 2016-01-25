@@ -24,20 +24,9 @@ class FuncSeleniumMixin(CommonMixin):
             cls.__display.start()
         driver_name = cls.get_driver_name()
         kwargs = {}
-        if driver_name == 'Firefox':
-            from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
-            profile = FirefoxProfile()
-            # Firefox 29 does not support sending keystrokes to <input type=number> widgets
-            # so we disable the special widgets.
-            profile.set_preference('dom.forms.number', False)
-            kwargs['firefox_profile'] = profile
         cls._driver = getattr(webdriver, driver_name)(**kwargs)
-        if hasattr(cls._driver, 'profile'):
-            # Firefix
-            cls._driver.profile.set_preference('dom.forms.number', False)
         timeout = cls.get_default_timeout()
         cls._driver.set_page_load_timeout(timeout)
-
         super(FuncSeleniumMixin, cls).setUpClass()
 
     @classmethod

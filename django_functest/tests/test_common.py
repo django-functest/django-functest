@@ -15,7 +15,8 @@ class TestCommonBase(object):
         self.thing = Thing.objects.create(name="Rock",
                                           big=True,
                                           clever=False,
-                                          element_type=Thing.ELEMENT_EARTH)
+                                          element_type=Thing.ELEMENT_EARTH,
+                                          count=1)
 
     def test_get_url(self):
         self.get_url('admin:login')
@@ -76,7 +77,8 @@ class TestCommonBase(object):
         self.fill({'#id_name': "New name",
                    '#id_big': False,
                    '#id_clever': True,
-                   '#id_element_type': Thing.ELEMENT_AIR
+                   '#id_element_type': Thing.ELEMENT_AIR,
+                   '#id_count': 5,
                    })
         self.submit('input[name=change]')
         self._assertThingChanged()
@@ -86,7 +88,8 @@ class TestCommonBase(object):
         self.fill_by_id({'id_name': "New name",
                          'id_big': False,
                          'id_clever': True,
-                         'id_element_type': Thing.ELEMENT_AIR
+                         'id_element_type': Thing.ELEMENT_AIR,
+                         'id_count': 5,
                          })
         self.submit('input[name=change]')
         self._assertThingChanged()
@@ -96,7 +99,8 @@ class TestCommonBase(object):
         self.fill_by_name({'name': "New name",
                            'big': False,
                            'clever': True,
-                           'element_type': Thing.ELEMENT_AIR
+                           'element_type': Thing.ELEMENT_AIR,
+                           'count': 5,
                            })
         self.submit('input[name=change]')
         self._assertThingChanged()
@@ -107,6 +111,7 @@ class TestCommonBase(object):
         self.assertEqual(thing.big, False)
         self.assertEqual(thing.clever, True)
         self.assertEqual(thing.element_type, Thing.ELEMENT_AIR)
+        self.assertEqual(thing.count, 5)
 
     def test_fill_no_element_error(self):
         self.get_url('edit_thing', thing_id=self.thing.id)
@@ -157,7 +162,8 @@ class TestFuncSeleniumCommonBase(TestCommonBase):
         self.fill({'#id_name': "New name",
                    '#id_big': False,
                    '#id_clever': True,
-                   '#id_element_type': Thing.ELEMENT_AIR
+                   '#id_element_type': Thing.ELEMENT_AIR,
+                   '#id_count': 5,
                    })
         self.submit('input[name=change]')
         self._assertThingChanged()
@@ -173,7 +179,8 @@ class TestFuncSeleniumCommonBase(TestCommonBase):
         self.fill({'#id_name': "New name",
                    '#id_big': False,
                    '#id_clever': True,
-                   '#id_element_type': Thing.ELEMENT_AIR
+                   '#id_element_type': Thing.ELEMENT_AIR,
+                   '#id_count': 5,
                    })
         self.submit('input[name=change]')
         self._assertThingChanged()
