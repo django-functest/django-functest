@@ -29,7 +29,8 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
 
    .. attribute:: driver_name
 
-      Controls which Selenium 'driver' i.e. browser will be used. Defaults to ``"Firefox"``
+      Controls which Selenium 'driver' i.e. browser will be used. Defaults to ``"Firefox"``.
+      You can also use ``"Chrome"`` if Chrome and chromedriver are installed.
 
    .. method:: display_browser_window
 
