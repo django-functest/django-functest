@@ -12,12 +12,19 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
 
    These are class attributes and class methods that determine how the browser
    will be set up and run. It is easiest to override the class attribute, but
-   the class method exists also for more involved needs. Note that these are
-   used when ``setUpClass`` is called.
+   the class method exists also for more involved needs. Note that most of these
+   are used when ``setUpClass`` is called, and most of the related methods
+   are therefore classmethods. Some are called within ``setUp``
 
    It is usually a good idea to set up a ``FuncSeleniumMixin`` sub-class in your
    project, to be used as a base-class for your tests, and set these
    configuration values on it.
+
+   .. attribute:: browser_window_size
+
+      If set, should be a tuple containing ``(width, height)`` in pixels. This
+      will be used inside ``setUp`` to set the browser window size. Defaults
+      to ``None``.
 
    .. attribute:: default_timeout
 
@@ -34,15 +41,19 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
 
    .. method:: display_browser_window
 
-      Returns boolean that determines if the browser window should be shown. Defaults to :attr:`display`.
+      classmethod. Returns boolean that determines if the browser window should be shown. Defaults to :attr:`display`.
 
-   .. method:: get_default_timeout
+   .. method:: get_browser_window_size()
 
-      Returns the time in seconds for Selenium to wait for the browser to respond etc. Defaults to :attr:`default_timeout`.
+      Returns :attr:`browser_window_size` by default.
 
-   .. method:: get_driver_name
+   .. method:: get_default_timeout()
 
-      Returns the driver name i.e. the browser to use. Defaults to :attr:`driver_name`.
+      classmethod. Returns the time in seconds for Selenium to wait for the browser to respond etc. Defaults to :attr:`default_timeout`.
+
+   .. method:: get_driver_name()
+
+      classmethod. Returns the driver name i.e. the browser to use. Defaults to :attr:`driver_name`.
 
    **Other attributes and methods**
 
@@ -75,3 +86,7 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
       present (see :meth:`~django_functest.FuncCommonApi.is_element_present`)
       and visible on the page (e.g. does not have ``display: none;``),
       ``False`` otherwise.
+
+   .. method:: set_window_size(width, height)
+
+      Sets the browser window size to the specified width and height in pixels.

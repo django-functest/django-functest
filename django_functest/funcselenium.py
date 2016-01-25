@@ -39,6 +39,9 @@ class FuncSeleniumMixin(CommonMixin):
     def setUp(self):
         self._have_visited_page = False
         super(FuncSeleniumMixin, self).setUp()
+        size = self.get_browser_window_size()
+        if size is not None:
+            self.set_window_size(*size)
         self._driver.delete_all_cookies()
 
     # Common API:
@@ -93,12 +96,17 @@ class FuncSeleniumMixin(CommonMixin):
 
     # Full browser specific:
 
-    # Configuration:
+    # Configuration methods and attributes
+    browser_window_size = None
+
     display = False  # Display browser window or not?
 
     default_timeout = 10  # seconds
 
     driver_name = "Firefox"  # Sensible default, works most places
+
+    def get_browser_window_size(self):
+        return self.browser_window_size
 
     @classmethod
     def display_browser_window(cls):
@@ -112,7 +120,7 @@ class FuncSeleniumMixin(CommonMixin):
     def get_driver_name(cls):
         return cls.driver_name
 
-    # Utility methods:
+    # Runtime methods:
 
     def click(self, css_selector=None, xpath=None, wait_for_reload=False, double=False, scroll=True):
         if wait_for_reload:
@@ -144,6 +152,9 @@ class FuncSeleniumMixin(CommonMixin):
         except NoSuchElementException:
             return False
         return elem.is_displayed()
+
+    def set_window_size(self, width, height):
+        self._driver.set_window_size(width, height)
 
     # Implementation methods - private
 

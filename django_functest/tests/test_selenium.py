@@ -42,3 +42,28 @@ class TestFuncSeleniumSpecificFirefox(TestFuncSeleniumSpecificBase, FirefoxBase)
 
 class TestFuncSeleniumSpecificChrome(TestFuncSeleniumSpecificBase, ChromeBase):
     pass
+
+
+# Test class attribute `browser_window_size` works correctly:
+
+class TestBrowserSizeBase(object):
+    browser_window_size = (2800, 1400)
+
+    def test_size(self):
+        width, height = self.execute_script("return [window.outerWidth, window.outerHeight]")
+        self.assertEqual((width, height),
+                         (2800, 1400))
+
+    def test_resize(self):
+        self.set_window_size(400, 300)
+        width, height = self.execute_script("return [window.outerWidth, window.outerHeight]")
+        self.assertEqual((width, height),
+                         (400, 300))
+
+
+class TestBrowserSizeFirefox(TestBrowserSizeBase, FirefoxBase):
+    pass
+
+
+class TestBrowserSizeChrome(TestBrowserSizeBase, ChromeBase):
+    pass
