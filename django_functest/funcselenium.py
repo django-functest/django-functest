@@ -154,7 +154,8 @@ class FuncSeleniumMixin(CommonMixin):
 
     # Runtime methods:
 
-    def click(self, css_selector=None, xpath=None, wait_for_reload=False, double=False, scroll=True, window_closes=False):
+    def click(self, css_selector=None, xpath=None, wait_for_reload=False,
+              double=False, scroll=True, window_closes=False):
         if window_closes:
             wait_for_reload = False
         if wait_for_reload:
