@@ -30,6 +30,12 @@ if sys.argv[-1] == 'tag':
 readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
+if sys.version_info < (3, 3):
+    extra_requires = 'faulthandler>=2.4'
+else:
+    extra_requires = []
+
+
 setup(
     name='django-functest',
     version=version,
@@ -49,8 +55,7 @@ setup(
         'six>=1.10.0',
         'furl>=0.4.9',
         'pyquery>=1.2.10',
-        'faulthandler>=2.4',
-    ],
+    ] + extra_requires,
     license="BSD",
     zip_safe=False,
     keywords='django-functest',
