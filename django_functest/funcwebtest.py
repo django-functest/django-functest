@@ -209,7 +209,8 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
             else:
                 raise ValueError("No option matched '{0}'".format(text))
         else:
-            raise WebTestCantUseElement("Don't know how to 'fill_by_text' for elements of type '{0}'".format(field.tag))
+            raise WebTestCantUseElement("Don't know how to 'fill_by_text' for elements of type '{0}'"
+                                        .format(field.tag))
 
     def _match_form_elem_to_webtest_form(self, form_elem, response):
         pq = self._make_pq(response)
