@@ -118,3 +118,13 @@ followed the same pattern.
       For :class:`~django_functest.FuncWebTestMixin`, ``auto_follow=True`` causes
       redirects to be followed automatically (which always happens with
       :class:`~django_functest.FuncSeleniumMixin`).
+
+   .. method:: value(css_selector)
+
+      Returns the value of the form input specified in CSS selector.
+
+      The types of the values correspond to those that are passed to :meth:`fill`:
+
+      * For check boxes, it will return ``True`` or ``False``.
+      * For text inputs, returns the text value.
+      * For selects, returns the internal ``value`` attribute of the selected item.

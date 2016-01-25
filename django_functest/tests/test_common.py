@@ -181,6 +181,19 @@ class TestCommonBase(object):
         self.back()
         self.assertUrlsEqual(reverse('list_things'))
 
+    def test_value(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.assertEqual(self.value('#id_name'),
+                         "Rock")
+        self.assertEqual(self.value('#id_big'),
+                         True)
+        self.assertEqual(self.value('#id_clever'),
+                         False)
+        self.assertEqual(self.value('#id_element_type'),
+                         'e')
+        self.assertEqual(self.value('#id_description'),
+                         'Hard thing')
+
 
 class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
 

@@ -101,6 +101,15 @@ class FuncSeleniumMixin(CommonMixin):
     def submit(self, css_selector, wait_for_reload=True, auto_follow=None):
         self.click(css_selector, wait_for_reload=wait_for_reload)
 
+    def value(self, css_selector):
+        elem = self._find(css_selector)
+        if elem.tag_name == 'input' and elem.get_attribute('type') == 'checkbox':
+            return self._is_checked(elem)
+        elif elem.tag_name == 'textarea':
+            return elem.text
+        else:
+            return elem.get_attribute('value')
+
     # Full browser specific:
 
     # Configuration methods and attributes

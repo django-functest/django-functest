@@ -8,6 +8,7 @@ from django.utils.html import escape
 from django_webtest import WebTestMixin
 from six import text_type
 from six.moves import http_cookiejar
+from webtest.forms import Checkbox
 
 from .exceptions import WebTestCantUseElement, WebTestMultipleElementsException, WebTestNoSuchElementException
 from .utils import CommonMixin, get_session_store
@@ -91,6 +92,16 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
             while 300 <= response.status_int < 400:
                 response = response.follow()
         self.last_responses.append(response)
+
+    def value(self, css_selector):
+        form, field_name = self._find_form_and_field_by_css_selector(self.last_response,
+                                                                     css_selector,
+                                                                     require_name=False)
+        field = form[field_name]
+        if isinstance(field, Checkbox):
+            return field.checked
+        else:
+            return field.value
 
     # Implementation methods - private
 
