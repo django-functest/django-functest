@@ -181,6 +181,11 @@ class TestCommonBase(object):
         self.back()
         self.assertUrlsEqual(reverse('list_things'))
 
+    def test_set_session_data(self):
+        self.set_session_data({'name': 'The Jabberwocky'})
+        self.get_url('django_functest.test_misc')
+        self.assertTextPresent("Hello to The Jabberwocky")
+
     def test_value(self):
         self.get_url('edit_thing', thing_id=self.thing.id)
         self.assertEqual(self.value('#id_name'),

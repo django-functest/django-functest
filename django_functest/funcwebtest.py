@@ -82,6 +82,12 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
     def is_element_present(self, css_selector):
         return len(self._make_pq(self.last_response).find(css_selector)) > 0
 
+    def set_session_data(self, item_dict):
+        session = self._get_session()
+        for name, value in item_dict.items():
+            session[name] = text_type(value)
+        session.save()
+
     def submit(self, css_selector, wait_for_reload=None, auto_follow=True):
         form, field_name = self._find_form_and_field_by_css_selector(self.last_response,
                                                                      css_selector,
@@ -109,9 +115,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
     def last_response(self):
         return self.last_responses[-1]
 
-    def add_cookie(self, cookie_dict):
-        # Same API as for SeleniumTest
-
+    def _add_cookie(self, cookie_dict):
         # We don't use self.app.set_cookie since it has undesirable behaviour
         # with domain and value fields that causes issues.
         value = cookie_dict['value']
@@ -138,19 +142,13 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
         )
         self.app.cookiejar.set_cookie(cookie)
 
-    def set_session_vars(self, item_dict):
-        session = self.get_session()
-        for name, value in item_dict.items():
-            session[name] = text_type(value)
-        session.save()
-
-    def get_session(self):
+    def _get_session(self):
         session_key = self.app.cookies.get(settings.SESSION_COOKIE_NAME, None)
         if session_key is None:
             # Create new
             session = get_session_store()
-            self.add_cookie({'name': settings.SESSION_COOKIE_NAME,
-                             'value': session.session_key})
+            self._add_cookie({'name': settings.SESSION_COOKIE_NAME,
+                              'value': session.session_key})
         else:
             session = get_session_store(session_key=session_key)
         return session

@@ -9,7 +9,7 @@
   </head>
   <body>
     <p>
-      Hello world, from me &amp; friends!
+      Hello {% if name %}to {{ name }}{% else %}world{% endif %}, from me &amp; friends!
     </p>
 
     <p id="hoverable">Hover me!</p>

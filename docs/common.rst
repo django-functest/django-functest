@@ -105,6 +105,11 @@ followed the same pattern.
 
       True for Selenium tests, False for WebTest tests.
 
+   .. method:: set_session_data(data_dict)
+
+      Set data directly into the Django session from the supplied dictionary.
+      This is useful for implementing setup/shortcuts needed for specific views.
+
    .. method:: submit(css_selector, wait_for_reload=True, auto_follow=True)
 
       Submits a form via the button specified in ``css_selector``.

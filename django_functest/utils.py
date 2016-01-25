@@ -22,12 +22,12 @@ class ShortcutLoginMixin(object):
             session_auth_hash = user.get_session_auth_hash()
 
         # Mimicking django.contrib.auth functionality
-        self.set_session_vars({AUTH_ID_SESSION_KEY: user.pk,
+        self.set_session_data({AUTH_ID_SESSION_KEY: user.pk,
                                AUTH_HASH_SESSION_KEY: session_auth_hash,
                                AUTH_BACKEND_SESSION_KEY: user.backend})
 
     def shortcut_logout(self):
-        self.set_session_vars({AUTH_BACKEND_SESSION_KEY: ''})
+        self.set_session_data({AUTH_BACKEND_SESSION_KEY: ''})
 
 
 def get_session_store(session_key=None):

@@ -8,7 +8,8 @@ from .models import Thing
 
 
 def test_misc(request):
-    return render(request, "django_functest/tests/test_misc.html", {})
+    return render(request, "django_functest/tests/test_misc.html",
+                  {'name': request.session.get('name', None)})
 
 
 class ThingForm(forms.ModelForm):

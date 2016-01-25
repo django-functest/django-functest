@@ -98,6 +98,22 @@ class FuncSeleniumMixin(CommonMixin):
             return False
         return True
 
+    def set_session_data(self, item_dict):
+        # Cookies don't work unless we visit a page first
+        if not self._have_visited_page:
+            self.get_url('django_functest.emptypage')
+
+        session = self._get_session()
+        for name, value in item_dict.items():
+            session[name] = text_type(value)
+        session.save()
+
+        s2 = self._get_session()
+        if all(s2.get(name) == text_type(value) for name, value in item_dict.items()):
+            return
+
+        raise RuntimeError("Session not saved correctly")
+
     def submit(self, css_selector, wait_for_reload=True, auto_follow=None):
         self.click(css_selector, wait_for_reload=wait_for_reload)
 
@@ -224,35 +240,19 @@ class FuncSeleniumMixin(CommonMixin):
         self._have_visited_page = True
         self._driver.get(url)
 
-    def add_cookie(self, cookie_dict):
+    def _add_cookie(self, cookie_dict):
         self._driver.add_cookie(cookie_dict)
 
-    def set_session_vars(self, item_dict):
-        # Cookies don't work unless we visit a page first
-        if not self._have_visited_page:
-            self.get_url('django_functest.emptypage')
-
-        session = self.get_session()
-        for name, value in item_dict.items():
-            session[name] = text_type(value)
-        session.save()
-
-        s2 = self.get_session()
-        if all(s2.get(name) == text_type(value) for name, value in item_dict.items()):
-            return
-
-        raise RuntimeError("Session not saved correctly")
-
-    def get_session(self):
+    def _get_session(self):
         session_cookie = self._driver.get_cookie(settings.SESSION_COOKIE_NAME)
         if session_cookie is None:
             # Create new
             session = get_session_store()
-            self.add_cookie({'name': settings.SESSION_COOKIE_NAME,
-                             'value': session.session_key,
-                             'path': '/',
-                             'secure': False,
-                             })
+            self._add_cookie({'name': settings.SESSION_COOKIE_NAME,
+                              'value': session.session_key,
+                              'path': '/',
+                              'secure': False,
+                              })
         else:
             session = get_session_store(session_key=session_cookie['value'])
         return session
