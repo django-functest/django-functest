@@ -48,10 +48,10 @@ class FuncSeleniumMixin(CommonMixin):
     is_full_browser_test = True
 
     def assertTextPresent(self, text):
-        self.assertIn(escape(text), self.get_page_source())
+        self.assertIn(escape(text), self._get_page_source())
 
     def assertTextAbsent(self, text):
-        self.assertNotIn(escape(text), self.get_page_source())
+        self.assertNotIn(escape(text), self._get_page_source())
 
     def back(self):
         self._driver.back()
@@ -66,7 +66,7 @@ class FuncSeleniumMixin(CommonMixin):
     def fill(self, fields):
         for k, v in fields.items():
             e = self._find_with_timeout(k)
-            self.fill_input(e, v)
+            self._fill_input(e, v)
 
     def get_url(self, name, *args, **kwargs):
         """
@@ -144,7 +144,7 @@ class FuncSeleniumMixin(CommonMixin):
                     return True
                 return False
             WebDriverWait(self._driver, self.get_default_timeout()).until(f)
-        self.wait_until_finished()
+        self._wait_until_finished()
 
     def is_element_displayed(self, css_selector):
         try:
@@ -155,6 +155,31 @@ class FuncSeleniumMixin(CommonMixin):
 
     def set_window_size(self, width, height):
         self._driver.set_window_size(width, height)
+
+    def wait_for_page_load(self):
+        self.wait_until_loaded('body')
+        self._wait_for_document_ready()
+
+    def wait_until(self, callback, timeout=None):
+        """
+        Helper function that blocks the execution of the tests until the
+        specified callback returns a value that is not falsy. This function can
+        be called, for example, after clicking a link or submitting a form.
+        See the other public methods that call this function for more details.
+        """
+        if timeout is None:
+            timeout = self.get_default_timeout()
+        WebDriverWait(self._driver, timeout).until(callback)
+
+    def wait_until_loaded(self, selector, timeout=None):
+        """
+        Helper function that blocks until the element with the given tag name
+        is found on the page.
+        """
+        self.wait_until(
+            lambda driver: driver.find_element_by_css_selector(selector),
+            timeout=timeout
+        )
 
     # Implementation methods - private
 
@@ -198,44 +223,19 @@ class FuncSeleniumMixin(CommonMixin):
             session = get_session_store(session_key=session_cookie['value'])
         return session
 
-    def wait_until_loaded(self, selector, timeout=None):
-        """
-        Helper function that blocks until the element with the given tag name
-        is found on the page.
-        """
-        self.wait_until(
-            lambda driver: driver.find_element_by_css_selector(selector),
-            timeout=timeout
-        )
-
-    def wait_until(self, callback, timeout=None):
-        """
-        Helper function that blocks the execution of the tests until the
-        specified callback returns a value that is not falsy. This function can
-        be called, for example, after clicking a link or submitting a form.
-        See the other public methods that call this function for more details.
-        """
-        if timeout is None:
-            timeout = self.get_default_timeout()
-        WebDriverWait(self._driver, timeout).until(callback)
-
-    def wait_for_page_load(self):
-        self.wait_until_loaded('body')
-        self.wait_for_document_ready()
-
-    def wait_for_document_ready(self):
+    def _wait_for_document_ready(self):
         self.wait_until(lambda driver: driver.execute_script("return document.readyState") == "complete")
 
-    def wait_until_finished(self):
+    def _wait_until_finished(self):
         try:
             self.wait_for_page_load()
         except NoSuchWindowException:
             pass  # window can legitimately close e.g. for popups
 
-    def get_page_source(self):
+    def _get_page_source(self):
         return self._driver.page_source
 
-    def fill_input(self, elem, val):
+    def _fill_input(self, elem, val):
         if elem.tag_name == 'select':
             self._set_select_elem(elem, val)
         elif elem.tag_name == 'input' and elem.get_attribute('type') == 'checkbox':

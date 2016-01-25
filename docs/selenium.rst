@@ -90,3 +90,17 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
    .. method:: set_window_size(width, height)
 
       Sets the browser window size to the specified width and height in pixels.
+
+   .. method:: wait_for_page_load()
+
+      Waits until the page has finished loading. You may want to override this
+      to add extra things if a page has specific requirements.
+
+   .. method:: wait_until(callback, timeout=None)
+
+      Waits until the callback returns ``True``, with a timeout that defaults
+      to the :attr:`default_timeout`.
+
+   .. method:: wait_until_loaded(css_selector)
+
+      Waits until an element matching the CSS selector appears.
