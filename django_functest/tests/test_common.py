@@ -1,8 +1,8 @@
 from django.core.urlresolvers import reverse
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 from django_functest.exceptions import (
-    WebTestCantUseElement, WebTestMultipleElementsException, WebTestNoSuchElementException
+    SeleniumCantUseElement, WebTestCantUseElement, WebTestMultipleElementsException, WebTestNoSuchElementException
 )
 from django_functest.tests.models import Thing
 
@@ -110,6 +110,22 @@ class TestCommonBase(object):
         self.submit('input[name=change]')
         self._assertThingChanged()
 
+    def test_fill_by_text(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.fill_by_text({'#id_element_type': 'Water'})
+        self.submit('input[name=change]')
+        self.refresh_thing()
+        self.assertEqual(self.thing.element_type,
+                         Thing.ELEMENT_WATER)
+
+    def test_fill_by_text_missing(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.assertRaises(self.TextNotFoundException, lambda: self.fill_by_text({'#id_element_type': 'Plasma'}))
+
+    def test_fill_by_text_for_unsupported(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.assertRaises(self.ElementUnusableException, lambda: self.fill_by_text({'#id_count': 'Water'}))
+
     def _assertThingChanged(self):
         thing = self.refresh_thing()
         self.assertEqual(thing.name, "New name")
@@ -164,6 +180,8 @@ class TestCommonBase(object):
 class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
 
     ElementNotFoundException = WebTestNoSuchElementException
+    TextNotFoundException = ValueError
+    ElementUnusableException = WebTestCantUseElement
 
     def test_is_full_browser_attribute(self):
         self.assertEqual(self.is_full_browser_test, False)
@@ -198,6 +216,8 @@ class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
 class TestFuncSeleniumCommonBase(TestCommonBase):
 
     ElementNotFoundException = TimeoutException
+    TextNotFoundException = NoSuchElementException
+    ElementUnusableException = SeleniumCantUseElement
 
     def test_is_full_browser_attribute(self):
         self.assertEqual(self.is_full_browser_test, True)

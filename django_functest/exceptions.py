@@ -9,3 +9,7 @@ class WebTestMultipleElementsException(Exception):
 
 class WebTestCantUseElement(Exception):
     pass
+
+
+class SeleniumCantUseElement(Exception):
+    pass

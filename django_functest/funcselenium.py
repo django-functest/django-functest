@@ -11,6 +11,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from six import text_type
 
+from .exceptions import SeleniumCantUseElement
 from .utils import CommonMixin, get_session_store
 
 logger = logging.getLogger(__name__)
@@ -68,6 +69,11 @@ class FuncSeleniumMixin(CommonMixin):
         for k, v in fields.items():
             e = self._find_with_timeout(k)
             self._fill_input(e, v)
+
+    def fill_by_text(self, fields):
+        for selector, text in fields.items():
+            elem = self._find_with_timeout(selector)
+            self._fill_input_by_text(elem, text)
 
     def get_url(self, name, *args, **kwargs):
         """
@@ -254,6 +260,12 @@ class FuncSeleniumMixin(CommonMixin):
             elem.clear()
             elem.send_keys(val)
 
+    def _fill_input_by_text(self, elem, val):
+        if elem.tag_name == 'select':
+            self._set_select_elem_by_text(elem, val)
+        else:
+            raise SeleniumCantUseElement("Can't do 'fill_by_text' on elements of type {0}".format(elem.tag_name))
+
     def _find(self, css_selector):
         return self._driver.find_element_by_css_selector(css_selector)
 
@@ -340,3 +352,8 @@ class FuncSeleniumMixin(CommonMixin):
         self._scroll_into_view(elem)
         s = Select(elem)
         s.select_by_value(value)
+
+    def _set_select_elem_by_text(self, elem, text):
+        self._scroll_into_view(elem)
+        s = Select(elem)
+        s.select_by_visible_text(text)

@@ -79,6 +79,11 @@ followed the same pattern.
 
       Same as :meth:`fill` except the keys are input names.
 
+   .. method:: fill_by_text(data_dict)
+
+      Same as :meth:`fill`, except the values are text captions. This can be
+      used only for ``select`` elements.
+
    .. method:: get_url(name, *args, **kwargs)
 
       Gets the named URL, passing it through ``django.core.urlresolvers.reverse`` with ``*args`` and ``**kwargs``.

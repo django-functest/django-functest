@@ -61,6 +61,11 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
             form, field_name = self._find_form_and_field_by_css_selector(self.last_response, selector)
             form[field_name] = value
 
+    def fill_by_text(self, fields):
+        for selector, text in fields.items():
+            form, field_name = self._find_form_and_field_by_css_selector(self.last_response, selector)
+            self._fill_field_by_text(form, field_name, text)
+
     def get_url(self, name, *args, **kwargs):
         """
         Gets the named URL, passing *args and **kwargs to Django's URL 'reverse' function.
@@ -182,6 +187,18 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
         if p.tag == 'form':
             return p
         return self._find_parent_form(p)
+
+    def _fill_field_by_text(self, form, field_name, text):
+        field = form[field_name]
+        if field.tag == 'select':
+            for val, _, t in field.options:
+                if t == text:
+                    form[field_name] = val
+                    break
+            else:
+                raise ValueError("No option matched '{0}'".format(text))
+        else:
+            raise WebTestCantUseElement("Don't know how to 'fill_by_text' for elements of type '{0}'".format(field.tag))
 
     def _match_form_elem_to_webtest_form(self, form_elem, response):
         pq = self._make_pq(response)
