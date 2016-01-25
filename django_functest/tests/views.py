@@ -38,7 +38,7 @@ def edit_thing(request, thing_id):
         if 'clear' in request.POST:
             thing = Thing(id=thing.id)
             thing.save()
-            return HttpResponseRedirect(reverse('edit_thing', kwargs={'thing_id': thing_id}))
+            return HttpResponseRedirect(reverse('thing_cleared', kwargs={'thing_id': thing_id}))
         else:
             thing_form = ThingForm(data=request.POST,
                                    instance=thing,
@@ -60,3 +60,9 @@ def edit_thing(request, thing_id):
 def list_things(request):
     return render(request, "django_functest/tests/list_things.html",
                   {'things': Thing.objects.all()})
+
+
+def thing_cleared(request, thing_id):
+    thing = Thing.objects.get(id=int(thing_id))
+    return render(request, "django_functest/tests/thing_cleared.html",
+                  {'thing': thing})

@@ -15,6 +15,10 @@ from .utils import CommonMixin, get_session_store
 
 class FuncWebTestMixin(WebTestMixin, CommonMixin):
 
+    def __init__(self, *args, **kwargs):
+        super(FuncWebTestMixin, self).__init__(*args, **kwargs)
+        self.last_responses = []
+
     # Public Common API
     is_full_browser_test = False
 
@@ -23,6 +27,9 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
 
     def assertTextPresent(self, text):
         self.assertIn(escape(text), self.last_response.content.decode('utf-8'))
+
+    def back(self):
+        self.last_responses.pop()
 
     @property
     def current_url(self):
@@ -75,13 +82,16 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
                                                                      require_name=False,
                                                                      filter_selector="input[type=submit], button")
         response = form.submit(field_name)
-        self.last_response = response
         if auto_follow:
             while 300 <= response.status_int < 400:
                 response = response.follow()
-        self.last_response = response
+        self.last_responses.append(response)
 
     # Implementation methods - private
+
+    @property
+    def last_response(self):
+        return self.last_responses[-1]
 
     def add_cookie(self, cookie_dict):
         # Same API as for SeleniumTest
@@ -133,7 +143,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
         """
         'raw' method for getting URL - not compatible between FullBrowserTest and WebTestBase
         """
-        self.last_response = self.app.get(url, auto_follow=auto_follow, expect_errors=expect_errors)
+        self.last_responses.append(self.app.get(url, auto_follow=auto_follow, expect_errors=expect_errors))
         return self.last_response
 
     def _find_form_and_field_by_css_selector(self, response, css_selector, filter_selector=None,

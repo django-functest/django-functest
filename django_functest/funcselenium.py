@@ -50,6 +50,9 @@ class FuncSeleniumMixin(CommonMixin):
     def assertTextAbsent(self, text):
         self.assertNotIn(escape(text), self.get_page_source())
 
+    def back(self):
+        self._driver.back()
+
     @property
     def current_url(self):
         return self._driver.current_url

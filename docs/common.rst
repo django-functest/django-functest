@@ -33,6 +33,14 @@ followed the same pattern.
 
    **Other methods and attributes**
 
+   .. method:: back()
+
+      Go back in the browser.
+
+      For WebTest, this will not make additional requests. For Selenium tests,
+      this may or may not make additional requests, depending on caching etc. and what
+      happens when you press 'Back' in the browser being used.
+
    .. attribute:: current_url
 
       The current full URL

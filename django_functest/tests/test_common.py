@@ -132,6 +132,29 @@ class TestCommonBase(object):
         self.get_url('list_things')
         self.assertRaises(self.ElementNotFoundException, lambda: self.follow_link('a.foobar'))
 
+    def test_back(self):
+        self.get_url('list_things')
+        self.follow_link('a.edit')
+        self.back()
+        self.assertUrlsEqual(reverse('list_things'))
+
+    def test_multiple_back(self):
+        # We could test the behaviour regarding forms, especially those that
+        # submit to the same URL and then redirect to the same URL. However,
+        # Firefox and Chrome behave differently here - Firefox produces
+        # fewer history entries.
+        self.get_url('list_things')
+        self.follow_link('a.edit')
+        edit_url = reverse('edit_thing', kwargs={'thing_id': self.thing.id})
+        self.assertUrlsEqual(edit_url)
+        self.submit('input[name=clear]')
+        self.assertUrlsEqual(reverse('thing_cleared', kwargs={'thing_id': self.thing.id}))
+        self.assertTextPresent("was cleared")
+        self.back()
+        self.assertUrlsEqual(edit_url)
+        self.back()
+        self.assertUrlsEqual(reverse('list_things'))
+
 
 class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
 
