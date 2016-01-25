@@ -47,8 +47,8 @@ class TestFuncSeleniumSpecificBase(object):
     def test_hover(self):
         self.get_url('django_functest.test_misc')
         get_style = "return document.defaultView.getComputedStyle(document.querySelector('#hoverable'))['font-style']"
-        self.assertEqual(self.execute_script(get_style),
-                         "normal")
+        self.assertIn(self.execute_script(get_style),
+                      ["normal", None])
         self.hover('#hoverable')
         self.assertEqual(self.execute_script(get_style),
                          "italic")
