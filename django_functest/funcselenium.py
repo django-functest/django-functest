@@ -146,6 +146,9 @@ class FuncSeleniumMixin(CommonMixin):
             WebDriverWait(self._driver, self.get_default_timeout()).until(f)
         self._wait_until_finished()
 
+    def execute_script(self, script, *args):
+        return self._driver.execute_script(script, *args)
+
     def is_element_displayed(self, css_selector):
         try:
             elem = self._driver.find_element_by_css_selector(css_selector)
@@ -321,9 +324,6 @@ class FuncSeleniumMixin(CommonMixin):
 
     def _is_checked(self, elem):
         return elem.get_attribute('checked') == 'true'
-
-    def execute_script(self, script, *args):
-        return self._driver.execute_script(script, *args)
 
     def _set_check_box(self, elem, state):
         if self._is_checked(elem) != state:

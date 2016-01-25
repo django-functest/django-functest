@@ -80,6 +80,17 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
       ``double_click`` action chain, which doesn't actually trigger single click
       events.
 
+   .. method:: execute_script(script, *args)
+
+      Executes the suppplied Javascript in the browser and returns the results.
+
+      If you need to pass arguments, you can receive them in the script using
+      ``arguments`` e.g.::
+
+        self.execute_script("return arguments[0] + arguments[1];", 1, 2)
+
+      Arguments and return values are serialized and deserialized by Selenium.
+
    .. method:: is_element_displayed(css_selector)
 
       Returns ``True`` if the element specified by the CSS selector is both

@@ -35,6 +35,15 @@ class TestFuncSeleniumSpecificBase(object):
         self.click('input[name=check]', double=True)
         self.assertTextPresent("Everything is really fine")
 
+    def test_execute_script(self):
+        self.get_url('django_functest.test1')
+        self.assertEqual(self.execute_script("return 1 + 1;"), 2)
+
+    def test_execute_script_with_args(self):
+        self.get_url('django_functest.test1')
+        retval = self.execute_script("return arguments[0] + arguments[1];", 1, 2)
+        self.assertEqual(retval, 3)
+
 
 class TestFuncSeleniumSpecificFirefox(TestFuncSeleniumSpecificBase, FirefoxBase):
     pass
