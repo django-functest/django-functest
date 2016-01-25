@@ -16,7 +16,8 @@ class TestCommonBase(object):
                                           big=True,
                                           clever=False,
                                           element_type=Thing.ELEMENT_EARTH,
-                                          count=1)
+                                          count=1,
+                                          description="Hard thing")
 
     def test_get_url(self):
         self.get_url('admin:login')
@@ -84,6 +85,7 @@ class TestCommonBase(object):
                    '#id_clever': True,
                    '#id_element_type': Thing.ELEMENT_AIR,
                    '#id_count': 5,
+                   '#id_description': "Soft thing\r\nwith line breaks",
                    })
         self.submit('input[name=change]')
         self._assertThingChanged()
@@ -95,6 +97,7 @@ class TestCommonBase(object):
                          'id_clever': True,
                          'id_element_type': Thing.ELEMENT_AIR,
                          'id_count': 5,
+                         'id_description': "Soft thing\r\nwith line breaks",
                          })
         self.submit('input[name=change]')
         self._assertThingChanged()
@@ -106,6 +109,7 @@ class TestCommonBase(object):
                            'clever': True,
                            'element_type': Thing.ELEMENT_AIR,
                            'count': 5,
+                           'description': "Soft thing\r\nwith line breaks",
                            })
         self.submit('input[name=change]')
         self._assertThingChanged()
@@ -133,6 +137,7 @@ class TestCommonBase(object):
         self.assertEqual(thing.clever, True)
         self.assertEqual(thing.element_type, Thing.ELEMENT_AIR)
         self.assertEqual(thing.count, 5)
+        self.assertEqual(thing.description, "Soft thing\r\nwith line breaks")
 
     def test_fill_no_element_error(self):
         self.get_url('edit_thing', thing_id=self.thing.id)
@@ -230,6 +235,7 @@ class TestFuncSeleniumCommonBase(TestCommonBase):
                    '#id_clever': True,
                    '#id_element_type': Thing.ELEMENT_AIR,
                    '#id_count': 5,
+                   '#id_description': "Soft thing\r\nwith line breaks",
                    })
         self.submit('input[name=change]')
         self._assertThingChanged()
@@ -247,6 +253,7 @@ class TestFuncSeleniumCommonBase(TestCommonBase):
                    '#id_clever': True,
                    '#id_element_type': Thing.ELEMENT_AIR,
                    '#id_count': 5,
+                   '#id_description': "Soft thing\r\nwith line breaks",
                    })
         self.submit('input[name=change]')
         self._assertThingChanged()

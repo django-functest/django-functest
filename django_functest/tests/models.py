@@ -21,3 +21,4 @@ class Thing(models.Model):
     element_type = models.CharField(max_length=1,
                                     choices=ELEMENT_CHOICES)
     count = models.IntegerField(default=0)
+    description = models.TextField(blank=True)
