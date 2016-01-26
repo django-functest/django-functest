@@ -11,6 +11,7 @@ Contents:
    usage
    common
    selenium
+   webtest
    utils
    contributing
    authors

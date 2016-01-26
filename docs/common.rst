@@ -127,9 +127,11 @@ followed the same pattern.
       ``wait_for_reload=False`` and other tweaks. It does nothing when running
       WebTest tests.
 
-      For :class:`~django_functest.FuncWebTestMixin`, ``auto_follow=True`` causes
-      redirects to be followed automatically (which always happens with
-      :class:`~django_functest.FuncSeleniumMixin`).
+      For :class:`~django_functest.FuncWebTestMixin`, ``auto_follow=True``
+      causes redirects to be followed automatically (which always happens with
+      :class:`~django_functest.FuncSeleniumMixin`). Pass ``False`` to allow
+      intermediate responses (i.e. 3XX redirect responses) to be inspected via
+      :attr:`~django_functest.FuncWebTestMixin.last_response`.
 
    .. method:: value(css_selector)
 
