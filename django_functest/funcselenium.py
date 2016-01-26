@@ -1,5 +1,7 @@
 import logging
+import os.path
 import time
+from datetime import datetime
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -200,6 +202,15 @@ class FuncSeleniumMixin(CommonMixin):
         except NoSuchElementException:
             return False
         return elem.is_displayed()
+
+    def save_screenshot(self, dirname="./", filename=None):
+        # Especially useful when hiding the browser window gives different behaviour.
+        testname = '%s.%s.%s' % (self.__class__.__module__, self.__class__.__name__, self._testMethodName)
+        if filename is None:
+            filename = datetime.now().strftime('Screenshot %Y-%m-%d %H.%M.%S') + " " + testname + ".png"
+        name = os.path.abspath(os.path.join(dirname, filename))
+        self._driver.save_screenshot(name)
+        return name
 
     def set_window_size(self, width, height):
         self._driver.set_window_size(width, height)

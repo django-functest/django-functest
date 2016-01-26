@@ -103,6 +103,14 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
       and visible on the page (e.g. does not have ``display: none;``),
       ``False`` otherwise.
 
+   .. method:: save_screenshot(dirname="./", filename=None)
+
+      Saves a screenshot of the browser window. By default, it is saved with a
+      filename that includes a timestamp and the current test being run, into
+      the current working directory, but this can be overridden by passing in
+      a directory path and/or a filename. The full filename of the screenshot
+      is returned.
+
    .. method:: set_window_size(width, height)
 
       Sets the browser window size to the specified width and height in pixels.

@@ -1,3 +1,4 @@
+import os
 import unittest
 
 from django.contrib.auth import get_user_model
@@ -79,6 +80,19 @@ class TestFuncSeleniumSpecificBase(AdminLoginMixin):
         self.assertEqual([g.name for g in user.groups.all()],
                          ["My new group"])
         self.assertEqual(user.first_name, "My first name")
+
+    def test_save_screenshot(self):
+        testname = ("django_functest.tests.test_selenium.{0}.test_save_screenshot"
+                    .format(self.__class__.__name__))
+
+        fname = None
+        try:
+            fname = self.save_screenshot()
+            self.assertIn(testname, fname)
+            self.assertTrue(os.path.exists(fname))
+        finally:
+            if fname is not None:
+                os.unlink(fname)
 
 
 class TestFuncSeleniumSpecificFirefox(TestFuncSeleniumSpecificBase, FirefoxBase):
