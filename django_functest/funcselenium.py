@@ -5,7 +5,6 @@ from datetime import datetime
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.utils.html import escape
 from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException, StaleElementReferenceException
@@ -17,6 +16,14 @@ from .exceptions import SeleniumCantUseElement
 from .utils import CommonMixin, get_session_store
 
 logger = logging.getLogger(__name__)
+
+
+def escape_selenium(text):
+    # Selenium seems to do something strange with its page source function:
+    #  &quot; gets converted back to "
+    #  &#39; gets converted back to '
+    # So we need a custom function here, instead of django.utils.html.escape
+    return text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
 
 
 class FuncSeleniumMixin(CommonMixin):
@@ -51,10 +58,10 @@ class FuncSeleniumMixin(CommonMixin):
     is_full_browser_test = True
 
     def assertTextPresent(self, text):
-        self.assertIn(escape(text), self._get_page_source())
+        self.assertIn(escape_selenium(text), self._get_page_source())
 
     def assertTextAbsent(self, text):
-        self.assertNotIn(escape(text), self._get_page_source())
+        self.assertNotIn(escape_selenium(text), self._get_page_source())
 
     def back(self):
         self._driver.back()

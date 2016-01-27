@@ -60,14 +60,14 @@ class TestCommonBase(object):
         self.get_url('django_functest.test_misc')
         self.assertTextPresent("Hello world")
         # Check escaping
-        self.assertTextPresent("from me & friends")
+        self.assertTextPresent("from 'me' & \"friends\"")
         self.assertRaises(AssertionError, lambda: self.assertTextPresent("Something definitely not there"))
 
     def test_assertTextAbsent(self):
         self.get_url('django_functest.test_misc')
         self.assertTextAbsent("Something definitely not there")
         self.assertRaises(AssertionError, lambda: self.assertTextAbsent("Hello world"))
-        self.assertRaises(AssertionError, lambda: self.assertTextAbsent("from me & friends"))
+        self.assertRaises(AssertionError, lambda: self.assertTextAbsent("from 'me' & \"friends\""))
 
     def test_current_url(self):
         self.get_url('admin:login')
