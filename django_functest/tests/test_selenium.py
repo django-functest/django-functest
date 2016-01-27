@@ -131,14 +131,20 @@ class TestFuncSeleniumSpecificPhantomJS(TestFuncSeleniumSpecificBase, PhantomJSB
 class TestBrowserSizeBase(object):
     browser_window_size = (2800, 1400)
 
+    def _get_window_size(self):
+        if self._driver.name == "phantomjs":
+            return self.execute_script("return [document.width, document.height]")
+        else:
+            return self.execute_script("return [window.outerWidth, window.outerHeight]")
+
     def test_size(self):
-        width, height = self.execute_script("return [window.outerWidth, window.outerHeight]")
+        width, height = self._get_window_size()
         self.assertEqual((width, height),
                          (2800, 1400))
 
     def test_resize(self):
         self.set_window_size(400, 300)
-        width, height = self.execute_script("return [window.outerWidth, window.outerHeight]")
+        width, height = self._get_window_size()
         self.assertEqual((width, height),
                          (400, 300))
 

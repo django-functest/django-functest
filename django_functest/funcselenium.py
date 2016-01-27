@@ -222,7 +222,7 @@ class FuncSeleniumMixin(CommonMixin):
         PAUSE = 0.1
         timeout = self.get_default_timeout()
         while t < timeout:
-            win_width, win_height = self.execute_script("return [window.outerWidth, window.outerHeight]")
+            win_width, win_height = self._get_window_size()
             if (win_width, win_height) == (width, height):
                 return
             t += PAUSE
@@ -326,6 +326,12 @@ class FuncSeleniumMixin(CommonMixin):
         else:
             session = get_session_store(session_key=session_cookie['value'])
         return session
+
+    def _get_window_size(self):
+        if self._driver.name == "phantomjs":
+            return self.execute_script("return [document.width, document.height]")
+        else:
+            return self.execute_script("return [window.outerWidth, window.outerHeight]")
 
     def _wait_for_document_ready(self):
         self.wait_until(lambda driver: driver.execute_script("return document.readyState") == "complete")

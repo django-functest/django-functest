@@ -123,6 +123,9 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
 
       Sets the browser window size to the specified width and height in pixels.
 
+      For PhantomJS browser, this sets the document size - there isn't
+      really a window.
+
    .. method:: switch_window(handle=None)
 
       Switches the browser window that has focus.
