@@ -29,8 +29,7 @@ class FuncSeleniumMixin(CommonMixin):
         driver_name = cls.get_driver_name()
         kwargs = {}
         cls._driver = getattr(webdriver, driver_name)(**kwargs)
-        timeout = cls.get_default_timeout()
-        cls._driver.set_page_load_timeout(timeout)
+        cls._driver.set_page_load_timeout(cls.get_page_load_timeout())
         super(FuncSeleniumMixin, cls).setUpClass()
 
     @classmethod
@@ -139,6 +138,8 @@ class FuncSeleniumMixin(CommonMixin):
 
     driver_name = "Firefox"  # Sensible default, works most places
 
+    page_load_timeout = 20  # seconds
+
     def get_browser_window_size(self):
         return self.browser_window_size
 
@@ -153,6 +154,10 @@ class FuncSeleniumMixin(CommonMixin):
     @classmethod
     def get_driver_name(cls):
         return cls.driver_name
+
+    @classmethod
+    def get_page_load_timeout(cls):
+        return cls.page_load_timeout
 
     # Runtime methods:
 

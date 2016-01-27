@@ -28,7 +28,7 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
 
    .. attribute:: default_timeout
 
-      Controls Selenium timeouts, defaults to ``10`` (seconds).
+      Controls most Selenium timeouts, defaults to ``10`` (seconds).
 
    .. attribute:: display
 
@@ -57,6 +57,15 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
    .. method:: get_driver_name()
 
       classmethod. Returns the driver name i.e. the browser to use. Defaults to :attr:`driver_name`.
+
+   .. method:: get_page_load_timeout()
+
+      classmethod. Returns the time in seconds for Selenium to wait for the browser to return a page. Defaults to :attr:`page_load_timeout`.
+
+   .. attribute:: page_load_timeout
+
+      Controls Selenium timeouts for loading page, defaults to ``20`` (seconds).
+
 
    **Other attributes and methods**
 
