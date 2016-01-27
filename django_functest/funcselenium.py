@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.utils.html import escape
 from pyvirtualdisplay import Display
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException
+from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException, StaleElementReferenceException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from six import text_type
@@ -175,7 +175,10 @@ class FuncSeleniumMixin(CommonMixin):
             self._scroll_into_view(elem)
         elem.click()
         if double:
-            elem.click()
+            try:
+                elem.click()
+            except StaleElementReferenceException:
+                pass
 
         if wait_for_reload:
             def f(driver):

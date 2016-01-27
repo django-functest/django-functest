@@ -60,6 +60,16 @@ class TestFuncSeleniumSpecificBase(AdminLoginMixin):
         self.click('button[name=check]', double=True)
         self.assertTextPresent("Everything is really fine")
 
+    def test_double_click_element_that_changes(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.click('[name=debounced]', double=True)
+        self.assertTextPresent("Pressed x 1")
+
+    def test_double_click_element_that_disappears(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.click('[name=disappears]', double=True)
+        self.assertTextPresent("Pressed x 1")
+
     def test_execute_script(self):
         self.get_url('django_functest.test_misc')
         self.assertEqual(self.execute_script("return 1 + 1;"), 2)

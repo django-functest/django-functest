@@ -13,6 +13,10 @@
         <button type="submit" name="clear" value="1">Clear all values</button>
 
         <button type="submit" name="check" value="1" id="id_check_button">Check it's all OK</button>
+
+        <input type="submit" name="debounced" value="Press me!" id="id_debounced">
+
+        <input type="submit" name="disappears" value="Press me as well!" id="id_disappears">
       </div>
 
       <div id="id_check_messages"></div>
@@ -39,6 +43,24 @@
           document.getElementById("id_check_messages").innerHTML = "Everything is " + emphasize(clickCount) + "fine";
           clickCount++;
       };
+
+      var pressMeClickCount = 0;
+      document.getElementById("id_debounced").onclick = function (event) {
+          event.preventDefault();
+          pressMeClickCount++;
+          document.getElementById("id_check_messages").innerHTML = "Pressed x " + pressMeClickCount.toString();
+          document.getElementById("id_debounced").disabled = true;
+          document.getElementById("id_debounced").cssClass = "aclass";
+      };
+
+      var pressMeTooClickCount = 0;
+      document.getElementById("id_disappears").onclick = function (event) {
+          event.preventDefault();
+          pressMeTooClickCount++;
+          document.getElementById("id_check_messages").innerHTML = "Pressed x " + pressMeTooClickCount.toString();
+          document.getElementById("id_disappears").remove();
+      };
+
     </script>
 
     {% if add_js_delay %}
