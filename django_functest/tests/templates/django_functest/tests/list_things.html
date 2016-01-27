@@ -3,10 +3,11 @@
     <title>Things!</title>
   </head>
   <body>
-    {% for thing in things %}
-      <p><a class="edit" href="{% url "edit_thing" thing_id=thing.id %}">Edit {{ thing.name }}</a></p>
-    {% endfor %}
-
+    <div id="id_thinglist">
+      {% for thing in things %}
+        <p><a class="edit" href="{% url "edit_thing" thing_id=thing.id %}">Edit {{ thing.name }}</a></p>
+      {% endfor %}
+    </div>
     <p><a class="javascriptonly">Some Javascript only link</a></p>
   </body>
 </html>

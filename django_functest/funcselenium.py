@@ -69,12 +69,12 @@ class FuncSeleniumMixin(CommonMixin):
 
     def fill(self, fields):
         for k, v in fields.items():
-            e = self._find_with_timeout(k)
+            e = self._find_with_timeout(css_selector=k)
             self._fill_input(e, v)
 
     def fill_by_text(self, fields):
         for selector, text in fields.items():
-            elem = self._find_with_timeout(selector)
+            elem = self._find_with_timeout(css_selector=selector)
             self._fill_input_by_text(elem, text)
 
     def get_url(self, name, *args, **kwargs):
@@ -120,7 +120,7 @@ class FuncSeleniumMixin(CommonMixin):
         self.click(css_selector, wait_for_reload=wait_for_reload, window_closes=window_closes)
 
     def value(self, css_selector):
-        elem = self._find(css_selector)
+        elem = self._find(css_selector=css_selector)
         if elem.tag_name == 'input' and elem.get_attribute('type') == 'checkbox':
             return self._is_checked(elem)
         elif elem.tag_name == 'textarea':
@@ -156,7 +156,10 @@ class FuncSeleniumMixin(CommonMixin):
 
     # Runtime methods:
 
-    def click(self, css_selector=None, xpath=None, wait_for_reload=False,
+    def click(self, css_selector=None, xpath=None,
+              text=None, text_parent_id=None,
+              wait_for_reload=False,
+              wait_timeout=None,
               double=False, scroll=True, window_closes=False):
         if window_closes:
             wait_for_reload = False
@@ -164,9 +167,17 @@ class FuncSeleniumMixin(CommonMixin):
             self._driver.execute_script("document.pageReloadedYetFlag='notyet';")
 
         if xpath is not None:
-            elem = self._driver.find_element_by_xpath(xpath)
+            elem = self._find_with_timeout(xpath=xpath, timeout=wait_timeout)
+        elif text is not None:
+            elem = None
+            if text_parent_id is not None:
+                prefix = '//*[@id="{0}"]'.format(text_parent_id)
+            else:
+                prefix = ''
+            _xpath = prefix + '//*[contains(text(), "{0}")]'.format(text)
+            elem = self._find_with_timeout(xpath=_xpath, timeout=wait_timeout)
         else:
-            elem = self._find_with_timeout(css_selector)
+            elem = self._find_with_timeout(css_selector=css_selector, timeout=wait_timeout)
         if scroll:
             self._scroll_into_view(elem)
         elem.click()
@@ -192,7 +203,7 @@ class FuncSeleniumMixin(CommonMixin):
         return self._driver.execute_script(script, *args)
 
     def hover(self, css_selector):
-        elem = self._find(css_selector)
+        elem = self._find(css_selector=css_selector)
         self._scroll_into_view(elem)
         ActionChains(self._driver).move_to_element(elem).perform()
 
@@ -267,17 +278,21 @@ class FuncSeleniumMixin(CommonMixin):
             timeout = self.get_default_timeout()
         WebDriverWait(self._driver, timeout).until(callback)
 
-    def wait_until_loaded(self, selector, timeout=None):
+    def wait_until_loaded(self, css_selector=None, xpath=None, timeout=None):
         """
         Helper function that blocks until the element with the given tag name
         is found on the page.
         """
-        self.wait_until(
-            lambda driver: driver.find_element_by_css_selector(selector),
-            timeout=timeout
-        )
+        self.wait_until(self._get_finder(css_selector=css_selector, xpath=xpath),
+                        timeout=timeout)
 
     # Implementation methods - private
+
+    def _get_finder(self, css_selector=None, xpath=None):
+        if css_selector is not None:
+            return lambda driver: driver.find_element_by_css_selector(css_selector)
+        else:
+            return lambda driver: driver.find_element_by_xpath(xpath)
 
     def _get_url_raw(self, url):
         """
@@ -331,12 +346,13 @@ class FuncSeleniumMixin(CommonMixin):
         else:
             raise SeleniumCantUseElement("Can't do 'fill_by_text' on elements of type {0}".format(elem.tag_name))
 
-    def _find(self, css_selector):
-        return self._driver.find_element_by_css_selector(css_selector)
+    def _find(self, css_selector=None, xpath=None):
+        return self._get_finder(css_selector=css_selector, xpath=xpath)(self._driver)
 
-    def _find_with_timeout(self, css_selector, timeout=None):
-        self.wait_until_loaded(css_selector, timeout=timeout)
-        return self._find(css_selector)
+    def _find_with_timeout(self, css_selector=None, xpath=None, timeout=None):
+        if timeout != 0:
+            self.wait_until_loaded(css_selector=css_selector, xpath=xpath, timeout=timeout)
+        return self._find(css_selector=css_selector, xpath=xpath)
 
     def _scroll_into_view(self, elem, attempts=0):
         if self._is_visible(elem):

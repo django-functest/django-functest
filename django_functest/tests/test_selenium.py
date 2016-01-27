@@ -2,6 +2,8 @@ import os
 import unittest
 
 from django.contrib.auth import get_user_model
+from django.core.urlresolvers import reverse
+from selenium.common.exceptions import NoSuchElementException
 
 from django_functest import AdminLoginMixin
 
@@ -38,6 +40,20 @@ class TestFuncSeleniumSpecificBase(AdminLoginMixin):
         self.get_url('edit_thing', thing_id=self.thing.id)
         self.click(xpath='//input[@name="check"]')
         self.assertTextPresent("Everything is fine")
+
+    def test_click_text(self):
+        self.get_url('list_things')
+        self.click(text='Edit Rock', text_parent_id="id_thinglist", wait_for_reload=True)
+        self.assertUrlsEqual(reverse('edit_thing', kwargs={'thing_id': self.thing.id}))
+
+    def test_click_text_missing(self):
+        self.get_url('list_things')
+        self.assertRaises(NoSuchElementException,
+                          lambda: self.click(text='Edit Fridge', wait_timeout=0))
+        self.assertRaises(NoSuchElementException,
+                          lambda: self.click(text='Edit Rock',
+                                             text_parent_id='fribble',
+                                             wait_timeout=0))
 
     def test_double_click(self):
         self.get_url('edit_thing', thing_id=self.thing.id)

@@ -57,16 +57,21 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
 
    **Other attributes and methods**
 
-   .. method:: click(css_selector=None, xpath=None, wait_for_reload=False, double=False, scroll=True, window_closes=False)
+   .. method:: click(css_selector=None, xpath=None, text=None, text_parent_id=None, wait_for_reload=False, double=False, scroll=True, window_closes=False)
 
       Clicks the button or control specified by the CSS selector e.g.::
 
         self.click("input.default")
 
-      If ``xpath`` is specified instead, ``css_selector`` does not need to be
-      passed, and the element will be found using the XPath selector e.g.::
+      Alternatively, ``xpath`` or ``text`` can be provided as keyowrd arguments,
+      instead of a CSS selector e.g.::
 
         self.click(xpath='//a[contains(text(), "kitten")]')
+        self.click(text="kitten")
+
+      Additionally, ``text_parent_id`` can be used in combination with ``text``
+      to limit the search to descendent elements of the one with the
+      supplied id.
 
       This method will attempt to scroll the window to make the element visible
       if ``scroll=True`` is passed (the default) - this is usually necessary for
