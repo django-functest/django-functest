@@ -13,7 +13,7 @@ Or, if you have virtualenvwrapper installed::
 
 You will also need to add django-functest to your URLs. In your URLconf::
 
-  urlpatterns += patterns(''
+  urlpatterns += patterns('',
       url(r'^django_functest/', include('django_functest.urls'))
   )
 

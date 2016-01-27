@@ -11,11 +11,6 @@ django-functest
 .. image:: https://readthedocs.org/projects/pip/badge/?version=latest
    :target: https://django-functest.readthedocs.org/en/latest/
 
-WORK IN PROGRESS!
-
-This project is in the process of being open-sourced from an internal project.
-More to come soon!
-
 
 Helpers for creating high-level functional tests in Django, with a unified API
 for WebTest and Selenium tests.
@@ -43,6 +38,10 @@ Features
 * Many of the gotchas and difficulties of using WebTest and Selenium ironed out
   for you.
 
+* Well tested - as well as its own test suite, which is run against Firefox,
+  Chrome, and PhantomJS, it is also used by `Wolf & Badger
+  <https://www.wolfandbadger.com/>`_ for tests covering many business critical
+  functionalities.
 
 Typical usage
 -------------
