@@ -25,6 +25,11 @@ class TestCommonBase(object):
         self.assertTrue(url.endswith("/admin/login/"))
         self.assertTrue(url.startswith("http://"))
 
+    def test_get_literal_url(self):
+        url = reverse('admin:login')
+        self.get_literal_url(url)
+        self.assertUrlsEqual(url)
+
     def test_assertUrlsEqual_default(self):
         self.get_url('admin:login')
         self.assertRaises(AssertionError, lambda: self.assertUrlsEqual("foo"))
@@ -234,6 +239,21 @@ class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
     def test_follow_link_no_href(self):
         self.get_url('list_things')
         self.assertRaises(WebTestCantUseElement, lambda: self.follow_link('a.javascriptonly'))
+
+    def test_get_literal_url_auto_follow(self):
+        url = '/admin/login'  # No trailing '/'
+        self.get_literal_url(url, auto_follow=True)
+        self.assertUrlsEqual(url + '/')
+
+        self.get_literal_url(url, auto_follow=False)
+        self.assertUrlsEqual(url)
+        self.assertEqual(self.last_response.status_int, 301)
+
+    def test_get_literal_url_expect_errors(self):
+        url = '/a_404_url/'
+        self.get_literal_url(url, expect_errors=True)
+        self.assertEqual(self.last_response.status_int, 404)
+        self.assertRaises(Exception, lambda: self.get_literal_url(url, expect_errors=False))
 
 
 class TestFuncSeleniumCommonBase(TestCommonBase):

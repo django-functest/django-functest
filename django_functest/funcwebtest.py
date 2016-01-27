@@ -73,11 +73,11 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
         """
         return self.get_literal_url(reverse(name, args=args, kwargs=kwargs))
 
-    def get_literal_url(self, url):
+    def get_literal_url(self, url, auto_follow=True, expect_errors=False):
         """
         Gets the passed in URL, as a literal relative URL, without using reverse.
         """
-        return self._get_url_raw(url)
+        return self._get_url_raw(url, auto_follow=auto_follow, expect_errors=expect_errors)
 
     def is_element_present(self, css_selector):
         return len(self._make_pq(self.last_response).find(css_selector)) > 0

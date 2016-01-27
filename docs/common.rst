@@ -67,8 +67,8 @@ followed the same pattern.
       to fill in fields that don't exist.
 
       If multiple fields match, you will get an exception for
-      :class:`django_functest.FuncWebTestMixin` but not for
-      :class:`django_functest.FuncSeleniumMixin` due to the way Selenium finds
+      :class:`~django_functest.FuncWebTestMixin` but not for
+      :class:`~django_functest.FuncSeleniumMixin` due to the way Selenium finds
       elements.
 
    .. method:: fill_by_id(data_dict)
@@ -92,9 +92,17 @@ followed the same pattern.
 
         self.get_url('admin:auth_user_change', object_id=1)
 
-   .. method:: get_literal_url(relative_url)
+   .. method:: get_literal_url(relative_url, auto_follow=True, expect_errors=False)
 
       Gets the URL given by the relative URL passed in.
+
+      For :class:`~django_functest.FuncWebTestMixin`, pass ``auto_follow=False``
+      if you don't want redirects to be followed. This parameter is ignored by
+      :class:`~django_functest.FuncSeleniumMixin`.
+
+      For :class:`~django_functest.FuncWebTestMixin`, pass ``expect_errors=True``
+      if you are expecting an error code e.g. a 404, otherwise you will get an
+      exception. This parameter is ignored by :class:`~django_functest.FuncSeleniumMixin`.
 
    .. method:: is_element_present(css_selector)
 

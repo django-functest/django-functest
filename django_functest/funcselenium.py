@@ -87,7 +87,7 @@ class FuncSeleniumMixin(CommonMixin):
         # TODO - need tests
         # self.wait_for_ajax()
 
-    def get_literal_url(self, url):
+    def get_literal_url(self, url, auto_follow=None, expect_errors=None):
         """
         Gets the passed in URL, as a literal relative URL, without using reverse.
         """
