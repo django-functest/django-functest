@@ -33,12 +33,12 @@ class TestFuncSeleniumSpecificBase(AdminLoginMixin):
 
     def test_click(self):
         self.get_url('edit_thing', thing_id=self.thing.id)
-        self.click('input[name=check]')
+        self.click('button[name=check]')
         self.assertTextPresent("Everything is fine")
 
     def test_click_xpath(self):
         self.get_url('edit_thing', thing_id=self.thing.id)
-        self.click(xpath='//input[@name="check"]')
+        self.click(xpath='//button[@name="check"]')
         self.assertTextPresent("Everything is fine")
 
     def test_click_text(self):
@@ -57,7 +57,7 @@ class TestFuncSeleniumSpecificBase(AdminLoginMixin):
 
     def test_double_click(self):
         self.get_url('edit_thing', thing_id=self.thing.id)
-        self.click('input[name=check]', double=True)
+        self.click('button[name=check]', double=True)
         self.assertTextPresent("Everything is really fine")
 
     def test_execute_script(self):

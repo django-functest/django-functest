@@ -150,7 +150,7 @@ class TestCommonBase(object):
 
     def test_submit(self):
         self.get_url('edit_thing', thing_id=self.thing.id)
-        self.submit('input[name=clear]')
+        self.submit('button[name=clear]')
         thing = self.refresh_thing()
         self.assertEqual(thing.name, "")
 
@@ -178,7 +178,7 @@ class TestCommonBase(object):
         self.follow_link('a.edit')
         edit_url = reverse('edit_thing', kwargs={'thing_id': self.thing.id})
         self.assertUrlsEqual(edit_url)
-        self.submit('input[name=clear]')
+        self.submit('button[name=clear]')
         self.assertUrlsEqual(reverse('thing_cleared', kwargs={'thing_id': self.thing.id}))
         self.assertTextPresent("was cleared")
         self.back()
@@ -280,7 +280,7 @@ class TestFuncSeleniumCommonBase(TestCommonBase):
 
     def test_submit_no_wait_for_reload(self):
         self.get_url('edit_thing', thing_id=self.thing.id)
-        self.submit('input[name=check]', wait_for_reload=False)
+        self.submit('button[name=check]', wait_for_reload=False)
         self.assertTextPresent("Everything is fine")
 
     def test_submit_slow_page(self):

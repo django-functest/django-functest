@@ -173,7 +173,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
             if form_elem is None:
                 raise WebTestCantUseElement("Can't find form for input {0}.".format(css_selector))
             form = self._match_form_elem_to_webtest_form(form_elem, response)
-            field = item.name
+            field = item.name if hasattr(item, 'name') else item.attrib.get('name', None)
             if field is None and require_name:
                 raise WebTestCantUseElement(
                     "Element {0} needs 'name' attribute in order to use it".format(css_selector))
