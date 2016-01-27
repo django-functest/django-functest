@@ -166,18 +166,11 @@ class FuncSeleniumMixin(CommonMixin):
         if wait_for_reload:
             self._driver.execute_script("document.pageReloadedYetFlag='notyet';")
 
-        if xpath is not None:
-            elem = self._find_with_timeout(xpath=xpath, timeout=wait_timeout)
-        elif text is not None:
-            elem = None
-            if text_parent_id is not None:
-                prefix = '//*[@id="{0}"]'.format(text_parent_id)
-            else:
-                prefix = ''
-            _xpath = prefix + '//*[contains(text(), "{0}")]'.format(text)
-            elem = self._find_with_timeout(xpath=_xpath, timeout=wait_timeout)
-        else:
-            elem = self._find_with_timeout(css_selector=css_selector, timeout=wait_timeout)
+        elem = self._find_with_timeout(css_selector=css_selector,
+                                       xpath=xpath,
+                                       text=text,
+                                       text_parent_id=text_parent_id,
+                                       timeout=wait_timeout)
         if scroll:
             self._scroll_into_view(elem)
         elem.click()
@@ -278,21 +271,32 @@ class FuncSeleniumMixin(CommonMixin):
             timeout = self.get_default_timeout()
         WebDriverWait(self._driver, timeout).until(callback)
 
-    def wait_until_loaded(self, css_selector=None, xpath=None, timeout=None):
+    def wait_until_loaded(self, css_selector=None, xpath=None,
+                          text=None, text_parent_id=None,
+                          timeout=None):
         """
         Helper function that blocks until the element with the given tag name
         is found on the page.
         """
-        self.wait_until(self._get_finder(css_selector=css_selector, xpath=xpath),
+        self.wait_until(self._get_finder(css_selector=css_selector, xpath=xpath,
+                                         text=text, text_parent_id=text_parent_id),
                         timeout=timeout)
 
     # Implementation methods - private
 
-    def _get_finder(self, css_selector=None, xpath=None):
+    def _get_finder(self, css_selector=None, xpath=None, text=None, text_parent_id=None):
         if css_selector is not None:
             return lambda driver: driver.find_element_by_css_selector(css_selector)
-        else:
+        if xpath is not None:
             return lambda driver: driver.find_element_by_xpath(xpath)
+        if text is not None:
+            if text_parent_id is not None:
+                prefix = '//*[@id="{0}"]'.format(text_parent_id)
+            else:
+                prefix = ''
+            _xpath = prefix + '//*[contains(text(), "{0}")]'.format(text)
+            return lambda driver: driver.find_element_by_xpath(_xpath)
+        raise AssertionError("No selector passed in")
 
     def _get_url_raw(self, url):
         """
@@ -346,13 +350,17 @@ class FuncSeleniumMixin(CommonMixin):
         else:
             raise SeleniumCantUseElement("Can't do 'fill_by_text' on elements of type {0}".format(elem.tag_name))
 
-    def _find(self, css_selector=None, xpath=None):
-        return self._get_finder(css_selector=css_selector, xpath=xpath)(self._driver)
+    def _find(self, css_selector=None, xpath=None, text=None, text_parent_id=None):
+        return self._get_finder(css_selector=css_selector, xpath=xpath,
+                                text=text, text_parent_id=text_parent_id)(self._driver)
 
-    def _find_with_timeout(self, css_selector=None, xpath=None, timeout=None):
+    def _find_with_timeout(self, css_selector=None, xpath=None, text=None, text_parent_id=None, timeout=None):
         if timeout != 0:
-            self.wait_until_loaded(css_selector=css_selector, xpath=xpath, timeout=timeout)
-        return self._find(css_selector=css_selector, xpath=xpath)
+            self.wait_until_loaded(css_selector=css_selector, xpath=xpath,
+                                   text=text, text_parent_id=text_parent_id,
+                                   timeout=timeout)
+        return self._find(css_selector=css_selector, xpath=xpath,
+                          text=text, text_parent_id=text_parent_id)
 
     def _scroll_into_view(self, elem, attempts=0):
         if self._is_visible(elem):
