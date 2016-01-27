@@ -7,7 +7,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 from django_functest import AdminLoginMixin
 
-from .base import ChromeBase, FirefoxBase
+from .base import ChromeBase, FirefoxBase, PhantomJSBase
 from .models import Thing
 
 
@@ -122,6 +122,10 @@ class TestFuncSeleniumSpecificChrome(TestFuncSeleniumSpecificBase, ChromeBase):
     pass
 
 
+class TestFuncSeleniumSpecificPhantomJS(TestFuncSeleniumSpecificBase, PhantomJSBase):
+    pass
+
+
 # Test class attribute `browser_window_size` works correctly:
 
 class TestBrowserSizeBase(object):
@@ -144,4 +148,8 @@ class TestBrowserSizeFirefox(TestBrowserSizeBase, FirefoxBase):
 
 
 class TestBrowserSizeChrome(TestBrowserSizeBase, ChromeBase):
+    pass
+
+
+class TestBrowserSizePhantomJS(TestBrowserSizeBase, PhantomJSBase):
     pass

@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 
 from django_functest import AdminLoginMixin, ShortcutLoginMixin
 
-from .base import ChromeBase, FirefoxBase, WebTestBase
+from .base import ChromeBase, FirefoxBase, WebTestBase, PhantomJSBase
 
 LOGGED_OUT_URL = "/admin/login/?next=/admin/"
 
@@ -37,6 +37,10 @@ class TestShortcutLoginFirefox(TestShortcutLoginBase, FirefoxBase):
 
 
 class TestShortcutLoginChrome(TestShortcutLoginBase, ChromeBase):
+    pass
+
+
+class TestShortcutLoginPhantomJS(TestShortcutLoginBase, PhantomJSBase):
     pass
 
 
@@ -82,4 +86,8 @@ class TestAdminLoginFirefox(TestAdminLoginBase, FirefoxBase):
 
 
 class TestAdminLoginChrome(TestAdminLoginBase, ChromeBase):
+    pass
+
+
+class TestAdminLoginPhantomJS(TestAdminLoginBase, PhantomJSBase):
     pass

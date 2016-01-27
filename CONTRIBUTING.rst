@@ -79,10 +79,13 @@ Now you can make your changes locally.
 tests, including testing other Python versions with tox::
 
     $ flake8 django_functest
+    % isort -rc -c .
     $ ./runtests.py
     $ tox
 
-To get flake8 and tox, just pip install them into your virtualenv.
+To get flake8/tox/isort, just pip install them into your virtualenv.
+
+To run the full test suite, you will need to install Firefox, chromedriver and phantomjs.
 
 6. Commit your changes and push your branch to GitHub::
 
