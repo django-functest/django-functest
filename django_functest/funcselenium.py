@@ -313,11 +313,16 @@ class FuncSeleniumMixin(CommonMixin):
         if session_cookie is None:
             # Create new
             session = get_session_store()
-            self._add_cookie({'name': settings.SESSION_COOKIE_NAME,
-                              'value': session.session_key,
-                              'path': '/',
-                              'secure': False,
-                              })
+            cookie_data = {'name': settings.SESSION_COOKIE_NAME,
+                           'value': session.session_key,
+                           'path': '/',
+                           'secure': False,
+                           }
+            if self._driver.name == 'phantomjs':
+                # Not sure why this is needed, but it seems to do the trick
+                cookie_data['domain'] = '.localhost'
+
+            self._add_cookie(cookie_data)
         else:
             session = get_session_store(session_key=session_cookie['value'])
         return session

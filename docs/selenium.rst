@@ -32,12 +32,15 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
 
    .. attribute:: display
 
-      Controls whether browser window is displayed or not, defaults to ``False``
+      Controls whether browser window is displayed or not, defaults to ``False``.
+
+      Note that PhantomJS is always invisible, regardless of this value.
 
    .. attribute:: driver_name
 
       Controls which Selenium 'driver' i.e. browser will be used. Defaults to ``"Firefox"``.
-      You can also use ``"Chrome"`` if Chrome and chromedriver are installed.
+      You can also use ``"Chrome"`` if Chrome and chromedriver are installed, and ``"PhantomJS"``
+      if PhantomJS is installed.
 
    .. method:: display_browser_window
 
