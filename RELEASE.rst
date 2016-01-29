@@ -9,6 +9,8 @@ Release process
 
   bumpversion release
 
+* Make sure all is committed
+
 * Release to PyPI::
 
     ./setup.py sdist bdist_wheel register upload
