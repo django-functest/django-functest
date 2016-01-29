@@ -152,14 +152,14 @@ class TestBrowserSizeBase(object):
 
     def test_size(self):
         width, height = self._get_window_size()
-        self.assertEqual((width, height),
-                         (2800, 1400))
+        self.assertTrue(2795 < width < 2805)
+        self.assertTrue(1395 < height < 1405)
 
     def test_resize(self):
         self.set_window_size(400, 300)
         width, height = self._get_window_size()
-        self.assertEqual((width, height),
-                         (400, 300))
+        self.assertTrue(395 < width < 405)
+        self.assertTrue(295 < height < 305)
 
 
 class TestBrowserSizeFirefox(TestBrowserSizeBase, FirefoxBase):

@@ -235,7 +235,9 @@ class FuncSeleniumMixin(CommonMixin):
         def f(driver):
             driver.set_window_size(width, height)
             win_width, win_height = self._get_window_size()
-            return (win_width, win_height) == (width, height)
+            # Some drivers fail to get it exactly
+            return ((width - 2 <= win_width <= width + 2) and
+                    (height - 2 <= win_height <= height + 2))
         self.wait_until(f)
 
     def switch_window(self, handle=None):
