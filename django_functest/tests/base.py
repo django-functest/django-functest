@@ -48,6 +48,9 @@ class HideBrowserMixin(object):
 
 class SeleniumBaseMixin(object):
     browser_window_size = (1024, 768)
+    if os.environ.get('TRAVIS'):
+        default_timeout = 20
+        page_load_timeout = 40
 
 
 @unittest.skipIf(not firefox_available, "Firefox not available, skipping")
