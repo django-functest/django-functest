@@ -153,7 +153,8 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
    .. method:: wait_until(callback, timeout=None)
 
       Waits until the callback returns ``True``, with a timeout that defaults
-      to the :attr:`default_timeout`.
+      to the :attr:`default_timeout`. The callback must accept a single
+      parameter which will be the driver instance.
 
    .. method:: wait_until_loaded(css_selector)
 
