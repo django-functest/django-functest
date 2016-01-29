@@ -46,18 +46,22 @@ class HideBrowserMixin(object):
     display = False  # hacked by runtests.py
 
 
+class SeleniumBaseMixin(object):
+    browser_window_size = (1024, 768)
+
+
 @unittest.skipIf(not firefox_available, "Firefox not available, skipping")
-class FirefoxBase(HideBrowserMixin, FuncSeleniumMixin, MyLiveServerTestCase):
+class FirefoxBase(HideBrowserMixin, SeleniumBaseMixin, FuncSeleniumMixin, MyLiveServerTestCase):
     driver_name = "Firefox"
 
 
 # Chrome/ChromeDriver don't work on Travis
 # https://github.com/travis-ci/travis-ci/issues/272
 @unittest.skipIf(not chrome_available or os.environ.get('TRAVIS'), "Chrome not available, skipping")
-class ChromeBase(HideBrowserMixin, FuncSeleniumMixin, MyLiveServerTestCase):
+class ChromeBase(HideBrowserMixin, SeleniumBaseMixin, FuncSeleniumMixin, MyLiveServerTestCase):
     driver_name = "Chrome"
 
 
 @unittest.skipIf(not phantomjs_available, "PhantomJS not available, skipping")
-class PhantomJSBase(FuncSeleniumMixin, MyLiveServerTestCase):
+class PhantomJSBase(SeleniumBaseMixin, FuncSeleniumMixin, MyLiveServerTestCase):
     driver_name = "PhantomJS"
