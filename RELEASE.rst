@@ -20,3 +20,5 @@ Release process
   bumpversion --no-tag patch
 
 * Add new section to HISTORY.rst
+
+* ``git push --tags``
