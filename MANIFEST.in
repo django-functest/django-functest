@@ -3,6 +3,7 @@ include CONTRIBUTING.rst
 include HISTORY.rst
 include LICENSE
 include README.rst
+include RELEASE.rst
 include .coveragerc
 include .editorconfig
 include Makefile
