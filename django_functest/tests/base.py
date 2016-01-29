@@ -8,6 +8,25 @@ from django.test import TestCase
 from django_functest import FuncSeleniumMixin, FuncWebTestMixin
 
 
+# Getting some errors that seem related to this:
+# http://stackoverflow.com/questions/18281137/selenium-django-gives-foreign-key-error/18292090#18292090 # noqa
+# producing a stacktrace in which a postmigrate handler attempts to
+# create permissions as part of fixture teardown and fails.
+# This is not fixed by change the order of INSTALLED_APPS. However,
+# we can avoid the code path by using TestCase.available_apps
+
+AVAILABLE_APPS = [
+    "django.contrib.contenttypes",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.staticfiles",
+    "django.contrib.sessions",
+    "django.contrib.sites",
+    "django_functest",
+    "django_functest.tests",
+]
+
+
 def binary_available(filename):
     return subprocess.call(["which", filename], stdout=subprocess.PIPE) == 0
 
@@ -16,8 +35,12 @@ chrome_available = binary_available("chromedriver")
 phantomjs_available = binary_available("phantomjs")
 
 
+class MyLiveServerTestCase(StaticLiveServerTestCase):
+    available_apps = AVAILABLE_APPS
+
+
 class WebTestBase(FuncWebTestMixin, TestCase):
-    pass
+    available_apps = AVAILABLE_APPS
 
 
 class HideBrowserMixin(object):
@@ -25,17 +48,17 @@ class HideBrowserMixin(object):
 
 
 @unittest.skipIf(not firefox_available, "Firefox not available, skipping")
-class FirefoxBase(HideBrowserMixin, FuncSeleniumMixin, StaticLiveServerTestCase):
+class FirefoxBase(HideBrowserMixin, FuncSeleniumMixin, MyLiveServerTestCase):
     driver_name = "Firefox"
 
 
 # Chrome/ChromeDriver don't work on Travis
 # https://github.com/travis-ci/travis-ci/issues/272
 @unittest.skipIf(not chrome_available or os.environ.get('TRAVIS'), "Chrome not available, skipping")
-class ChromeBase(HideBrowserMixin, FuncSeleniumMixin, StaticLiveServerTestCase):
+class ChromeBase(HideBrowserMixin, FuncSeleniumMixin, MyLiveServerTestCase):
     driver_name = "Chrome"
 
 
 @unittest.skipIf(not phantomjs_available, "PhantomJS not available, skipping")
-class PhantomJSBase(FuncSeleniumMixin, StaticLiveServerTestCase):
+class PhantomJSBase(FuncSeleniumMixin, MyLiveServerTestCase):
     driver_name = "PhantomJS"
