@@ -7,7 +7,6 @@ from django.test import TestCase
 
 from django_functest import FuncSeleniumMixin, FuncWebTestMixin
 
-
 # Getting some errors that seem related to this:
 # http://stackoverflow.com/questions/18281137/selenium-django-gives-foreign-key-error/18292090#18292090 # noqa
 # producing a stacktrace in which a postmigrate handler attempts to

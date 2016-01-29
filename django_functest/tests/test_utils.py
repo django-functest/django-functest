@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 
 from django_functest import AdminLoginMixin, ShortcutLoginMixin
 
-from .base import ChromeBase, FirefoxBase, WebTestBase, PhantomJSBase
+from .base import ChromeBase, FirefoxBase, PhantomJSBase, WebTestBase
 
 LOGGED_OUT_URL = "/admin/login/?next=/admin/"
 
