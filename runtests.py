@@ -36,6 +36,7 @@ settings.configure(
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": "tests.db",
+            "CONN_MAX_AGE": None,
         }
     },
     ROOT_URLCONF="django_functest.tests.urls",
