@@ -232,17 +232,11 @@ class FuncSeleniumMixin(CommonMixin):
         return name
 
     def set_window_size(self, width, height):
-        self._driver.set_window_size(width, height)
-        t = 0
-        PAUSE = 0.1
-        timeout = self.get_default_timeout()
-        while t < timeout:
+        def f(driver):
+            driver.set_window_size(width, height)
             win_width, win_height = self._get_window_size()
-            if (win_width, win_height) == (width, height):
-                return
-            t += PAUSE
-            time.sleep(PAUSE)
-        logger.warning("Browser window was not resized to (%s, %s) after waiting %s seconds.", width, height, timeout)
+            return (win_width, win_height) == (width, height)
+        self.wait_until(f)
 
     def switch_window(self, handle=None):
         """
@@ -268,7 +262,10 @@ class FuncSeleniumMixin(CommonMixin):
             else:
                 handle = possible_window_handles[0]
 
-        self._driver.switch_to_window(handle)
+        def f(driver):
+            driver.switch_to_window(handle)
+            return driver.current_window_handle == handle
+        self.wait_until(f)
         return current_window_handle, handle
 
     def wait_for_page_load(self):
