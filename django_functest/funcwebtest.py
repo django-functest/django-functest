@@ -179,12 +179,13 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
                     "Element {0} needs 'name' attribute in order to use it".format(css_selector))
             found.append((form, field))
 
-        if len(found) == 1:
-            return found[0]
-
         if len(found) > 1:
-            raise WebTestMultipleElementsException(
-                "Multiple elements found matching '{0}'".format(css_selector))
+            if not all(f == found[0] for f in found):
+                raise WebTestMultipleElementsException(
+                    "Multiple elements found matching '{0}'".format(css_selector))
+
+        if len(found) > 0:
+            return found[0]
 
         raise WebTestNoSuchElementException(
             "Can't find element matching {0} in response {1}.".format(css_selector, response))

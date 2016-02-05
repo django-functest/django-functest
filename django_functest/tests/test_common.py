@@ -16,6 +16,7 @@ class TestCommonBase(object):
                                           big=True,
                                           clever=False,
                                           element_type=Thing.ELEMENT_EARTH,
+                                          category=Thing.CATEGORY_MAGMA,
                                           count=1,
                                           description="Hard thing")
 
@@ -89,6 +90,7 @@ class TestCommonBase(object):
                    '#id_big': False,
                    '#id_clever': True,
                    '#id_element_type': Thing.ELEMENT_AIR,
+                   '#id_category_1': Thing.CATEGORY_QUASIGROUP,
                    '#id_count': 5,
                    '#id_description': "Soft thing\r\nwith line breaks",
                    })
@@ -101,6 +103,7 @@ class TestCommonBase(object):
                          'id_big': False,
                          'id_clever': True,
                          'id_element_type': Thing.ELEMENT_AIR,
+                         'id_category_1': Thing.CATEGORY_QUASIGROUP,
                          'id_count': 5,
                          'id_description': "Soft thing\r\nwith line breaks",
                          })
@@ -113,6 +116,7 @@ class TestCommonBase(object):
                            'big': False,
                            'clever': True,
                            'element_type': Thing.ELEMENT_AIR,
+                           'category': Thing.CATEGORY_QUASIGROUP,
                            'count': 5,
                            'description': "Soft thing\r\nwith line breaks",
                            })
@@ -141,6 +145,7 @@ class TestCommonBase(object):
         self.assertEqual(thing.big, False)
         self.assertEqual(thing.clever, True)
         self.assertEqual(thing.element_type, Thing.ELEMENT_AIR)
+        self.assertEqual(thing.category, Thing.CATEGORY_QUASIGROUP)
         self.assertEqual(thing.count, 5)
         self.assertEqual(thing.description, "Soft thing\r\nwith line breaks")
 
@@ -272,6 +277,7 @@ class TestFuncSeleniumCommonBase(TestCommonBase):
                    '#id_big': False,
                    '#id_clever': True,
                    '#id_element_type': Thing.ELEMENT_AIR,
+                   '#id_category_1': Thing.CATEGORY_QUASIGROUP,
                    '#id_count': 5,
                    '#id_description': "Soft thing\r\nwith line breaks",
                    })
@@ -289,6 +295,7 @@ class TestFuncSeleniumCommonBase(TestCommonBase):
         self.fill({'#id_name': "New name",
                    '#id_big': False,
                    '#id_clever': True,
+                   '#id_category_1': Thing.CATEGORY_QUASIGROUP,
                    '#id_element_type': Thing.ELEMENT_AIR,
                    '#id_count': 5,
                    '#id_description': "Soft thing\r\nwith line breaks",

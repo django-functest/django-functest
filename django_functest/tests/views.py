@@ -13,6 +13,9 @@ def test_misc(request):
 
 
 class ThingForm(forms.ModelForm):
+    category = forms.ChoiceField(choices=Thing.CATEGORY_CHOICES,
+                                 widget=forms.RadioSelect)
+
     def __init__(self, add_spacers=False, **kwargs):
         super(ThingForm, self).__init__(**kwargs)
         self.add_spacers = add_spacers
@@ -37,7 +40,7 @@ def edit_thing(request, thing_id):
 
     if request.method == "POST":
         if 'clear' in request.POST:
-            thing = Thing(id=thing.id)
+            thing = Thing(id=thing.id, category=Thing.CATEGORY_MAGMA)
             thing.save()
             return HttpResponseRedirect(reverse('thing_cleared', kwargs={'thing_id': thing_id}))
         else:

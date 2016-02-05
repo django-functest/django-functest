@@ -364,6 +364,8 @@ class FuncSeleniumMixin(CommonMixin):
             self._set_select_elem(elem, val)
         elif elem.tag_name == 'input' and elem.get_attribute('type') == 'checkbox':
             self._set_check_box(elem, val)
+        elif elem.tag_name == 'input' and elem.get_attribute('type') == 'radio':
+            self._set_radio_button(elem, val)
         else:
             self._scroll_into_view(elem)
             elem.clear()
@@ -461,6 +463,17 @@ class FuncSeleniumMixin(CommonMixin):
         if self._is_checked(elem) != state:
             self._scroll_into_view(elem)
             elem.click()
+
+    def _set_radio_button(self, elem, value):
+        # The 'elem' found might be one of several (previous Selenium code will have
+        # returned the first one that matched, especially if a 'name' selector was
+        # used). We need to find the actual one that is has the correct value.
+        # We also need to be aware of multiple forms that might be on the page.
+        form_elem = elem.find_element_by_xpath("./ancestor::form")
+        correct_elem = form_elem.find_element_by_xpath('//input[@type="radio"][@value="{0}"]'.format(value))
+        if not self._is_checked(correct_elem):
+            self._scroll_into_view(correct_elem)
+            correct_elem.click()
 
     def _set_select_elem(self, elem, value):
         self._scroll_into_view(elem)

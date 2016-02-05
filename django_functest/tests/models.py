@@ -15,10 +15,21 @@ class Thing(models.Model):
         (ELEMENT_FIRE, 'Fire')
     ]
 
+    CATEGORY_MAGMA = 0
+    CATEGORY_QUASIGROUP = 1
+    CATEGORY_MONOID = 2
+    CATEGORY_CHOICES = [
+        (CATEGORY_MAGMA, 'Magma'),
+        (CATEGORY_QUASIGROUP, 'Quasigroup'),
+        (CATEGORY_MONOID, 'Monoid'),
+    ]
+
     name = models.CharField(max_length=255)
     big = models.BooleanField(default=False)
     clever = models.BooleanField(default=False)
     element_type = models.CharField(max_length=1,
                                     choices=ELEMENT_CHOICES)
+    category = models.IntegerField(choices=CATEGORY_CHOICES,
+                                   default=CATEGORY_MAGMA)
     count = models.IntegerField(default=0)
     description = models.TextField(blank=True)

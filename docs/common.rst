@@ -60,7 +60,10 @@ followed the same pattern.
       Fills form inputs using the values in ``data_dict``. The keys are CSS
       selectors, and the values and the values for the inputs. Works for text
       inputs, radio boxes, check boxes, and select fields. Checkbox values can
-      be specified using ``True`` and ``False``.
+      be specified using ``True`` and ``False``. Radio button values should be
+      specified using the ``value`` attribute that should be matched, and the radio
+      button that matches that will be selected (even if the selector matched another
+      button in that group).
 
       This will raise an exception if the fields can't be found. It will be a
       timeout exception for Selenium tests, so you will want to avoid attempting

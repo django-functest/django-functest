@@ -20,7 +20,8 @@ class TestFuncSeleniumSpecificBase(AdminLoginMixin):
         self.thing = Thing.objects.create(name="Rock",
                                           big=True,
                                           clever=False,
-                                          element_type=Thing.ELEMENT_EARTH)
+                                          element_type=Thing.ELEMENT_EARTH,
+                                          category=Thing.CATEGORY_MAGMA)
         User = get_user_model()
         self.user = User.objects.create_superuser("admin", "admin@example.com", "password")
 

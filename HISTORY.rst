@@ -6,6 +6,8 @@ History
 0.1.3 (in development)
 ++++++++++++++++++++++
 
+* Support for filling radio buttons
+
 0.1.2
 +++++
 
