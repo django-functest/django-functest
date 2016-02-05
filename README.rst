@@ -23,7 +23,9 @@ The full documentation is at https://django-functest.readthedocs.org.
 Installation
 ------------
 
-    pip install django-functest
+::
+
+   pip install django-functest
 
 Features
 --------
