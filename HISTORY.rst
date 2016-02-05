@@ -3,8 +3,8 @@
 History
 -------
 
-0.1.3 (in development)
-++++++++++++++++++++++
+0.1.3
++++++
 
 * Support for filling radio buttons
 * More convenient support for quotes and apostrophes (" ') in text assertion methods.
