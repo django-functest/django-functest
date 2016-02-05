@@ -62,6 +62,8 @@ class TestCommonBase(object):
         self.assertTextPresent("Hello world")
         # Check escaping
         self.assertTextPresent("from 'me' & \"friends\"")
+        self.assertTextPresent("""It's also allowed to have "quotes" without escaping in text in valid HTML""")
+
         self.assertRaises(AssertionError, lambda: self.assertTextPresent("Something definitely not there"))
 
     def test_assertTextAbsent(self):
@@ -69,6 +71,7 @@ class TestCommonBase(object):
         self.assertTextAbsent("Something definitely not there")
         self.assertRaises(AssertionError, lambda: self.assertTextAbsent("Hello world"))
         self.assertRaises(AssertionError, lambda: self.assertTextAbsent("from 'me' & \"friends\""))
+        self.assertRaises(AssertionError, lambda: self.assertTextAbsent("""It's also allowed to have "quotes" without escaping in text in valid HTML"""))
 
     def test_current_url(self):
         self.get_url('admin:login')

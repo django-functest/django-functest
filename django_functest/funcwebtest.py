@@ -14,6 +14,10 @@ from .exceptions import WebTestCantUseElement, WebTestMultipleElementsException,
 from .utils import CommonMixin, get_session_store
 
 
+def html_norm(html):
+    return html.replace('&quot;', '"').replace('&apos;', "'").replace('&#39;', "'")
+
+
 class FuncWebTestMixin(WebTestMixin, CommonMixin):
 
     def __init__(self, *args, **kwargs):
@@ -24,10 +28,12 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
     is_full_browser_test = False
 
     def assertTextAbsent(self, text):
-        self.assertNotIn(escape(text), self.last_response.content.decode('utf-8'))
+        self.assertNotIn(html_norm(escape(text)),
+                         html_norm(self.last_response.content.decode('utf-8')))
 
     def assertTextPresent(self, text):
-        self.assertIn(escape(text), self.last_response.content.decode('utf-8'))
+        self.assertIn(html_norm(escape(text)),
+                      html_norm(self.last_response.content.decode('utf-8')))
 
     def back(self):
         self.last_responses.pop()
