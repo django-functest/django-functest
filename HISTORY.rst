@@ -6,6 +6,8 @@ History
 0.1.4 (under development)
 +++++++++++++++++++++++++
 
+* Added support for file uploads
+
 0.1.3
 +++++
 

@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
+from django_functest import Upload
 from django_functest.exceptions import (
     SeleniumCantUseElement, WebTestCantUseElement, WebTestMultipleElementsException, WebTestNoSuchElementException
 )
@@ -212,6 +213,14 @@ class TestCommonBase(object):
                          'e')
         self.assertEqual(self.value('#id_description'),
                          'Hard thing')
+
+    def test_file_upload(self):
+        self.get_url('edit_thing_with_upload', thing_id=self.thing.id)
+        data = b"This is my data"
+        self.fill({'#id_notes_file': Upload("notes.txt", content=data)})
+        self.submit('[name=change]')
+        thing = self.refresh_thing()
+        self.assertEqual(thing.notes_file.file.read(), data)
 
 
 class TestFuncWebTestCommon(TestCommonBase, WebTestBase):

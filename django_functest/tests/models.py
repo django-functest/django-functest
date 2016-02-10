@@ -1,5 +1,7 @@
 from django.db import models
 
+UPLOAD_DIR = "django_functest/tests/uploads"
+
 
 # After making changes here, run:
 #   ./runtests.py --update-migration
@@ -33,3 +35,4 @@ class Thing(models.Model):
                                    default=CATEGORY_MAGMA)
     count = models.IntegerField(default=0)
     description = models.TextField(blank=True)
+    notes_file = models.FileField(blank=True, upload_to=UPLOAD_DIR)

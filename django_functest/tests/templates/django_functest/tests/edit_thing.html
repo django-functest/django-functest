@@ -3,7 +3,9 @@
     <title>Edit {{ thing.name }}</title>
   </head>
   <body>
-    <form id="id_form" action="" method="POST">
+    <form id="id_form" action="" method="POST"
+          {% if upload %}enctype="multipart/form-data" {% endif %}
+          >
       {% csrf_token %}
       {{ thing_form.as_p }}
 

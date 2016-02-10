@@ -65,6 +65,8 @@ followed the same pattern.
       button that matches that will be selected (even if the selector matched another
       button in that group).
 
+      To upload a file, pass an :class:`~django_functest.Upload` instance as the value.
+
       This will raise an exception if the fields can't be found. It will be a
       timeout exception for Selenium tests, so you will want to avoid attempting
       to fill in fields that don't exist.
@@ -153,3 +155,11 @@ followed the same pattern.
       * For check boxes, it will return ``True`` or ``False``.
       * For text inputs, returns the text value.
       * For selects, returns the internal ``value`` attribute of the selected item.
+
+
+.. class:: django_functest.Upload
+
+   .. method:: __init__(filename, content=data)
+
+      Construct an object for uploading in a normal file upload field. The
+      `content` parameter must be a bytestring (`str` on Python 2, `bytes` on Python 3)

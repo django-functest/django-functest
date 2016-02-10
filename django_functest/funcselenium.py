@@ -1,5 +1,7 @@
 import logging
 import os.path
+import random
+import tempfile
 import time
 from datetime import datetime
 
@@ -366,6 +368,10 @@ class FuncSeleniumMixin(CommonMixin):
             self._set_check_box(elem, val)
         elif elem.tag_name == 'input' and elem.get_attribute('type') == 'radio':
             self._set_radio_button(elem, val)
+        elif elem.tag_name == 'input' and elem.get_attribute('type') == 'file':
+            # val is an Upload instance
+            fname = self._make_temp_file_for_upload(val)
+            elem.send_keys(fname)
         else:
             self._scroll_into_view(elem)
             elem.clear()
@@ -388,6 +394,19 @@ class FuncSeleniumMixin(CommonMixin):
                                    timeout=timeout)
         return self._find(css_selector=css_selector, xpath=xpath,
                           text=text, text_parent_id=text_parent_id)
+
+    def _make_temp_file_for_upload(self, upload):
+        fname = os.path.join(tempfile.tempdir,
+                             "{0}-{1}".format(random.randint(0, 1000000),
+                                              upload.filename))
+        with open(fname, "wb") as f:
+            f.write(upload.content)
+
+        def rmfile():
+            os.unlink(fname)
+
+        self.addCleanup(rmfile)
+        return fname
 
     def _scroll_into_view(self, elem, attempts=0):
         if self._is_visible(elem):
