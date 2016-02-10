@@ -9,7 +9,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-version = "0.1.4-dev"
+version = "0.1.4"
 
 if sys.argv[-1] == 'publish':
     try:
@@ -51,7 +51,7 @@ setup(
     install_requires=[
         'django-webtest>=1.7.8',
         'selenium>=2.48.0',
-        'PyVirtualDisplay>=0.1.4-dev',
+        'PyVirtualDisplay>=0.1.4',
         'six>=1.10.0',
         'furl>=0.4.9',
         'pyquery>=1.2.10',
