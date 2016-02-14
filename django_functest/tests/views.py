@@ -12,6 +12,11 @@ def test_misc(request):
                   {'name': request.session.get('name', None)})
 
 
+def set_sess_foo_to_bar(request):
+    request.session['foo'] = 'bar'
+    return render(request, "django_functest/tests/test_misc.html")
+
+
 class AddSpacersMixin(object):
     def __init__(self, add_spacers=False, **kwargs):
         super(AddSpacersMixin, self).__init__(**kwargs)

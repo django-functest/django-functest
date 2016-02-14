@@ -123,6 +123,11 @@ followed the same pattern.
       Set data directly into the Django session from the supplied dictionary.
       This is useful for implementing setup/shortcuts needed for specific views.
 
+   .. method:: get_session_data()
+
+      Get the Django session as a dictionary. This is useful for creating
+      assertions.
+
    .. method:: submit(css_selector, wait_for_reload=True, auto_follow=True, window_closes=False)
 
       Submits a form via the button specified in ``css_selector``.
