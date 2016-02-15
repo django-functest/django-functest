@@ -6,6 +6,8 @@ History
 0.1.5 (in development)
 ++++++++++++++++++++++
 
+* Added get_session_data()
+
 0.1.4
 +++++
 
