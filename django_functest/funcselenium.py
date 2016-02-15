@@ -487,7 +487,10 @@ class FuncSeleniumMixin(CommonMixin):
         # used). We need to find the actual one that is has the correct value.
         # We also need to be aware of multiple forms that might be on the page.
         form_elem = elem.find_element_by_xpath("./ancestor::form")
-        correct_elem = form_elem.find_element_by_xpath('//input[@type="radio"][@value="{0}"]'.format(value))
+        name = elem.get_attribute('name')
+        correct_elem = form_elem.find_element_by_xpath(
+            '//input[@type="radio"][@name="{0}"][@value="{1}"]'.format(
+                name, value))
         if not self._is_checked(correct_elem):
             self._scroll_into_view(correct_elem)
             correct_elem.click()

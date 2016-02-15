@@ -10,6 +10,8 @@ History
 * Improved reliability of `FuncSeleniumMixin.get_literal_url()`
 * Allow <select> elements to be set using integers for values.
 * Fixed issues with `.value()` for radio buttons and text areas
+* Fixed bug with setting radio buttons when there are more than
+  one set of radio buttons in the form.
 
 0.1.4
 +++++
