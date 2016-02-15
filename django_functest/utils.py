@@ -64,6 +64,9 @@ class CommonMixin(object):
     def fill_by_name(self, fields, prefix=""):
         self.fill({'[name="%s%s"]' % (prefix, k): v for k, v in fields.items()})
 
+    def get_session_data(self):
+        return dict(self._get_session())
+
 
 class AdminLoginMixin(ShortcutLoginMixin):
     """
