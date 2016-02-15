@@ -8,6 +8,7 @@ History
 
 * Added get_session_data()
 * Improved reliability of `FuncSeleniumMixin.get_literal_url()`
+* Allow <select> elements to be set using integers for values.
 
 0.1.4
 +++++

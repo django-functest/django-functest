@@ -12,7 +12,7 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException, StaleElementReferenceException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select, WebDriverWait
-from six import text_type
+from six import text_type, string_types
 
 from .exceptions import SeleniumCantUseElement
 from .utils import CommonMixin, get_session_store
@@ -495,6 +495,7 @@ class FuncSeleniumMixin(CommonMixin):
     def _set_select_elem(self, elem, value):
         self._scroll_into_view(elem)
         s = Select(elem)
+        value = value if isinstance(value, string_types) else str(value)
         s.select_by_value(value)
 
     def _set_select_elem_by_text(self, elem, text):

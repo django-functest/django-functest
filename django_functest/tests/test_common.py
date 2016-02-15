@@ -158,6 +158,20 @@ class TestCommonBase(object):
         self.get_url('edit_thing', thing_id=self.thing.id)
         self.assertRaises(self.ElementNotFoundException, lambda: self.fill({'#id_blahblah': "New name"}))
 
+    def test_fill_select_by_integer(self):
+        url = reverse('edit_thing', kwargs=dict(thing_id=self.thing.id)) + "?select_for_category=1"
+        self.get_literal_url(url)
+        self.fill_by_name({'name': "New name",
+                           'big': False,
+                           'clever': True,
+                           'element_type': Thing.ELEMENT_AIR,
+                           'category': Thing.CATEGORY_QUASIGROUP,
+                           'count': 5,
+                           'description': "Soft thing\r\nwith line breaks",
+                           })
+        self.submit('input[name=change]')
+        self._assertThingChanged()
+
     def test_submit(self):
         self.get_url('edit_thing', thing_id=self.thing.id)
         self.submit('button[name=clear]')

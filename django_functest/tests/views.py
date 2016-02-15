@@ -40,6 +40,12 @@ class ThingForm(AddSpacersMixin, forms.ModelForm):
         fields = ['name', 'big', 'clever', 'element_type', 'category', 'count', 'description']
 
 
+class ThingFormWithSelectForCategory(AddSpacersMixin, forms.ModelForm):
+    class Meta:
+        model = Thing
+        fields = ThingForm._meta.fields
+
+
 # Have separate forms so that we test different form enctype
 class ThingFormWithUpload(AddSpacersMixin, forms.ModelForm):
     class Meta:
@@ -56,7 +62,8 @@ def edit_thing(request, thing_id, with_upload=False):
         form_class = ThingFormWithUpload
         redirect_url = reverse('edit_thing_with_upload', kwargs={'thing_id': thing_id})
     else:
-        form_class = ThingForm
+        select_for_category = 'select_for_category' in request.GET
+        form_class = ThingFormWithSelectForCategory if select_for_category else ThingForm
         redirect_url = reverse('edit_thing', kwargs={'thing_id': thing_id})
 
     if request.method == "POST":
