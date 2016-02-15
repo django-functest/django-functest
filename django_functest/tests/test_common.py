@@ -230,8 +230,33 @@ class TestCommonBase(object):
                          False)
         self.assertEqual(self.value('#id_element_type'),
                          'e')
+        self.assertEqual(self.value('[name=category]'),
+                         str(Thing.CATEGORY_MAGMA))
         self.assertEqual(self.value('#id_description'),
                          'Hard thing')
+
+    def test_value_immediately_after_fill(self):
+        self.get_url('edit_thing', thing_id=self.thing.id)
+        self.fill_by_name({
+            'name': "Some changed name",
+            'big': False,
+            'clever': True,
+            'element_type': 'w',
+            'category': Thing.CATEGORY_MONOID,
+            'description': "Some changed description",
+        })
+        self.assertEqual(self.value('#id_name'),
+                         "Some changed name")
+        self.assertEqual(self.value('#id_big'),
+                         False)
+        self.assertEqual(self.value('#id_clever'),
+                         True)
+        self.assertEqual(self.value('#id_element_type'),
+                         'w')
+        self.assertEqual(self.value('#id_description'),
+                         "Some changed description")
+        self.assertEqual(self.value('[name=category]'),
+                         str(Thing.CATEGORY_MONOID))
 
     def test_file_upload(self):
         self.get_url('edit_thing_with_upload', thing_id=self.thing.id)
