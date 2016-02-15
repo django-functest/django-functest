@@ -91,15 +91,13 @@ class FuncSeleniumMixin(CommonMixin):
         """
         kwargs.pop('expect_errors', None)
         self.get_literal_url(reverse(name, args=args, kwargs=kwargs))
-        self.wait_until_loaded('body')
-        # TODO - need tests
-        # self.wait_for_ajax()
 
     def get_literal_url(self, url, auto_follow=None, expect_errors=None):
         """
         Gets the passed in URL, as a literal relative URL, without using reverse.
         """
         self._get_url_raw(self.live_server_url + url)
+        self.wait_until_loaded('body')
 
     def is_element_present(self, css_selector):
         try:

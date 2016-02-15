@@ -7,6 +7,7 @@ History
 ++++++++++++++++++++++
 
 * Added get_session_data()
+* Improved reliability of `FuncSeleniumMixin.get_literal_url()`
 
 0.1.4
 +++++
