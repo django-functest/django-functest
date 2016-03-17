@@ -443,8 +443,8 @@ class FuncSeleniumMixin(CommonMixin):
         # http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
         return self.execute_script("""return [window.innerWidth,
                                               window.innerHeight,
-                                              document.documentElement.offsetWidth,
-                                              document.documentElement.offsetHeight];""")
+                                              document.documentElement.scrollWidth,
+                                              document.documentElement.scrollHeight];""")
 
     def _scroll_position(self):
         return self.execute_script("""return [document.documentElement.scrollTop,
