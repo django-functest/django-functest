@@ -3,6 +3,12 @@
 History
 -------
 
+0.1.6
++++++
+
+* Fixed bug where elements wouldn't scroll into view if html height is set to
+  100%
+
 0.1.5
 +++++
 
@@ -12,8 +18,6 @@ History
 * Fixed issues with ``.value()`` for radio buttons and text areas
 * Fixed bug with setting radio buttons when there are more than
   one set of radio buttons in the form.
-* Fixed bug where elements wouldn't scroll into view if html height is set to
-  100%
 
 0.1.4
 +++++
