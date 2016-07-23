@@ -21,6 +21,9 @@ parser.add_argument("--show-browser", action='store_true',
                     help="Show the browser when running Selenium tests")
 parser.add_argument("--update-migration", action='store_true',
                     help="Don't run tests - just update the migration used for tests")
+parser.add_argument("-v", "--verbosity", action='store', dest="verbosity",
+                    choices=[0, 1, 2, 3], type=int,
+                    help="Verbosity")
 
 
 known_args, remaining_args = parser.parse_known_args()
@@ -105,6 +108,8 @@ if known_args.update_migration:
     argv = [sys.argv[0], "makemigrations", "tests"] + sys.argv[2:]
 else:
     argv = [sys.argv[0], "test"]
+    if known_args.verbosity:
+        argv.extend(["-v", str(known_args.verbosity)])
     if len(test_args) == 0:
         argv.extend(["django_functest.tests"])
     else:
