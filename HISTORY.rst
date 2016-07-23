@@ -8,6 +8,7 @@ History
 
 * Fixed bug where elements wouldn't scroll into view if html height is set to
   100%
+* New method ``get_webdriver_options`` for customizing WebDriver behaviour.
 
 0.1.5
 +++++

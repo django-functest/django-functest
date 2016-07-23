@@ -66,6 +66,12 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
 
       Controls Selenium timeouts for loading page, defaults to ``20`` (seconds).
 
+   .. method:: get_webdriver_options()
+
+      Returns options to pass to the WebDriver class. Defaults to ``{}``. This
+      can be used to pass ``capabilities``, ``firefox_binary`` or
+      ``firefox_options`` if you are using the Firefox driver, for example.
+
 
    **Other attributes and methods**
 
