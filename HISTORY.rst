@@ -6,6 +6,8 @@ History
 0.1.7 (under development)
 +++++++++++++++++++++++++
 
+* Fixed performance/reliability issue caused by browsers attempting
+  to retrieve ``/favicon.ico`` after visiting ``emptypage``.
 
 0.1.6
 +++++
