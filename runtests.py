@@ -19,6 +19,8 @@ parser = argparse.ArgumentParser(description="Run the test suite, or some tests.
                                  " e.g. --failfast and --noinput")
 parser.add_argument("--show-browser", action='store_true',
                     help="Show the browser when running Selenium tests")
+parser.add_argument("--firefox-binary", action='store',
+                    help="Path to binary to use for Firefox tests")
 parser.add_argument("--update-migration", action='store_true',
                     help="Don't run tests - just update the migration used for tests")
 parser.add_argument("-v", "--verbosity", action='store', dest="verbosity",
@@ -100,6 +102,9 @@ if known_args.show_browser:
     from django_functest.tests.base import HideBrowserMixin
     HideBrowserMixin.display = True
 
+if known_args.firefox_binary:
+    from django_functest.tests.base import FirefoxBase
+    FirefoxBase.firefox_binary = known_args.firefox_binary
 
 if known_args.update_migration:
     initial_migration = "django_functest/tests/migrations/0001_initial.py"

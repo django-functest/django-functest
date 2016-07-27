@@ -59,6 +59,16 @@ class SeleniumBaseMixin(object):
 class FirefoxBase(HideBrowserMixin, SeleniumBaseMixin, FuncSeleniumMixin, MyLiveServerTestCase):
     driver_name = "Firefox"
 
+    firefox_binary = None  # default, hacked by runtests.py
+
+    @classmethod
+    def get_webdriver_options(cls):
+        kwargs = super(FirefoxBase, cls).get_webdriver_options()
+        if cls.firefox_binary is not None:
+            from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+            kwargs['firefox_binary'] = FirefoxBinary(firefox_path=cls.firefox_binary)
+        return kwargs
+
 
 # Chrome/ChromeDriver don't work on Travis
 # https://github.com/travis-ci/travis-ci/issues/272
