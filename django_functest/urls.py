@@ -11,7 +11,8 @@ def emptypage(request):
     # other issues.
     return HttpResponse("""<html>
     <head>
-        <link href="data:image/gif;base64,R0lGODlhEAAQAIABAACE/////yH5BAEKAAEALAAAAAAQABAAAAIghI9pwe2+nmRxvmobzmFnb4GTKJEXwEFoSq2sqSqyUQAAOw==" rel="shortcut icon">
+        <link href="data:image/gif;base64,R0lGODlhEAAQAIABAACE/////yH5BAEKAAEALA"""
+"""AAAAAQABAAAAIghI9pwe2+nmRxvmobzmFnb4GTKJEXwEFoSq2sqSqyUQAAOw==" rel="shortcut icon">
     </head>
     <body></body>
 </html>""")
