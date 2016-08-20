@@ -69,7 +69,7 @@ In your tests.py::
          pass
 
 In this way, you can write a single test with a high-level API, and run it in
-two way - using a fast, WSGI-based method with emulates typical HTTP usage of a
+two way - using a fast, WSGI-based method which emulates typical HTTP usage of a
 browser, and using a full browser that actually executes Javascript (if present)
 etc.
 
