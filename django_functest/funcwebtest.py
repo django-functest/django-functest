@@ -125,12 +125,14 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
         # We don't use self.app.set_cookie since it has undesirable behaviour
         # with domain and value fields that causes issues.
         value = cookie_dict['value']
+        name = cookie_dict['name']
         if six.PY2:
             value = value.encode('utf-8')
+            name = name.encode('utf-8')
 
         cookie = http_cookiejar.Cookie(
             version=0,
-            name=cookie_dict['name'],
+            name=name,
             value=value,
             port=None,
             port_specified=False,

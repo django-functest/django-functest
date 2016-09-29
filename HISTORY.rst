@@ -6,6 +6,8 @@ History
 0.1.8 (under development)
 +++++++++++++++++++++++++
 
+* Django 1.10 compatibility
+
 0.1.7
 +++++
 

@@ -1,5 +1,5 @@
 import django
-from django.conf.urls import include, patterns, url
+from django.conf.urls import include, url
 from django.contrib import admin
 
 from . import views
@@ -16,4 +16,5 @@ urlpatterns = [
 ]
 
 if django.VERSION < (1, 9):
+    from django.conf.urls import patterns
     urlpatterns = patterns('', *urlpatterns)

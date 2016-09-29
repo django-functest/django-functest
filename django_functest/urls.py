@@ -1,5 +1,5 @@
 import django
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.http import HttpResponse
 
 
@@ -23,4 +23,5 @@ urlpatterns = [
 ]
 
 if django.VERSION < (1, 9):
+    from django.conf.urls import patterns
     urlpatterns = patterns('', *urlpatterns)
