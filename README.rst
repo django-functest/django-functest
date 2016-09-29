@@ -96,6 +96,14 @@ Or, to run on all environments::
   tox
 
 
+Firefox tests are currently failing due to incompatibilities with recent
+Firefox versions (>= 47) and all published versions of Selenium (< 3.0).
+
+This can be worked around by downloading an old version of Firefox from
+https://www.mozilla.org/en-US/firefox/organizations/all/ and
+using `runtests.py --firefox-binary`
+
+
 Credits
 -------
 
