@@ -58,7 +58,7 @@ followed the same pattern.
    .. method:: fill(data_dict)
 
       Fills form inputs using the values in ``data_dict``. The keys are CSS
-      selectors, and the values and the values for the inputs. Works for text
+      selectors, and the values are the values for the inputs. Works for text
       inputs, radio boxes, check boxes, and select fields. Checkbox values can
       be specified using ``True`` and ``False``. Radio button values should be
       specified using the ``value`` attribute that should be matched, and the radio
