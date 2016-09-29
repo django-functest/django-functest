@@ -3,8 +3,8 @@
 History
 -------
 
-0.1.8 (under development)
-+++++++++++++++++++++++++
+0.1.8
++++++
 
 * Django 1.10 compatibility
 
