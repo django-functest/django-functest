@@ -12,7 +12,7 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException, StaleElementReferenceException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select, WebDriverWait
-from six import text_type, string_types
+from six import string_types, text_type
 
 from .exceptions import SeleniumCantUseElement
 from .utils import CommonMixin, get_session_store
