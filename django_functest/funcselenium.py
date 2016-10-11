@@ -411,7 +411,7 @@ class FuncSeleniumMixin(CommonMixin):
         return fname
 
     def _scroll_into_view(self, elem, attempts=0):
-        if self._is_visible(elem):
+        if self._is_center_visible(elem):
             return
 
         # Attempt to scroll to the center of the screen. This is the best
@@ -441,7 +441,7 @@ class FuncSeleniumMixin(CommonMixin):
                 logger.warning("Can't scroll to (%s, %s)", scroll_to_x, scroll_to_y)
 
         if attempts == 0:
-            self.wait_until(lambda *_: self._is_visible(elem))
+            self.wait_until(lambda *_: self._is_center_visible(elem))
 
     def _scroll_center_data(self):
         # http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
@@ -454,7 +454,7 @@ class FuncSeleniumMixin(CommonMixin):
         return self.execute_script("""return [document.documentElement.scrollTop,
                                               document.documentElement.scrollLeft];""")
 
-    def _is_visible(self, elem):
+    def _is_center_visible(self, elem):
         # Thanks http://stackoverflow.com/a/15203639/182604
         return self.execute_script("""return (function (el) {
     var rect     = el.getBoundingClientRect(),
@@ -462,9 +462,11 @@ class FuncSeleniumMixin(CommonMixin):
         vHeight  = window.innerHeight || doc.documentElement.clientHeight,
         efp      = function (x, y) { return document.elementFromPoint(x, y) };
 
+    var e_x = (rect.left + rect.right) / 2;
+    var e_y = (rect.top + rect.bottom) / 2;
     // Return false if it's not in the viewport
-    if (rect.right < 0 || rect.bottom < 0
-            || rect.left > vWidth || rect.top > vHeight)
+    if (e_x < 0 || e_y < 0
+            || e_x > vWidth || e_y > vHeight)
         return false;
 
     // Return true if any of its four corners or center are visible
