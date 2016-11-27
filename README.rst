@@ -27,6 +27,10 @@ Installation
 
    pip install django-functest
 
+See also the `dependencies documentation
+<http://django-functest.readthedocs.io/en/latest/installation.html#dependencies>`_
+for important compatibility information.
+
 Features
 --------
 
