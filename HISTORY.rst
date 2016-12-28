@@ -6,6 +6,7 @@ History
 0.1.9 (Under development)
 +++++++++++++++++++++++++
 
+* Fix for scrolling to exactly the right place.
 
 0.1.8
 +++++
