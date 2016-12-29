@@ -1,7 +1,9 @@
+from __future__ import absolute_import, print_function, unicode_literals
+
 from django.core.urlresolvers import reverse
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
-from django_functest import Upload, FuncBaseMixin
+from django_functest import FuncBaseMixin, Upload
 from django_functest.exceptions import (
     SeleniumCantUseElement, WebTestCantUseElement, WebTestMultipleElementsException, WebTestNoSuchElementException
 )

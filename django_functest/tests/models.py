@@ -1,3 +1,5 @@
+from __future__ import absolute_import, print_function, unicode_literals
+
 from django.db import models
 
 UPLOAD_DIR = "django_functest/tests/uploads"

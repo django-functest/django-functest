@@ -1,3 +1,5 @@
+from __future__ import absolute_import, print_function, unicode_literals
+
 import django
 from django.conf.urls import url
 from django.http import HttpResponse

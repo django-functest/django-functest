@@ -1,3 +1,5 @@
+from __future__ import absolute_import, print_function, unicode_literals
+
 from importlib import import_module
 
 from django.conf import settings

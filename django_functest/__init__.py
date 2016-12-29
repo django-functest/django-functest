@@ -1,3 +1,5 @@
+from __future__ import absolute_import, print_function, unicode_literals
+
 from .base import FuncBaseMixin
 from .funcselenium import FuncSeleniumMixin
 from .funcwebtest import FuncWebTestMixin
