@@ -31,6 +31,7 @@ IN_TRAVIS = os.environ.get('TRAVIS')
 def binary_available(filename):
     return subprocess.call(["which", filename], stdout=subprocess.PIPE) == 0
 
+
 firefox_available = binary_available("firefox")
 chrome_available = binary_available("chromedriver")
 phantomjs_available = binary_available("phantomjs")
