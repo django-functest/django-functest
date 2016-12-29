@@ -153,11 +153,16 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         else:
             return field.value
 
-    # Implementation methods - private
+    # WebTest specific
 
     @property
     def last_response(self):
+        """
+        Returns the last WebTest response received.
+        """
         return self.last_responses[-1]
+
+    # Implementation methods - private
 
     def _add_cookie(self, cookie_dict):
         # We don't use self.app.set_cookie since it has undesirable behaviour

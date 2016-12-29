@@ -190,26 +190,50 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
     page_load_timeout = 20  # seconds
 
     def get_browser_window_size(self):
+        """
+        Configuration method: returns the desired browser window height that
+        django_functest will attempt to set, as a tuple of (width, height)
+        in pixels, or None. Defaults to ``browser_window_size`` attribute.
+        """
         return self.browser_window_size
 
     @classmethod
     def display_browser_window(cls):
+        """
+        Configuration classmethod: returns a boolean that determines if the browser window
+        should be shown, Defaults to ``display`` attribute.
+        """
         return cls.display
 
     @classmethod
     def get_default_timeout(cls):
+        """
+        Configuration classmethod: returns the time in seconds for Selenium to wait for
+        the browser to respond. Default so ``default_timeout`` attribute.
+        """
         return cls.default_timeout
 
     @classmethod
     def get_driver_name(cls):
+        """
+        Configuration classmethod: returns the driver name i.e. the browser to use.
+        Defaults to `driver_name` attribute.
+        """
         return cls.driver_name
 
     @classmethod
     def get_page_load_timeout(cls):
+        """
+        Configuration classmethod: returns the time in seconds for Selenium to wait
+        for the browser to return a page. Defaults to `page_load_timeout` attribute.
+        """
         return cls.page_load_timeout
 
     @classmethod
     def get_webdriver_options(cls):
+        """
+        Configuration classmethod: returns options to pass to the WebDriver class.
+        """
         return {}
 
     # Runtime methods:
@@ -219,6 +243,10 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
               wait_for_reload=False,
               wait_timeout=None,
               double=False, scroll=True, window_closes=False):
+        """
+        Clicks the button or control specified by the CSS selector
+        or xpath
+        """
         if window_closes:
             wait_for_reload = False
         if wait_for_reload:
@@ -254,14 +282,24 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             self._wait_until_finished()
 
     def execute_script(self, script, *args):
+        """
+        Executes the suppplied Javascript in the browser and returns the results.
+        """
         return self._driver.execute_script(script, *args)
 
     def hover(self, css_selector):
+        """
+        Peform a mouse hover over the element specified by the CSS selector.
+        """
         elem = self._find(css_selector=css_selector)
         self._scroll_into_view(elem)
         ActionChains(self._driver).move_to_element(elem).perform()
 
     def is_element_displayed(self, css_selector):
+        """
+        Returns True if the element specified by the CSS selector is both
+        present and visible on the page.
+        """
         try:
             elem = self._driver.find_element_by_css_selector(css_selector)
         except NoSuchElementException:
@@ -269,6 +307,9 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         return elem.is_displayed()
 
     def save_screenshot(self, dirname="./", filename=None):
+        """
+        Saves a screenshot of the browser window.
+        """
         # Especially useful when hiding the browser window gives different behaviour.
         testname = '%s.%s.%s' % (self.__class__.__module__, self.__class__.__name__, self._testMethodName)
         if filename is None:
@@ -278,6 +319,9 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         return name
 
     def set_window_size(self, width, height):
+        """
+        Sets the browser window size to specified width and height.
+        """
         def f(driver):
             driver.set_window_size(width, height)
             win_width, win_height = self._get_window_size()
@@ -317,6 +361,9 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         return current_window_handle, handle
 
     def wait_for_page_load(self):
+        """
+        Waits until the page has finished loading
+        """
         self.wait_until_loaded('body')
         self._wait_for_document_ready()
 
