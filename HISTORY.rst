@@ -3,8 +3,8 @@
 History
 -------
 
-0.1.9 (Under development)
-+++++++++++++++++++++++++
+0.1.9
++++++
 
 * Fix for scrolling to exactly the right place.
 * Added docstrings everywhere, and a base class you can inherit from
