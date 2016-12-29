@@ -13,12 +13,7 @@ Release process
 
 * Release to PyPI::
 
-    ./setup.py sdist register upload
-    python2.7 setup.py bdist_wheel --python-tag=py2 upload
-    python3.4 setup.py bdist_wheel --python-tag=py3 upload
-
-  (Different wheels are needed for py2 and py3 because of the faulthandler
-  dependency).
+    ./release.sh
 
 * bumpversion again
 
