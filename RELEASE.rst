@@ -1,9 +1,9 @@
 Release process
 ===============
 
-* Tests, including flake8 and check-manifest
+* Tests, including flake8, isort and check-manifest
 
-* Update HISTORY.rst, removing "(in development)"
+* Update HISTORY.rst, removing "(in development)". Commit.
 
 * Use bumpversion e.g.
 
