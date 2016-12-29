@@ -5,9 +5,11 @@ Release process
 
 * Update HISTORY.rst, removing "(in development)". Commit.
 
-* Use bumpversion e.g.
+* Use bumpversion e.g.::
 
-  bumpversion release
+      bumpversion release
+
+* Check the commit log and undo any nastiness that bumpversion did to setup.cfg
 
 * Make sure all is committed
 
@@ -15,9 +17,11 @@ Release process
 
     ./release.sh
 
-* bumpversion again
+* bumpversion again::
 
-  bumpversion --no-tag patch
+      bumpversion --no-tag patch
+
+  And fix again.
 
 * Add new section to HISTORY.rst
 
