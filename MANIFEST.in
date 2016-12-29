@@ -4,6 +4,7 @@ include HISTORY.rst
 include LICENSE
 include README.rst
 include RELEASE.rst
+include release.sh
 include .coveragerc
 include .editorconfig
 include Makefile
