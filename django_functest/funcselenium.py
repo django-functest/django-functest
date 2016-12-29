@@ -14,6 +14,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from six import string_types, text_type
 
+from .base import FuncBaseMixin
 from .exceptions import SeleniumCantUseElement
 from .utils import CommonMixin, get_session_store
 
@@ -28,7 +29,7 @@ def escape_selenium(text):
     return text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
 
 
-class FuncSeleniumMixin(CommonMixin):
+class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
 
     @classmethod
     def setUpClass(cls):
@@ -57,30 +58,51 @@ class FuncSeleniumMixin(CommonMixin):
         self._driver.delete_all_cookies()
 
     # Common API:
-    is_full_browser_test = True
 
     def assertTextPresent(self, text):
+        """
+        Asserts that the text is present on the current page
+        """
         self.assertIn(escape_selenium(text), self._get_page_source())
 
     def assertTextAbsent(self, text):
+        """
+        Asserts that the text is not present on the current page
+        """
         self.assertNotIn(escape_selenium(text), self._get_page_source())
 
     def back(self):
+        """
+        Go back in the browser.
+        """
         self._driver.back()
 
     @property
     def current_url(self):
+        """
+        The current full URL
+        """
         return self._driver.current_url
 
     def follow_link(self, css_selector):
+        """
+        Follows the link specified in the CSS selector.
+        """
         return self.click(css_selector, wait_for_reload=True)
 
     def fill(self, fields):
+        """
+        Fills form inputs using the values in fields, which is a dictionary
+        of CSS selectors to values.
+        """
         for k, v in fields.items():
             e = self._find_with_timeout(css_selector=k)
             self._fill_input(e, v)
 
     def fill_by_text(self, fields):
+        """
+        Same as ``fill`` except the values are text captions. Useful for ``select`` elements.
+        """
         for selector, text in fields.items():
             elem = self._find_with_timeout(css_selector=selector)
             self._fill_input_by_text(elem, text)
@@ -100,13 +122,27 @@ class FuncSeleniumMixin(CommonMixin):
         self.wait_until_loaded('body')
 
     def is_element_present(self, css_selector):
+        """
+        Returns True if the element specified by the CSS selector is present on the current page,
+        False otherwise.
+        """
         try:
             self._driver.find_element_by_css_selector(css_selector)
         except NoSuchElementException:
             return False
         return True
 
+    @property
+    def is_full_browser_test(self):
+        """
+        True for Selenium tests, False for WebTest tests.
+        """
+        return True
+
     def set_session_data(self, item_dict):
+        """
+        Set a dictionary of items directly into the Django session.
+        """
         # Cookies don't work unless we visit a page first
         if not self._have_visited_page:
             self.get_url('django_functest.emptypage')
@@ -123,9 +159,15 @@ class FuncSeleniumMixin(CommonMixin):
         raise RuntimeError("Session not saved correctly")
 
     def submit(self, css_selector, wait_for_reload=True, auto_follow=None, window_closes=False):
+        """
+        Submit the form using the input given in the CSS selector
+        """
         self.click(css_selector, wait_for_reload=wait_for_reload, window_closes=window_closes)
 
     def value(self, css_selector):
+        """
+        Returns the value of the form input specified in the CSS selector
+        """
         elem = self._find(css_selector=css_selector)
         if elem.tag_name == 'input' and elem.get_attribute('type') == 'checkbox':
             return self._is_checked(elem)

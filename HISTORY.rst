@@ -7,6 +7,8 @@ History
 +++++++++++++++++++++++++
 
 * Fix for scrolling to exactly the right place.
+* Added docstrings everywhere, and a base class you can inherit from
+  for the purpose of providing autocomplete help.
 
 0.1.8
 +++++

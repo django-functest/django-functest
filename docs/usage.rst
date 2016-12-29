@@ -97,9 +97,9 @@ Then:
 ``yourapp.tests``::
 
     from yourproject.tests.base import SeleniumTestBase, WebTestBase
+    from django_functest import FuncBaseMixin
 
-
-    class ContactFormTestBase(object):
+    class ContactFormTestBase(FuncBaseMixin):
         def test_contact_form(self):
             self.get_url("contact_form")
             self.fill({'#id_email': 'my@email.com',
@@ -124,13 +124,13 @@ Of course:
 * Sometimes you have pages that require Javascript to work for some parts. This
   can be handled by adding tests to the Selenium subclass only.
 
-Also, sometimes you need different actions to be done if Javascript is enabled.
+Sometimes you need different actions to be done if Javascript is enabled.
 In this case, there are several options:
 
 1) Use an abstract method in the base class, and create different
    implementations of it in the subclasses::
 
-       class ContactFormTestBase(object):
+       class ContactFormTestBase(FuncBaseMixin):
            def test_foo(self):
                self.get_url('foo')
                self.do_thing()
@@ -161,6 +161,17 @@ Tips
 ====
 
 The following are various tips for writing reliable tests.
+
+Use FuncBaseMixin
+-----------------
+
+In the above example, ``FuncBaseMixin`` is not strictly needed at all - it
+provides method definitions which all raise ``NotImplementedError`` - so you
+could replace it with ``object``. However, it can be very useful for editors
+that provide code autocompletion help, which be able to find the docstrings on
+``FuncBaseMixin`` when you are writing methods like
+``ContactFormTestBase.test_contact_form``. You may want to inherit from it in
+your own base class.
 
 
 Avoid 404s

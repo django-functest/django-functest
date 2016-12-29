@@ -59,12 +59,21 @@ class CommonMixin(object):
             self.assertEqual(url1.scheme, url2.scheme)
 
     def fill_by_id(self, data):
+        """
+        Same as ``fill`` except the keys are input IDs
+        """
         self.fill({'#' + k: v for k, v in data.items()})
 
     def fill_by_name(self, fields, prefix=""):
+        """
+        Same as ``fill`` except the keys are input names
+        """
         self.fill({'[name="%s%s"]' % (prefix, k): v for k, v in fields.items()})
 
     def get_session_data(self):
+        """
+        Returns the current Django session dictionary
+        """
         return dict(self._get_session())
 
 

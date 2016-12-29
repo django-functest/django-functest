@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from selenium.common.exceptions import NoSuchElementException
 
-from django_functest import AdminLoginMixin
+from django_functest import AdminLoginMixin, FuncBaseMixin
 
 from .base import ChromeBase, FirefoxBase, PhantomJSBase
 from .models import Thing
@@ -13,7 +13,7 @@ from .models import Thing
 
 # Tests for Selenium specific methods
 
-class TestFuncSeleniumSpecificBase(AdminLoginMixin):
+class TestFuncSeleniumSpecificBase(AdminLoginMixin, FuncBaseMixin):
 
     def setUp(self):
         super(TestFuncSeleniumSpecificBase, self).setUp()

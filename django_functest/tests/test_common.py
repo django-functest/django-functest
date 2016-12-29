@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
-from django_functest import Upload
+from django_functest import Upload, FuncBaseMixin
 from django_functest.exceptions import (
     SeleniumCantUseElement, WebTestCantUseElement, WebTestMultipleElementsException, WebTestNoSuchElementException
 )
@@ -10,7 +10,7 @@ from django_functest.tests.models import Thing
 from .base import ChromeBase, FirefoxBase, PhantomJSBase, WebTestBase
 
 
-class TestCommonBase(object):
+class TestCommonBase(FuncBaseMixin):
     def setUp(self):
         super(TestCommonBase, self).setUp()
         self.thing = Thing.objects.create(name="Rock",

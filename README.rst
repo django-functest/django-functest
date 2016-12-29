@@ -55,9 +55,9 @@ Typical usage
 In your tests.py::
 
     from django.test import LiveServerTestCase, TestCase
-    from django_functest import FuncWebTestMixin, FuncSeleniumMixin
+    from django_functest import FuncWebTestMixin, FuncSeleniumMixin, FuncBaseMixin
 
-    class ContactTestBase(object):
+    class ContactTestBase(FuncBaseMixin):
 
         def test_contact_form(self):
             self.get_url('contact_form')

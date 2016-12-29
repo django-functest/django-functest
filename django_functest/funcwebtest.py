@@ -10,6 +10,7 @@ from six import text_type
 from six.moves import http_cookiejar
 from webtest.forms import Checkbox
 
+from .base import FuncBaseMixin
 from .exceptions import WebTestCantUseElement, WebTestMultipleElementsException, WebTestNoSuchElementException
 from .utils import CommonMixin, get_session_store
 
@@ -18,33 +19,43 @@ def html_norm(html):
     return html.replace('&quot;', '"').replace('&apos;', "'").replace('&#39;', "'")
 
 
-class FuncWebTestMixin(WebTestMixin, CommonMixin):
+class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
 
     def __init__(self, *args, **kwargs):
         super(FuncWebTestMixin, self).__init__(*args, **kwargs)
         self.last_responses = []
 
     # Public Common API
-    is_full_browser_test = False
-
     def assertTextAbsent(self, text):
+        """
+        Asserts that the text is not present on the current page
+        """
         self.assertNotIn(html_norm(escape(text)),
                          html_norm(self.last_response.content.decode('utf-8')))
 
     def assertTextPresent(self, text):
+        """
+        Asserts that the text is present on the current page
+        """
         self.assertIn(html_norm(escape(text)),
                       html_norm(self.last_response.content.decode('utf-8')))
 
     def back(self):
+        """
+        Go back in the browser.
+        """
         self.last_responses.pop()
 
     @property
     def current_url(self):
+        """
+        The current full URL
+        """
         return self.last_response.request.url
 
     def follow_link(self, css_selector):
         """
-        Follow the link described by the given CSS selector
+        Follows the link specified in the CSS selector.
         """
         elems = self._make_pq(self.last_response).find(css_selector)
         if len(elems) == 0:
@@ -64,11 +75,18 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
         self.get_literal_url(hrefs[0])
 
     def fill(self, data):
+        """
+        Fills form inputs using the values in fields, which is a dictionary
+        of CSS selectors to values.
+        """
         for selector, value in data.items():
             form, field_name = self._find_form_and_field_by_css_selector(self.last_response, selector)
             form[field_name] = value
 
     def fill_by_text(self, fields):
+        """
+        Same as ``fill`` except the values are text captions. Useful for ``select`` elements.
+        """
         for selector, text in fields.items():
             form, field_name = self._find_form_and_field_by_css_selector(self.last_response, selector)
             self._fill_field_by_text(form, field_name, text)
@@ -86,15 +104,32 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
         return self._get_url_raw(url, auto_follow=auto_follow, expect_errors=expect_errors)
 
     def is_element_present(self, css_selector):
+        """
+        Returns True if the element specified by the CSS selector is present on the current page,
+        False otherwise.
+        """
         return len(self._make_pq(self.last_response).find(css_selector)) > 0
 
+    @property
+    def is_full_browser_test(self):
+        """
+        True for Selenium tests, False for WebTest tests.
+        """
+        return False
+
     def set_session_data(self, item_dict):
+        """
+        Set a dictionary of items directly into the Django session.
+        """
         session = self._get_session()
         for name, value in item_dict.items():
             session[name] = text_type(value)
         session.save()
 
     def submit(self, css_selector, wait_for_reload=None, auto_follow=True, window_closes=None):
+        """
+        Submit the form using the input given in the CSS selector
+        """
         form, field_name = self._find_form_and_field_by_css_selector(self.last_response,
                                                                      css_selector,
                                                                      require_name=False,
@@ -106,6 +141,9 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin):
         self.last_responses.append(response)
 
     def value(self, css_selector):
+        """
+        Returns the value of the form input specified in the CSS selector
+        """
         form, field_name = self._find_form_and_field_by_css_selector(self.last_response,
                                                                      css_selector,
                                                                      require_name=False)
