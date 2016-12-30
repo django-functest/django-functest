@@ -43,7 +43,16 @@ the browser to use, and note the following:
 * Chrome can be used if `chromedriver
   <https://sites.google.com/a/chromium.org/chromedriver/>`_ is installed.
 
-* Firefox 45 and older can be used with Selenium < 3 without anything additional installed.
+* Firefox 45 and older can be used with Selenium < 3 without anything additional
+  installed. Old versions of Firefox can be found here:
+  https://www.mozilla.org/en-US/firefox/organizations/all/
+
+  If you need to run your own tests with a different version of Firefox than the
+  default one on your system, it is recommended you follow the pattern used by
+  django-functests own ``runtests.py`` script which allows you to pass a
+  ``--firefox-binary`` option. This is then eventually returned by
+  ``get_webdriver_options`` as argument ``firefox_binary``. You could also make
+  ``get_webdriver_options`` look in ``os.environ`` if that is easier to arrange.
 
 * Selenium >= 3 will not work with Firefox 45 or older.
 
