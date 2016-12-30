@@ -6,9 +6,10 @@ History
 0.1.10 (under development)
 ++++++++++++++++++++++++++
 
-* Added ``new_browser_session`` and ``switch_browser_session`` to the
-  common API. These can be used to simulate multiple devices or users
-  accessing the site. See the docs for important usage information.
+* Added :meth:`~django_functest.FuncCommonApi.new_browser_session` and
+  :meth:`~django_functest.FuncCommonApi.switch_browser_session` to the common
+  API. These can be used to simulate multiple devices or users accessing the
+  site. See the docs for important usage information.
 
 0.1.9
 +++++
@@ -33,7 +34,8 @@ History
 
 * Fixed bug where elements wouldn't scroll into view if html height is set to
   100%
-* New method ``get_webdriver_options`` for customizing WebDriver behaviour.
+* New method :meth:`~django_functest.FuncSeleniumMixin.get_webdriver_options`
+  for customizing WebDriver behaviour.
 
 0.1.5
 +++++

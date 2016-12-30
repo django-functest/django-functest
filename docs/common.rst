@@ -128,7 +128,7 @@ followed the same pattern.
       Get the Django session as a dictionary. This is useful for creating
       assertions.
 
-   .. method:: new_browser_session():
+   .. method:: new_browser_session()
 
       Creates (and switches to) a new session that is separate from previous
       sessions. This can be used to simulate multiple devices/users accessing a
@@ -136,7 +136,7 @@ followed the same pattern.
 
       Returns a tuple (old_session_token, new_session_token). These values
       should be treated as opaque tokens that can be used with
-      ``switch_browser_session``.
+      :meth:`switch_browser_session`.
 
       For Selenium tests, a new instance of the web driver is created, which
       results in a new browser instance with a separate profile being used. In
@@ -154,8 +154,8 @@ followed the same pattern.
    .. method:: switch_browser_session(session_token)
 
       Switch to the browser session indicated by the supplied token. The token
-      must be an object returned from a previous call to ``new_browser_session``
-      or ``switch_browser_session``.
+      must be an object returned from a previous call to :meth:`new_browser_session`
+      or :meth:`switch_browser_session`.
 
       Returns a tuple (old_session_token, new_session_token).
 
