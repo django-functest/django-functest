@@ -111,6 +111,7 @@ class FuncBaseMixin(object):
         """
         Returns the current Django session dictionary
         """
+        raise NotImplementedError()
 
     def submit(self, css_selector, wait_for_reload=True, auto_follow=None, window_closes=False):
         """
