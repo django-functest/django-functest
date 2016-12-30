@@ -6,6 +6,10 @@ History
 0.1.10 (under development)
 ++++++++++++++++++++++++++
 
+* Added ``new_browser_session`` and ``switch_browser_session`` to the
+  common API. These can be used to simulate multiple devices or users
+  accessing the site. See the docs for important usage information.
+
 0.1.9
 +++++
 

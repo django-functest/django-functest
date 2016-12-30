@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^edit_thing/(?P<thing_id>.*)/', views.edit_thing, name='edit_thing'),
     url(r'^edit_thing_with_upload/(?P<thing_id>.*)/', views.edit_thing_with_upload, name='edit_thing_with_upload'),
     url(r'^thing_cleared/(?P<thing_id>.*)/', views.thing_cleared, name='thing_cleared'),
+    url(r'^new_browser_session_test/', views.new_browser_session_test, name='new_browser_session_test'),
 ]
 
 if django.VERSION < (1, 9):

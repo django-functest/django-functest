@@ -5,7 +5,12 @@ from .funcselenium import FuncSeleniumMixin
 from .funcwebtest import FuncWebTestMixin
 from .utils import AdminLoginMixin, ShortcutLoginMixin
 from .files import Upload
+from .server import MultiThreadedLiveServerMixin
 
 __version__ = '0.1.10-dev'
 
-__all__ = ['FuncBaseMixin', 'FuncWebTestMixin', 'FuncSeleniumMixin', 'ShortcutLoginMixin', 'AdminLoginMixin', 'Upload']
+__all__ = ['FuncBaseMixin', 'FuncWebTestMixin', 'FuncSeleniumMixin', 'ShortcutLoginMixin',
+           'AdminLoginMixin', 'MultiThreadedLiveServerMixin', 'Upload']
+
+
+FuncCommonApi = FuncBaseMixin

@@ -113,6 +113,22 @@ class FuncBaseMixin(object):
         """
         raise NotImplementedError()
 
+    def new_browser_session(self):
+        """
+        Creates (and switches to) a new session that is separate from previous
+        sessions. Returns a tuple (old_session_token, new_session_token). These
+        values should be treated as opaque tokens that can be used with
+        switch_browser_session.
+        """
+        raise NotImplementedError()
+
+    def switch_browser_session(self, session_token):
+        """
+        Switch to the browser session indicated by the supplied token.
+        Returns a tuple (old_session_token, new_session_token).
+        """
+        raise NotImplementedError()
+
     def submit(self, css_selector, wait_for_reload=True, auto_follow=None, window_closes=False):
         """
         Submit the form using the input given in the CSS selector

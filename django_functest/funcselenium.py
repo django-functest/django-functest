@@ -18,7 +18,7 @@ from six import string_types, text_type
 
 from .base import FuncBaseMixin
 from .exceptions import SeleniumCantUseElement
-from .utils import CommonMixin, get_session_store
+from .utils import BrowserSessionToken, CommonMixin, get_session_store
 
 logger = logging.getLogger(__name__)
 
@@ -44,26 +44,33 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
                 display_args['size'] = (width + 500, height + 500)
             cls.__display = Display(**display_args)
             cls.__display.start()
-        driver_name = cls.get_driver_name()
-        kwargs = cls.get_webdriver_options()
-        cls._driver = getattr(webdriver, driver_name)(**kwargs)
-        cls._driver.set_page_load_timeout(cls.get_page_load_timeout())
+
+        # We have one driver attached to the class, re-used between test runs
+        # for speed. Manually started driver instances (using new_browser_session)
+        # are cleaned up at the end of an individual test.
+        cls._cls_driver = cls._create_browser_instance()
         super(FuncSeleniumMixin, cls).setUpClass()
 
     @classmethod
     def tearDownClass(cls):
+        cls._cls_driver.quit()
         if not cls.display_browser_window():
-            cls._driver.quit()
             cls.__display.stop()
         super(FuncSeleniumMixin, cls).tearDownClass()
 
     def setUp(self):
-        self._have_visited_page = False
+        self._instance_drivers = []
+        self._drivers_visited_pages = set()
         super(FuncSeleniumMixin, self).setUp()
-        size = self.get_browser_window_size()
-        if size is not None:
-            self.set_window_size(*size)
+        self._fix_window_size()
         self._driver.delete_all_cookies()
+
+    def tearDown(self):
+        super(FuncSeleniumMixin, self).tearDown()
+        for d in self._instance_drivers:
+            if d != self._cls_driver:
+                d.quit()
+        self._instance_drivers = []
 
     # Common API:
 
@@ -152,7 +159,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         Set a dictionary of items directly into the Django session.
         """
         # Cookies don't work unless we visit a page first
-        if not self._have_visited_page:
+        if not self._have_visited_page():
             self.get_url('django_functest.emptypage')
 
         session = self._get_session()
@@ -314,6 +321,33 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             return False
         return elem.is_displayed()
 
+    def new_browser_session(self):
+        """
+        Creates (and switches to) a new session that is separate from previous
+        sessions. Returns a tuple (old_session_token, new_session_token). These
+        values should be treated as opaque tokens that can be used with
+        switch_browser_session.
+        """
+        old_driver = self._driver
+        new_driver = self._create_browser_instance()
+        self._instance_drivers.insert(0, new_driver)
+        self._fix_window_size()
+        return (BrowserSessionToken(old_driver),
+                BrowserSessionToken(new_driver))
+
+    def switch_browser_session(self, session_token):
+        """
+        Switch to the browser session indicated by the supplied token.
+        Returns a tuple (old_session_token, new_session_token).
+        """
+        old_driver = self._driver
+        new_driver = session_token.value
+        if new_driver in self._instance_drivers:
+            self._instance_drivers.remove(new_driver)
+        self._instance_drivers.insert(0, new_driver)
+        return (BrowserSessionToken(old_driver),
+                BrowserSessionToken(new_driver))
+
     def save_screenshot(self, dirname="./", filename=None):
         """
         Saves a screenshot of the browser window.
@@ -399,6 +433,26 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
 
     # Implementation methods - private
 
+    @classmethod
+    def _create_browser_instance(cls):
+        driver_name = cls.get_driver_name()
+        kwargs = cls.get_webdriver_options()
+        driver = getattr(webdriver, driver_name)(**kwargs)
+        driver.set_page_load_timeout(cls.get_page_load_timeout())
+        return driver
+
+    def _fix_window_size(self):
+        size = self.get_browser_window_size()
+        if size is not None:
+            self.set_window_size(*size)
+
+    @property
+    def _driver(self):
+        if self._instance_drivers:
+            return self._instance_drivers[0]
+        else:
+            return self._cls_driver
+
     def _get_finder(self, css_selector=None, xpath=None, text=None, text_parent_id=None):
         if css_selector is not None:
             return lambda driver: driver.find_element_by_css_selector(css_selector)
@@ -417,8 +471,11 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         """
         'raw' method for getting URL - not compatible between FullBrowserTest and WebTestBase
         """
-        self._have_visited_page = True
+        self._drivers_visited_pages.add(self._driver)
         self._driver.get(url)
+
+    def _have_visited_page(self):
+        return self._driver in self._drivers_visited_pages
 
     def _add_cookie(self, cookie_dict):
         self._driver.add_cookie(cookie_dict)

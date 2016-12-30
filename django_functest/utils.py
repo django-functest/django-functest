@@ -100,3 +100,16 @@ class AdminLoginMixin(ShortcutLoginMixin):
             return
 
         self.get_url('admin:logout')
+
+
+class BrowserSessionToken(object):
+    # Simple container class to hide the fact that the value is really a
+    # webdriver instance or webtest instance (but that may change in future)
+    def __init__(self, value):
+        self.value = value
+
+    def __eq__(self, other):
+        return self.value == other.value
+
+    def __repr__(self):
+        return "<BrowserSessionToken {0}>".format(id(self.value))

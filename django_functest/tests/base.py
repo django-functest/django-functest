@@ -5,9 +5,9 @@ import subprocess
 import unittest
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
-from django_functest import FuncSeleniumMixin, FuncWebTestMixin
+from django_functest import FuncSeleniumMixin, FuncWebTestMixin, MultiThreadedLiveServerMixin
 
 # Getting some errors that seem related to this:
 # http://stackoverflow.com/questions/18281137/selenium-django-gives-foreign-key-error/18292090#18292090 # noqa
@@ -39,6 +39,7 @@ chrome_available = binary_available("chromedriver")
 phantomjs_available = binary_available("phantomjs")
 
 
+@override_settings(DEBUG=True)  # easier debugging
 class MyLiveServerTestCase(StaticLiveServerTestCase):
     available_apps = AVAILABLE_APPS
 
@@ -76,7 +77,8 @@ class FirefoxBase(HideBrowserMixin, SeleniumBaseMixin, FuncSeleniumMixin, MyLive
 # Chrome/ChromeDriver don't work on Travis
 # https://github.com/travis-ci/travis-ci/issues/272
 @unittest.skipIf(not chrome_available or IN_TRAVIS, "Chrome not available, skipping")
-class ChromeBase(HideBrowserMixin, SeleniumBaseMixin, FuncSeleniumMixin, MyLiveServerTestCase):
+class ChromeBase(HideBrowserMixin, SeleniumBaseMixin, FuncSeleniumMixin,
+                 MultiThreadedLiveServerMixin, MyLiveServerTestCase):
     driver_name = "Chrome"
 
 

@@ -128,6 +128,37 @@ followed the same pattern.
       Get the Django session as a dictionary. This is useful for creating
       assertions.
 
+   .. method:: new_browser_session():
+
+      Creates (and switches to) a new session that is separate from previous
+      sessions. This can be used to simulate multiple devices/users accessing a
+      site at the same time.
+
+      Returns a tuple (old_session_token, new_session_token). These values
+      should be treated as opaque tokens that can be used with
+      ``switch_browser_session``.
+
+      For Selenium tests, a new instance of the web driver is created, which
+      results in a new browser instance with a separate profile being used. In
+      this case, however, there are complications:
+
+      Django's ``LiveServerTestCase`` is currently single threaded. Some browsers
+      keep (mutliple) connections open to a domain, and Chrome especially can
+      lock up the test server when multiple sessions are open.
+
+      A fix for this is to add
+      :class:`django_functest.MultiThreadedLiveServerMixin` to any test class
+      that needs this functionality, especially if run against Chrome. However,
+      please note the issues documented for that mixin.
+
+   .. method:: switch_browser_session(session_token)
+
+      Switch to the browser session indicated by the supplied token. The token
+      must be an object returned from a previous call to ``new_browser_session``
+      or ``switch_browser_session``.
+
+      Returns a tuple (old_session_token, new_session_token).
+
    .. method:: submit(css_selector, wait_for_reload=True, auto_follow=True, window_closes=False)
 
       Submits a form via the button specified in ``css_selector``.

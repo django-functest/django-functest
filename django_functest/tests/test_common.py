@@ -268,6 +268,53 @@ class TestCommonBase(FuncBaseMixin):
         thing = self.refresh_thing()
         self.assertEqual(thing.notes_file.file.read(), data)
 
+    def test_new_browser_session(self):
+        self.get_url('new_browser_session_test')
+        self.assertTextPresent('Hello new user')
+        self.assertTextAbsent('Welcome back')
+        uid_1 = self.get_session_data()['UID']
+
+        # Sanity check our view behaves as expected
+        self.get_url('new_browser_session_test')
+        self.assertTextPresent('Welcome back')
+        uid_1b = self.get_session_data()['UID']
+
+        self.assertEqual(uid_1, uid_1b)
+
+        first_session_token, second_session_token = self.new_browser_session()
+        self.get_url('new_browser_session_test')
+        self.assertTextPresent('Hello new user')
+        self.assertTextAbsent('Welcome back')
+        uid_2 = self.get_session_data()['UID']
+        self.assertNotEqual(uid_1, uid_2)
+
+        # Tests for switch_browser_session
+        ot2, nt2 = self.switch_browser_session(first_session_token)
+        self.assertEqual(nt2, first_session_token)
+        self.assertEqual(ot2, second_session_token)
+
+        self.get_url('new_browser_session_test')
+        self.assertTextPresent('Welcome back')
+        self.assertTextPresent(uid_1)
+        self.assertEqual(self.get_session_data()['UID'], uid_1)
+
+        self.switch_browser_session(second_session_token)
+        self.get_url('new_browser_session_test')
+        self.assertTextPresent('Welcome back')
+        self.assertTextPresent(uid_2)
+        self.assertEqual(self.get_session_data()['UID'], uid_2)
+
+        # assertTextPresent (etc.) should work without refetching
+        # a page. This requires things like `last_response`
+        # automatically switching.
+
+        self.switch_browser_session(first_session_token)
+        self.assertTextPresent(uid_1)
+        self.assertTextAbsent(uid_2)
+        self.switch_browser_session(second_session_token)
+        self.assertTextPresent(uid_2)
+        self.assertTextAbsent(uid_1)
+
 
 class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
 

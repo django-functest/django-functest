@@ -1,5 +1,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
+from collections import defaultdict
+
 import pyquery
 import six
 from django.conf import settings
@@ -12,7 +14,7 @@ from webtest.forms import Checkbox
 
 from .base import FuncBaseMixin
 from .exceptions import WebTestCantUseElement, WebTestMultipleElementsException, WebTestNoSuchElementException
-from .utils import CommonMixin, get_session_store
+from .utils import BrowserSessionToken, CommonMixin, get_session_store
 
 
 def html_norm(html):
@@ -23,7 +25,8 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
 
     def __init__(self, *args, **kwargs):
         super(FuncWebTestMixin, self).__init__(*args, **kwargs)
-        self.last_responses = []
+        self._all_last_responses = defaultdict(list)
+        self._all_apps = []
 
     # Public Common API
     def assertTextAbsent(self, text):
@@ -126,6 +129,30 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
             session[name] = text_type(value)
         session.save()
 
+    def new_browser_session(self):
+        """
+        Creates (and switches to) a new session that is separate from previous
+        sessions. Returns a tuple (old_session_token, new_session_token). These
+        values should be treated as opaque tokens that can be used with
+        switch_browser_session.
+        """
+        # WebTestMixin creates the instance as 'self.app', so we just just move
+        # that value around.
+        last_app = self.app
+        self.renew_app()
+        return (BrowserSessionToken(last_app),
+                BrowserSessionToken(self.app))
+
+    def switch_browser_session(self, session_token):
+        """
+        Switch to the browser session indicated by the supplied token.
+        Returns a tuple (old_session_token, new_session_token).
+        """
+        last_app = self.app
+        self.app = session_token.value
+        return (BrowserSessionToken(last_app),
+                BrowserSessionToken(self.app))
+
     def submit(self, css_selector, wait_for_reload=None, auto_follow=True, window_closes=None):
         """
         Submit the form using the input given in the CSS selector
@@ -163,6 +190,9 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         return self.last_responses[-1]
 
     # Implementation methods - private
+    @property
+    def last_responses(self):
+        return self._all_last_responses[self.app]
 
     def _add_cookie(self, cookie_dict):
         # We don't use self.app.set_cookie since it has undesirable behaviour

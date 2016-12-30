@@ -1,5 +1,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
+import uuid
+
 from django import forms
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -106,3 +108,18 @@ def thing_cleared(request, thing_id):
     thing = Thing.objects.get(id=int(thing_id))
     return render(request, "django_functest/tests/thing_cleared.html",
                   {'thing': thing})
+
+
+def new_browser_session_test(request):
+    if 'UID' in request.session:
+        uid = request.session['UID']
+        message = "Welcome back"
+    else:
+        uid = uuid.uuid1()
+        request.session['UID'] = str(uid)
+        message = "Hello new user"
+
+    return render(request, "django_functest/tests/new_browser_session_test.html",
+                  {'uid': uid,
+                   'message': message,
+                   })
