@@ -53,11 +53,12 @@ setup(
     include_package_data=True,
     install_requires=[
         'django-webtest>=1.7.8',
-        'selenium>=2.48.0',
+        'selenium>=2.48.0,<3',
         'PyVirtualDisplay>=0.1.4',
         'six>=1.10.0',
         'furl>=0.4.9',
         'pyquery>=1.2.10',
+        'Django>=1.7',
     ] + extra_requires,
     license="BSD",
     zip_safe=False,
