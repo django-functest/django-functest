@@ -36,7 +36,13 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
     @classmethod
     def setUpClass(cls):
         if not cls.display_browser_window():
-            cls.__display = Display(visible=False)
+            display_args = {'visible': False}
+            if cls.browser_window_size is not None:
+                # For some browsers, we need display to be bigger
+                # than the size we want the window to be.
+                width, height = cls.browser_window_size
+                display_args['size'] = (width + 500, height + 500)
+            cls.__display = Display(**display_args)
             cls.__display.start()
         driver_name = cls.get_driver_name()
         kwargs = cls.get_webdriver_options()
