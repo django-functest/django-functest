@@ -366,6 +366,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         """
         def f(driver):
             driver.set_window_size(width, height)
+            time.sleep(0.1)
             win_width, win_height = self._get_window_size()
             # Some drivers fail to get it exactly
             return ((width - 2 <= win_width <= width + 2) and
