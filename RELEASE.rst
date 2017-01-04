@@ -5,11 +5,11 @@ Release process
 
 * Update HISTORY.rst, removing "(in development)". Commit.
 
-* Use bumpversion e.g.::
+* Update the version number again:
 
-      bumpversion release
-
-* Check the commit log and undo any nastiness that bumpversion did to setup.cfg
+  * setup.py
+  * django_functest/__init__.py
+  * docs/conf.py
 
 * Make sure all is committed
 
@@ -17,11 +17,11 @@ Release process
 
     ./release.sh
 
-* bumpversion again::
+* Tag the release e.g.::
 
-      bumpversion --no-tag patch
+    git tag v0.1.0
 
-  And fix again.
+* Update the version numbers again, moving to the next release, and adding "-dev"
 
 * Add new section to HISTORY.rst
 
