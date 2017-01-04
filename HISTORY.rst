@@ -3,8 +3,8 @@
 History
 -------
 
-0.1.10 (under development)
-++++++++++++++++++++++++++
+0.2.0
++++++
 
 * Added :meth:`~django_functest.FuncCommonApi.new_browser_session` and
   :meth:`~django_functest.FuncCommonApi.switch_browser_session` to the common
