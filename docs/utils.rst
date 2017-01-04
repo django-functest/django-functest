@@ -26,7 +26,12 @@ Utilities
    This provides a method for doing a login without actually doing HTTP-level work,
    as far as possible.
 
-   This works with both ``FuncWebTestMixin`` and ``FuncSeleniumMixin``.
+   This works with both ``FuncWebTestMixin`` and ``FuncSeleniumMixin``. These
+   methods do *not* simulate exactly what happens when a user logs in and out
+   with real HTTP requests — they only do enough to get you to "logged in user",
+   or "logged out user" state. In particular, other side effects on the session
+   that normally happen (such as session key rotation, or anything that
+   responds to the ``user_logged_in`` signal etc.) will not be done.
 
    .. method:: shortcut_login(**credentials)
 
