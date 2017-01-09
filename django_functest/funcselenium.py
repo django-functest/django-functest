@@ -624,14 +624,8 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             || e_x > vWidth || e_y > vHeight)
         return false;
 
-    // Return true if any of its four corners or center are visible
-    return (
-          el.contains(efp(rect.left,  rect.top))
-      ||  el.contains(efp(rect.right, rect.top))
-      ||  el.contains(efp(rect.right, rect.bottom))
-      ||  el.contains(efp(rect.left,  rect.bottom))
-      ||  el.contains(efp(rect.right - rect.width / 2, rect.bottom - rect.height / 2))
-    );
+    // Return true if its center is visible
+    return el.contains(efp(e_x, e_y));
 })(arguments[0])""", elem)
 
     def _is_checked(self, elem):
