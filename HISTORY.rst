@@ -6,6 +6,9 @@ History
 0.2.1 (in development)
 ++++++++++++++++++++++
 
+* Made :meth:`~django_functest.FuncCommonApi.get_literal_url` accept
+  absolute URLs for Selenium (WebTest already worked by accident).
+
 0.2.0
 +++++
 

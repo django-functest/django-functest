@@ -133,7 +133,9 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         """
         Gets the passed in URL, as a literal relative URL, without using reverse.
         """
-        self._get_url_raw(self.live_server_url + url)
+        if not url.startswith(self.live_server_url):
+            url = self.live_server_url + url
+        self._get_url_raw(url)
         self.wait_until_loaded('body')
 
     def is_element_present(self, css_selector):

@@ -34,6 +34,13 @@ class TestCommonBase(FuncBaseMixin):
         self.get_literal_url(url)
         self.assertUrlsEqual(url)
 
+    def test_get_literal_url_with_full_url(self):
+        url = reverse('admin:login')
+        self.get_literal_url(url)
+        # Specifically check this idiom for refreshing a page:
+        self.get_literal_url(self.current_url)
+        self.assertUrlsEqual(url)
+
     def test_assertUrlsEqual_default(self):
         self.get_url('admin:login')
         self.assertRaises(AssertionError, lambda: self.assertUrlsEqual("foo"))
