@@ -5,7 +5,7 @@ Release process
 
 * Update HISTORY.rst, removing "(in development)". Commit.
 
-* Update the version number again:
+* Update the version number, removing the ``-dev`` part
 
   * setup.py
   * django_functest/__init__.py
