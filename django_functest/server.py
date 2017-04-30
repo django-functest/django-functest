@@ -2,6 +2,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import sys
 
+import django
 from django.test import testcases
 
 if sys.version_info < (3,):
@@ -28,11 +29,14 @@ class MultiThreadedLiveServerMixin(object):
     """
     Mixin for a LiveServerTestCase to make it multi-threaded.
     """
-    @classmethod
-    def _create_server_thread(cls, host, possible_ports, connections_override):
-        return MultiThreadedLiveServerThread(
-            host,
-            possible_ports,
-            cls.static_handler,
-            connections_override=connections_override,
-        )
+    if django.VERSION < (1, 11):
+        @classmethod
+        def _create_server_thread(cls, host, possible_ports, connections_override):
+            return MultiThreadedLiveServerThread(
+                host,
+                possible_ports,
+                cls.static_handler,
+                connections_override=connections_override,
+            )
+    else:
+        server_thread_class = MultiThreadedLiveServerThread
