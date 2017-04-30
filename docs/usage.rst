@@ -22,7 +22,11 @@ There are two main ideas behind django-functest:
        form['message'] = 'Hello'
        response2 = form.submit().follow()
 
-   Both of these are verbose, and much lower-level than you would like to write for testing a Django web app.
+   Both of these are verbose, and much lower-level than you would like to write
+   for testing a Django web app. (Tests that use `Django test client
+   <https://docs.djangoproject.com/en/dev/topics/testing/tools/#the-test-client>`_
+   are even worse, and additionally do a really bad job of modelling what
+   happens when a user interacts with a web page.)
 
    With django-functest, the lower-level details are hidden, and instead you
    would write::
