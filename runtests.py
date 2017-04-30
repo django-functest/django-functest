@@ -123,7 +123,10 @@ settings.configure(
                 'formatter': 'verbose'
             },
         }
-    }
+    },
+    ALLOWED_HOSTS=[
+        'localhost',
+    ],
 )
 
 try:
