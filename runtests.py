@@ -141,9 +141,16 @@ if known_args.show_browser:
     from django_functest.tests.base import HideBrowserMixin
     HideBrowserMixin.display = True
 
-if known_args.firefox_binary:
+
+def set_firefox_binary(path):
     from django_functest.tests.base import FirefoxBase
-    FirefoxBase.firefox_binary = known_args.firefox_binary
+    FirefoxBase.firefox_binary = path
+
+
+if known_args.firefox_binary:
+    set_firefox_binary(known_args.firefox_binary)
+elif 'TEST_FIREFOX_BINARY' in os.environ:
+    set_firefox_binary(os.environ['TEST_FIREFOX_BINARY'])
 
 if known_args.update_migration:
     initial_migration = "django_functest/tests/migrations/0001_initial.py"
