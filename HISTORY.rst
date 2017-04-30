@@ -3,6 +3,12 @@
 History
 -------
 
+1.0 (under development)
++++++++++++++++++++++++
+
+* Added Django 1.11 support.
+* Dropped official Django 1.7 support (may still work).
+
 0.2.1
 +++++
 
