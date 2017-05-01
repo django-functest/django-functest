@@ -124,9 +124,6 @@ settings.configure(
             },
         }
     },
-    ALLOWED_HOSTS=[
-        'localhost',
-    ],
 )
 
 try:

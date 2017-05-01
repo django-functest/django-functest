@@ -209,7 +209,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
             value=value,
             port=None,
             port_specified=False,
-            domain='localhost.local',
+            domain=self._get_cookie_domain(),
             domain_specified=True,
             domain_initial_dot=False,
             path='/',
@@ -222,6 +222,12 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
             rest=None
         )
         self.app.cookiejar.set_cookie(cookie)
+
+    def _get_cookie_domain(self):
+        # Cope with different versions of django-webtest, and work out
+        # what HTTP_HOST it is going to set:
+        env = self.app._update_environ({}, None)
+        return env.get('HTTP_HOST', 'localhost.local')
 
     def _get_session(self):
         session_key = self.app.cookies.get(settings.SESSION_COOKIE_NAME, None)

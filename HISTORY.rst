@@ -6,6 +6,7 @@ History
 1.0.1 (under development)
 +++++++++++++++++++++++++
 
+* Fixed incompatibility with django-webtest 1.9.0 and later
 
 1.0
 +++

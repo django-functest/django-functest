@@ -33,6 +33,10 @@ When running tests, you will also need to have ``localhost`` in your
 Dependencies
 ============
 
+django-webtest, WebTest and other dependencies are automatically installed. If
+you are using Django 1.11 or later, you should install django-functest 1.0.1 or
+later and django-webtest 1.9.1 or later.
+
 Installing django-functest will install the Python ``selenium`` package
 automatically. However, due the nature of Selenium, if you are writing Selenium
 tests (i.e. if you are not simply using the WebTest wrapper), dependencies are
