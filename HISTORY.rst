@@ -3,8 +3,8 @@
 History
 -------
 
-1.0.1 (under development)
-+++++++++++++++++++++++++
+1.0.1
++++++
 
 * Fixed incompatibility with django-webtest 1.9.0 and later
 
