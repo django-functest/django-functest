@@ -6,6 +6,7 @@ import os
 import os.path
 import signal
 import sys
+import warnings
 
 import faulthandler
 from django.conf import settings
@@ -14,6 +15,9 @@ from django.core.management import execute_from_command_line
 # If the process receives signal SIGUSR1, dump a traceback
 faulthandler.enable()
 faulthandler.register(signal.SIGUSR1)
+
+warnings.simplefilter("once", PendingDeprecationWarning)
+warnings.simplefilter("once", DeprecationWarning)
 
 
 parser = argparse.ArgumentParser(description="Run the test suite, or some tests. "
