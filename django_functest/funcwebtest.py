@@ -9,7 +9,6 @@ from django.core.urlresolvers import reverse
 from django.utils.html import escape
 from django_webtest import WebTestMixin
 from six import text_type
-from six.moves import http_cookiejar
 from webtest.forms import Checkbox
 
 from .base import FuncBaseMixin
@@ -194,49 +193,22 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
     def last_responses(self):
         return self._all_last_responses[self.app]
 
-    def _add_cookie(self, cookie_dict):
-        # We don't use self.app.set_cookie since it has undesirable behaviour
-        # with domain and value fields that causes issues.
-        value = cookie_dict['value']
-        name = cookie_dict['name']
+    def _set_cookie(self, name, value):
         if six.PY2:
             value = value.encode('utf-8')
             name = name.encode('utf-8')
 
-        cookie = http_cookiejar.Cookie(
-            version=0,
-            name=name,
-            value=value,
-            port=None,
-            port_specified=False,
-            domain=self._get_cookie_domain(),
-            domain_specified=True,
-            domain_initial_dot=False,
-            path='/',
-            path_specified=True,
-            secure=False,
-            expires=None,
-            discard=False,
-            comment=None,
-            comment_url=None,
-            rest=None
-        )
-        self.app.cookiejar.set_cookie(cookie)
-
-    def _get_cookie_domain(self):
-        # Cope with different versions of django-webtest, and work out
-        # what HTTP_HOST it is going to set:
-        env = self.app._update_environ({}, None)
-        return env.get('HTTP_HOST', 'localhost.local')
+        self.app.set_cookie(name, value)
 
     def _get_session(self):
         session_key = self.app.cookies.get(settings.SESSION_COOKIE_NAME, None)
         if session_key is None:
             # Create new
             session = get_session_store()
-            self._add_cookie({'name': settings.SESSION_COOKIE_NAME,
-                              'value': session.session_key})
+            self._set_cookie(settings.SESSION_COOKIE_NAME,
+                             session.session_key)
         else:
+            session_key = session_key.strip('"')
             session = get_session_store(session_key=session_key)
         return session
 

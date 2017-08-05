@@ -6,8 +6,9 @@ History
 1.0.2
 +++++
 
+* Fixes to cope with WebTest 2.0.28. We now require django-webtest 1.9.2 or
+  later, and only test against the latest WebTest.
 * Fixed some deprecation warnings
-
 
 1.0.1
 +++++
