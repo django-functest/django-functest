@@ -5,7 +5,6 @@ from collections import defaultdict
 import pyquery
 import six
 from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.utils.html import escape
 from django_webtest import WebTestMixin
 from six import text_type
@@ -14,6 +13,11 @@ from webtest.forms import Checkbox
 from .base import FuncBaseMixin
 from .exceptions import WebTestCantUseElement, WebTestMultipleElementsException, WebTestNoSuchElementException
 from .utils import BrowserSessionToken, CommonMixin, get_session_store
+
+try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
 
 
 def html_norm(html):

@@ -3,12 +3,16 @@ from __future__ import absolute_import, print_function, unicode_literals
 import uuid
 
 from django import forms
-from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils.html import mark_safe
 
 from .models import Thing
+
+try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
 
 
 def test_misc(request):
