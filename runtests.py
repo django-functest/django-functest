@@ -8,6 +8,7 @@ import signal
 import sys
 import warnings
 
+import django
 import faulthandler
 from django.conf import settings
 from django.core.management import execute_from_command_line
@@ -67,7 +68,8 @@ elif known_args.database == "postgres":
         }
     }
 
-settings.configure(
+
+settings_dict = dict(
     DEBUG=True,
     USE_TZ=True,
     DATABASES=DATABASES,
@@ -84,7 +86,7 @@ settings.configure(
         "django_functest.tests",
     ],
     SITE_ID=1,
-    MIDDLEWARE_CLASSES=[
+    MIDDLEWARE=[
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
@@ -132,8 +134,14 @@ settings.configure(
     },
 )
 
+if django.VERSION < (1, 10):
+    settings_dict['MIDDLEWARE_CLASSES'] = settings_dict.pop('MIDDLEWARE')
+
+
+settings.configure(**settings_dict)
+
+
 try:
-    import django
     setup = django.setup
 except AttributeError:
     pass
