@@ -27,6 +27,8 @@ parser.add_argument("--show-browser", action='store_true',
                     help="Show the browser when running Selenium tests")
 parser.add_argument("--firefox-binary", action='store',
                     help="Path to binary to use for Firefox tests")
+parser.add_argument("--skip-selenium", action='store_true',
+                    help="Skip Selenium tests")
 parser.add_argument("--update-migration", action='store_true',
                     help="Don't run tests - just update the migration used for tests")
 parser.add_argument("-v", "--verbosity", action='store', dest="verbosity",
@@ -152,6 +154,9 @@ if known_args.firefox_binary:
     set_firefox_binary(known_args.firefox_binary)
 elif 'TEST_FIREFOX_BINARY' in os.environ:
     set_firefox_binary(os.environ['TEST_FIREFOX_BINARY'])
+
+if known_args.skip_selenium:
+    os.environ['TEST_SKIP_SELENIUM'] = "TRUE"
 
 if known_args.update_migration:
     initial_migration = "django_functest/tests/migrations/0001_initial.py"

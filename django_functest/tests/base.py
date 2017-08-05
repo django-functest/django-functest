@@ -52,6 +52,7 @@ class HideBrowserMixin(object):
     display = False  # hacked by runtests.py
 
 
+@unittest.skipIf(os.environ.get('TEST_SKIP_SELENIUM'), "Skipping Selenium tests")
 class SeleniumBaseMixin(object):
     browser_window_size = (1024, 768)
     if IN_TRAVIS:
