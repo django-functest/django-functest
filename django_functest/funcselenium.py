@@ -8,7 +8,6 @@ import time
 from datetime import datetime
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
 from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException, StaleElementReferenceException
@@ -19,6 +18,12 @@ from six import string_types, text_type
 from .base import FuncBaseMixin
 from .exceptions import SeleniumCantUseElement
 from .utils import BrowserSessionToken, CommonMixin, get_session_store
+
+try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
+
 
 logger = logging.getLogger(__name__)
 
