@@ -3,6 +3,12 @@
 History
 -------
 
+1.0.2
++++++
+
+* Fixed some deprecation warnings
+
+
 1.0.1
 +++++
 

@@ -405,7 +405,12 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
                 handle = possible_window_handles[0]
 
         def f(driver):
-            driver.switch_to_window(handle)
+            if (hasattr(driver, 'switch_to') and
+                    hasattr(driver.switch_to, 'window')):
+                m = driver.switch_to.window
+            else:
+                m = driver.switch_to_window
+            m(handle)
             return driver.current_window_handle == handle
         self.wait_until(f)
         return current_window_handle, handle
