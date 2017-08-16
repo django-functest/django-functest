@@ -5,7 +5,7 @@ Release process
 
 * Update HISTORY.rst, removing "(in development)". Commit.
 
-* Update the version number, removing the ``-dev`` part
+* Update the version number, removing the ``-dev1`` part
 
   * setup.py
   * django_functest/__init__.py
@@ -21,7 +21,7 @@ Release process
 
     git tag v0.1.0
 
-* Update the version numbers again, moving to the next release, and adding "-dev"
+* Update the version numbers again, moving to the next release, and adding "-dev1"
 
 * Add new section to HISTORY.rst
 
