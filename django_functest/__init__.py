@@ -7,7 +7,7 @@ from .utils import AdminLoginMixin, ShortcutLoginMixin
 from .files import Upload
 from .server import MultiThreadedLiveServerMixin
 
-__version__ = '1.0.2'
+__version__ = '1.0.3-dev1'
 
 __all__ = ['FuncBaseMixin', 'FuncWebTestMixin', 'FuncSeleniumMixin', 'ShortcutLoginMixin',
            'AdminLoginMixin', 'MultiThreadedLiveServerMixin', 'Upload']
