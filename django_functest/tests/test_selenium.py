@@ -4,17 +4,12 @@ import os
 import unittest
 
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 from selenium.common.exceptions import NoSuchElementException
 
 from django_functest import AdminLoginMixin, FuncBaseMixin
-
 from .base import ChromeBase, FirefoxBase, PhantomJSBase
 from .models import Thing
-
-try:
-    from django.urls import reverse
-except ImportError:
-    from django.core.urlresolvers import reverse
 
 
 # Tests for Selenium specific methods

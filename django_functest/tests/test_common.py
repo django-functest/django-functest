@@ -1,5 +1,6 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
+from django.urls import reverse
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 from django_functest import FuncBaseMixin, Upload
@@ -7,13 +8,7 @@ from django_functest.exceptions import (
     SeleniumCantUseElement, WebTestCantUseElement, WebTestMultipleElementsException, WebTestNoSuchElementException
 )
 from django_functest.tests.models import Thing
-
 from .base import ChromeBase, FirefoxBase, PhantomJSBase, WebTestBase
-
-try:
-    from django.urls import reverse
-except ImportError:
-    from django.core.urlresolvers import reverse
 
 
 class TestCommonBase(FuncBaseMixin):
