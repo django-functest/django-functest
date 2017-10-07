@@ -166,6 +166,9 @@ elif 'TEST_FIREFOX_BINARY' in os.environ:
 if known_args.skip_selenium:
     os.environ['TEST_SKIP_SELENIUM'] = "TRUE"
 
+if known_args.verbosity is None and 'TRAVIS' in os.environ:
+    known_args.verbosity = 2
+
 if known_args.update_migration:
     initial_migration = "django_functest/tests/migrations/0001_initial.py"
     if os.path.exists(initial_migration):
