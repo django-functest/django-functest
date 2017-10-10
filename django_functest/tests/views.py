@@ -5,14 +5,10 @@ import uuid
 from django import forms
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 from django.utils.html import mark_safe
 
 from .models import Thing
-
-try:
-    from django.urls import reverse
-except ImportError:
-    from django.core.urlresolvers import reverse
 
 
 def test_misc(request):
