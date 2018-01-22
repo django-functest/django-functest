@@ -1,21 +1,22 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
-import sys
-
 import django
 from django.test import testcases
 
-if sys.version_info < (3,):
-    import SocketServer as socketserver
-else:
-    import socketserver
 
-
-# See
-#  https://code.djangoproject.com/ticket/20238
-#  https://code.djangoproject.com/ticket/27665
-class ThreadedWSGIServer(socketserver.ThreadingMixIn, testcases.WSGIServer):
-    pass
+try:
+    from django.core.servers.basehttp import ThreadedWSGIServer
+except ImportError:
+    import sys
+    if sys.version_info < (3,):
+        import SocketServer as socketserver
+    else:
+        import socketserver
+    # See
+    #  https://code.djangoproject.com/ticket/20238
+    #  https://code.djangoproject.com/ticket/27665
+    class ThreadedWSGIServer(socketserver.ThreadingMixIn, testcases.WSGIServer):
+        pass
 
 
 class MultiThreadedLiveServerThread(testcases.LiveServerThread):
