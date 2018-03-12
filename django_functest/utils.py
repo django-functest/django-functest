@@ -1,5 +1,6 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
+import warnings
 from importlib import import_module
 
 from django.conf import settings
@@ -64,6 +65,8 @@ class CommonMixin(object):
         """
         Same as ``fill`` except the keys are input IDs
         """
+        warnings.warn("instead of `fill_by_id({'foo': 'bar'})` do `fill({'#foo': 'bar'})`",
+                      DeprecationWarning)
         self.fill({'#' + k: v for k, v in data.items()})
 
     def fill_by_name(self, fields, prefix=""):

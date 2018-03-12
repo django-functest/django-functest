@@ -78,7 +78,9 @@ followed the same pattern.
 
    .. method:: fill_by_id(data_dict)
 
-      Same as :meth:`fill` except the keys are element IDs.
+      Same as :meth:`fill` except the keys are element IDs. **Deprecated** —
+      instead of ``fill_by_id({'foo': 'bar'})`` you should do ``fill({'#foo':
+      'bar'})``, because it is shorter and more flexible.
 
    .. method:: fill_by_name(data_dict)
 
