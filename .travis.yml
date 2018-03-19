@@ -28,6 +28,10 @@ addons:
   firefox: "45.2.0"
 script:
 - coverage erase
+- firefox --version
+- ls -lhd /tmp
+- ls -lh /tmp
+- whoami
 - tox
 after_success:
 - coverage combine
