@@ -1,9 +1,10 @@
 # Config file for automatic testing at travis-ci.org
 
 language: python
-python: 3.5  # this is needed to fool travis to have python3.5 as well
+python: 3.5  # this is needed to make Travis have python3.5 as well
 # See tox.ini for env list
-# This list should be generated using tox -l
+# This list should be generated using tox -l.
+# We miss out Python 3.3 because Travis doesn't have it in the Python 3.5 image
 env:
 - TOXENV=checkmanifest
 - TOXENV=flake8-check
@@ -12,7 +13,6 @@ env:
 - TOXENV=py27-django111
 - TOXENV=py27-django18
 - TOXENV=py27-django19
-- TOXENV=py33-django18
 - TOXENV=py34-django110
 - TOXENV=py34-django111
 - TOXENV=py34-django18
