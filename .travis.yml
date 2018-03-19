@@ -28,7 +28,7 @@ install:
 #   firefox: "45.2.0"
 script:
 - coverage erase
-- test -z "${TEST_TYPE##*django*}" && ./download_firefox.sh
+- if [ -z "${TEST_TYPE##*django*}" ]; then ./download_firefox.sh; fi
 - TEST_FIREFOX_BINARY=`pwd`/downloads/firefox-sdk/bin/firefox tox
 after_success:
 - coverage combine
