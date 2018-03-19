@@ -24,15 +24,13 @@ env:
 install:
 - pip install tox>=2.1
 - pip install coveralls coverage
-addons:
-  firefox: "45.2.0"
+# This doesn't work - https://github.com/travis-ci/travis-ci/issues/9362
+# addons:
+#   firefox: "45.2.0"
 script:
 - coverage erase
-- firefox --version
-- ls -lhd /tmp
-- ls -lh /tmp
-- whoami
-- tox
+- ./download_firefox.sh
+- TEST_FIREFOX_BINARY=`pwd`/firefox-sdk/bin/firefox tox
 after_success:
 - coverage combine
 - coveralls
