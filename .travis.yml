@@ -30,7 +30,7 @@ install:
 script:
 - coverage erase
 - ./download_firefox.sh
-- TEST_FIREFOX_BINARY=`pwd`/firefox-sdk/bin/firefox tox
+- TEST_FIREFOX_BINARY=`pwd`/downloads/firefox-sdk/bin/firefox tox
 after_success:
 - coverage combine
 - coveralls
