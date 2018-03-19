@@ -29,7 +29,7 @@ install:
 #   firefox: "45.2.0"
 script:
 - coverage erase
-- ./download_firefox.sh
+- test -z "${TOXENV##*django*}" && ./download_firefox.sh
 - TEST_FIREFOX_BINARY=`pwd`/downloads/firefox-sdk/bin/firefox tox
 after_success:
 - coverage combine
