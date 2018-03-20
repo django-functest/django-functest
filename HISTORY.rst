@@ -9,6 +9,7 @@ History
 * Deprecated ``fill_by_id``. Instead of ``fill_by_id({'foo': 'bar'})`` you
   should do ``fill({'#foo': 'bar'})``, because it is shorter and more flexible.
 * Test against latest Firefox
+* Django 2.0 compatibility
 
 1.0.2
 +++++
