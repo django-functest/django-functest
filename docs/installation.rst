@@ -56,10 +56,15 @@ the browser to use, and note the following:
 
   If you need to run your own tests with a different version of Firefox than the
   default one on your system, it is recommended you follow the pattern used by
-  django-functests own ``runtests.py`` script which allows you to pass a
-  ``--firefox-binary`` option. This is then eventually returned by
-  ``get_webdriver_options`` as argument ``firefox_binary``. You could also make
-  ``get_webdriver_options`` look in ``os.environ`` if that is easier to arrange.
+  django-functest's own `runtests.py
+  <https://github.com/django-functest/django-functest/blob/master/runtests.py>`_
+  script which allows you to pass a ``--firefox-binary`` option. This is then
+  eventually returned by
+  :meth:`~django_functest.FuncSeleniumMixin.get_webdriver_options` as argument
+  ``firefox_binary`` (see `tests/base.py
+  <https://github.com/django-functest/django-functest/blob/master/django_functest/tests/base.py>`_).
+  You could also make ``get_webdriver_options`` look in ``os.environ`` if that
+  is easier to arrange.
 
 * Selenium >= 3 will not work with Firefox 45 or older.
 
