@@ -4,11 +4,13 @@ python:
   - "2.7"
   - "3.4"
   - "3.5"
+  - "3.6"
 env:
   - TEST_TYPE="django18"
   - TEST_TYPE="django19"
   - TEST_TYPE="django110"
   - TEST_TYPE="django111"
+  - TEST_TYPE="django20"
 matrix:
   include:
     - python: "2.7"
@@ -19,6 +21,9 @@ matrix:
       env: TEST_TYPE="isort"
     - python: "3.3"
       env: TEST_TYPE="django18"
+  exclude:
+    - python: "2.7"
+      env: TEST_TYPE="django20"
 
 install:
 - pip install tox>=2.1 tox-travis
