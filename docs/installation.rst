@@ -52,7 +52,7 @@ the browser to use, and note the following:
 
 * Firefox 45 and older can be used with Selenium < 3 without anything additional
   installed. Old versions of Firefox can be found here:
-  https://www.mozilla.org/en-US/firefox/organizations/all/
+  https://ftp.mozilla.org/pub/firefox/releases/
 
   If you need to run your own tests with a different version of Firefox than the
   default one on your system, it is recommended you follow the pattern used by
