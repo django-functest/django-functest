@@ -63,3 +63,6 @@ Utilities
         need to set a NAME parameter for `the test database
         <https://docs.djangoproject.com/en/1.10/topics/testing/overview/#the-test-database>`_
         to force it to be a non-in-memory database.
+
+      On Django 2.0 and greater, this is class does nothing since the Django 2.0
+      ``LiveServerTestCase`` already has this behaviour builtin.
