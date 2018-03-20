@@ -141,7 +141,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         if not url.startswith(self.live_server_url):
             url = self.live_server_url + url
         self._get_url_raw(url)
-        self.wait_until_loaded('body')
+        self._wait_until_finished()
 
     def is_element_present(self, css_selector):
         """
