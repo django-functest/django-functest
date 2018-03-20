@@ -8,7 +8,7 @@ History
 
 * Deprecated ``fill_by_id``. Instead of ``fill_by_id({'foo': 'bar'})`` you
   should do ``fill({'#foo': 'bar'})``, because it is shorter and more flexible.
-
+* Test against latest Firefox
 
 1.0.2
 +++++

@@ -28,13 +28,11 @@ matrix:
 install:
 - pip install tox>=2.1 tox-travis
 - pip install coveralls coverage
-# This doesn't work - https://github.com/travis-ci/travis-ci/issues/9362
-# addons:
-#   firefox: "45.2.0"
+addons:
+  firefox: "latest"
 script:
 - coverage erase
-- if [ -z "${TEST_TYPE##*django*}" ]; then ./download_firefox.sh; fi
-- TEST_FIREFOX_BINARY=`pwd`/downloads/firefox-sdk/bin/firefox tox
+- tox
 after_success:
 - coverage combine
 - coveralls
