@@ -68,15 +68,18 @@ the browser to use, and note the following:
 
 * Selenium >= 3 will not work with Firefox 45 or older.
 
-* For newer versions of Firefox (tested with 50 and later), you can use Selenium
-  3 or later, if you install the new `Marionette
+* For newer versions of Firefox, you can use Selenium 3 or later, if you install
+  the new `Marionette
   <https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette/WebDriver>`_
-  driver, also known as ``geckodriver``. Unfortunately this currently is
-  `incomplete
+  driver, also known as ``geckodriver`` (`download releases here
+  <https://github.com/mozilla/geckodriver/releases>`_).
+
+  This implementation currently is `incomplete
   <https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette/WebDriver/status>`_
-  and has `many bugs
+  and has `bugs
   <https://bugzilla.mozilla.org/buglist.cgi?bug_status=__open__&columnlist=assigned_to,bug_status,resolution,short_desc,changeddate,keywords,status_whiteboard&component=Marionette&product=Testing>`_
-  and various incompatibilities. The django-functest suite fails in various
-  places with this combination.
+  and various incompatibilities. However, with the most recent versions of
+  Firefox (58.0), geckodriver (0.20.0) and Selenium (3.11), the django-functest
+  suite passes fully.
 
 * If installed `PhantomJS <http://phantomjs.org/>`_ can be used.
