@@ -74,7 +74,7 @@ In your tests.py::
          pass
 
 In this way, you can write a single test with a high-level API, and run it in
-two way - using a fast, WSGI-based method which emulates typical HTTP usage of a
+two ways - using a fast, WSGI-based method which emulates typical HTTP usage of a
 browser, and using a full browser that actually executes Javascript (if present)
 etc.
 
@@ -85,31 +85,11 @@ Under the hood, the WSGI-based method uses and builds upon `WebTest
 django-functest provides its functionality as mixins, so that you can have your
 own base class for tests.
 
+Contributing and tests
+----------------------
 
-Running Tests
---------------
-
-To run the tests::
-
-  source <YOURVIRTUALENV>/bin/activate
-  (myenv) $ ./setup.py develop
-  (myenv) $ ./runtests.py
-
-Or, to run on all environments::
-
-  pip install tox
-  tox
-
-
-Firefox tests are currently failing due to incompatibilities with recent
-Firefox versions (>= 47) and all published versions of Selenium (< 3.0).
-
-This can be worked around by downloading an old version of Firefox from
-https://www.mozilla.org/en-US/firefox/organizations/all/ and
-using ``runtests.py --firefox-binary=...``, or, in the case of using tox::
-
-    TEST_FIREFOX_BINARY=... tox
-
+See CONTRIBUTING.rst for information about running the test suite and
+contributing to django-functest.
 
 Credits
 -------
