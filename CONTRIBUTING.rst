@@ -87,20 +87,7 @@ To get flake8/tox/isort, just pip install them into your virtualenv.
 
 To run the full test suite, you will need to install:
 
-* Firefox
-
-  Currently the latest version of Firefox that can be reliably used
-  for Selenium tests is Firefox 45.
-
-  With Firefox 50 and later, you can use geckodriver
-  https://github.com/mozilla/geckodriver with Selenium 3, but this appears to
-  be very incomplete.
-
-  Alternatively you can get Firefox 45 here -
-  https://www.mozilla.org/en-US/firefox/organizations/all/
-  You may be able to extract it without installing over other versions of Firefox.
-
-  To use it in tests, use the ``--firefox-binary`` to ``runtests.py``
+* Firefox and `geckodriver <https://github.com/mozilla/geckodriver>`_.
 
 * `chromedriver <https://sites.google.com/a/chromium.org/chromedriver>`_
 
