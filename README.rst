@@ -8,7 +8,7 @@ django-functest
 .. image:: https://coveralls.io/repos/django-functest/django-functest/badge.svg?branch=master&service=github
    :target: https://coveralls.io/github/django-functest/django-functest?branch=master
 
-.. image:: https://readthedocs.org/projects/pip/badge/?version=latest
+.. image:: https://readthedocs.org/projects/django-functest/badge/?version=latest
    :target: https://django-functest.readthedocs.org/en/latest/
 
 
