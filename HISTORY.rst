@@ -10,6 +10,7 @@ History
   should do ``fill({'#foo': 'bar'})``, because it is shorter and more flexible.
 * Test against latest Firefox
 * Django 2.0 compatibility
+* Fix for Django 1.11.2 and later for MultiThreadedLiveServerMixin
 
 1.0.2
 +++++

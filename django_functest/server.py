@@ -22,10 +22,17 @@ if django.VERSION < (2,):
             pass
 
         class MultiThreadedLiveServerThread(testcases.LiveServerThread):
-            def _create_server(self, port):
-                return ThreadedWSGIServer((self.host, port),
-                                          testcases.QuietWSGIRequestHandler,
-                                          allow_reuse_address=False)
+            if django.VERSION < (1, 11, 2):
+                def _create_server(self, port):
+                    return ThreadedWSGIServer((self.host, port),
+                                              testcases.QuietWSGIRequestHandler,
+                                              allow_reuse_address=False)
+            else:
+                # Django 1.11.2 changed the signature
+                def _create_server(self):
+                    return ThreadedWSGIServer((self.host, self.port),
+                                              testcases.QuietWSGIRequestHandler,
+                                              allow_reuse_address=False)
 
     class MultiThreadedLiveServerMixin(object):
         """
