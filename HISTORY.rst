@@ -3,8 +3,8 @@
 History
 -------
 
-1.0.3 (under development)
-+++++++++++++++++++++++++
+1.0.3
++++++
 
 * Deprecated ``fill_by_id``. Instead of ``fill_by_id({'foo': 'bar'})`` you
   should do ``fill({'#foo': 'bar'})``, because it is shorter and more flexible.
