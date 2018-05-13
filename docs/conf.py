@@ -45,7 +45,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'django-functest'
-copyright = u'2016, Luke Plant'
+copyright = u'2016-2018, Luke Plant'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
