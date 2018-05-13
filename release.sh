@@ -1,5 +1,6 @@
 #!/bin/sh
 
+umask 000
 ./setup.py sdist || exit 1
 
 # Different wheels are needed for py2 and py3 because of the faulthandler

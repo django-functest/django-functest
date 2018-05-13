@@ -11,6 +11,10 @@ Release process
   * django_functest/__init__.py
   * docs/conf.py
 
+* Ensure correct file permissions::
+
+    git ls-tree --full-tree --name-only -r HEAD | xargs chmod ugo+r
+
 * Make sure all is committed
 
 * Release to PyPI::
