@@ -3,8 +3,9 @@ WebTest wrapper
 
 The class ``FuncWebTestMixin`` has some WebTest specific methods/attributes, as well as the :doc:`common`.
 
+.. currentmodule:: django_functest
 
-.. class:: django_functest.FuncWebTestMixin
+.. class:: FuncWebTestMixin
 
    .. attribute:: last_response
 

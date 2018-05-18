@@ -12,7 +12,9 @@ suit with assertion methods, but for other things defaults to the PEP8
 recommendation of ``name_with_underscores`` e.g. ``live_server_url``. We have
 followed the same pattern.
 
-.. class:: django_functest.FuncCommonApi
+.. currentmodule:: django_functest
+
+.. class:: FuncCommonApi
 
    **Assertion methods**
 
@@ -195,7 +197,7 @@ followed the same pattern.
       * For selects, returns the internal ``value`` attribute of the selected item.
 
 
-.. class:: django_functest.Upload
+.. class:: Upload
 
    .. method:: __init__(filename, content=data)
 

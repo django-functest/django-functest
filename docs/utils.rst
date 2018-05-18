@@ -1,7 +1,9 @@
 Utilities
 =========
 
-.. class:: django_functest.AdminLoginMixin
+.. currentmodule:: django_functest
+
+.. class:: AdminLoginMixin
 
    This provides helpers for logging into the admin interface using the standard
    login page. It assumes logging in with username and password.
@@ -21,7 +23,7 @@ Utilities
       ``shortcut=True`` (the default), or using the admin logout page if
       ``shortcut=False``
 
-.. class:: django_functest.ShortcutLoginMixin
+.. class:: ShortcutLoginMixin
 
    This provides a method for doing a login without actually doing HTTP-level work,
    as far as possible.
@@ -48,7 +50,7 @@ Utilities
       Manipulates the session and cookies directly.
 
 
-.. class:: django_functest.MultiThreadedLiveServerMixin
+.. class:: MultiThreadedLiveServerMixin
 
       Add this as a mixin to any test class (or test class base) to enable
       a multi-threaded live server.
