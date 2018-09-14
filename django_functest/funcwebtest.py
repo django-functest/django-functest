@@ -86,15 +86,23 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         of CSS selectors to values.
         """
         for selector, value in data.items():
-            form, field_name = self._find_form_and_field_by_css_selector(self.last_response, selector)
-            form[field_name] = value
+            form, field_name, elem = self._find_form_and_field_by_css_selector(self.last_response, selector)
+            field_items = form.fields[field_name]
+            if isinstance(field_items, list) and len(field_items) > 1:
+                # We've got something like a set of checkboxes with the same name.
+                selected_value = elem.attrib['value']
+                for checkbox in field_items:
+                    if checkbox._value == selected_value:
+                        checkbox.checked = value
+            else:
+                form[field_name] = value
 
     def fill_by_text(self, fields):
         """
         Same as ``fill`` except the values are text captions. Useful for ``select`` elements.
         """
         for selector, text in fields.items():
-            form, field_name = self._find_form_and_field_by_css_selector(self.last_response, selector)
+            form, field_name, _ = self._find_form_and_field_by_css_selector(self.last_response, selector)
             self._fill_field_by_text(form, field_name, text)
 
     def get_url(self, name, *args, **kwargs):
@@ -160,10 +168,10 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         """
         Submit the form using the input given in the CSS selector
         """
-        form, field_name = self._find_form_and_field_by_css_selector(self.last_response,
-                                                                     css_selector,
-                                                                     require_name=False,
-                                                                     filter_selector="input[type=submit], button")
+        form, field_name, _ = self._find_form_and_field_by_css_selector(self.last_response,
+                                                                        css_selector,
+                                                                        require_name=False,
+                                                                        filter_selector="input[type=submit], button")
         response = form.submit(field_name)
         if auto_follow:
             while 300 <= response.status_int < 400:
@@ -174,9 +182,9 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         """
         Returns the value of the form input specified in the CSS selector
         """
-        form, field_name = self._find_form_and_field_by_css_selector(self.last_response,
-                                                                     css_selector,
-                                                                     require_name=False)
+        form, field_name, _ = self._find_form_and_field_by_css_selector(self.last_response,
+                                                                        css_selector,
+                                                                        require_name=False)
         field = form[field_name]
         if isinstance(field, Checkbox):
             return field.checked
@@ -240,10 +248,10 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
             if field is None and require_name:
                 raise WebTestCantUseElement(
                     "Element {0} needs 'name' attribute in order to use it".format(css_selector))
-            found.append((form, field))
+            found.append((form, field, item))
 
         if len(found) > 1:
-            if not all(f == found[0] for f in found):
+            if not all(f[0:2] == found[0][0:2] for f in found):
                 raise WebTestMultipleElementsException(
                     "Multiple elements found matching '{0}'".format(css_selector))
 

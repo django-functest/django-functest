@@ -104,8 +104,16 @@ def edit_thing_with_upload(request, thing_id):
 
 
 def list_things(request):
+    things = Thing.objects.all()
+    if 'select_thing' in request.GET:
+        id_list = map(int, request.GET.getlist('select_thing'))
+        selected_things = things.filter(id__in=id_list)
+    else:
+        selected_things = []
     return render(request, "django_functest/tests/list_things.html",
-                  {'things': Thing.objects.all()})
+                  {'things': things,
+                   'selected_things': selected_things,
+                   })
 
 
 def thing_cleared(request, thing_id):

@@ -6,6 +6,8 @@ History
 1.0.4 (under development)
 +++++++++++++++++++++++++
 
+* Fixed bug with setting checkboxes if a form with multiple checkboxes of the same name
+
 1.0.3
 +++++
 

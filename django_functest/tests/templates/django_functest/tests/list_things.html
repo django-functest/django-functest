@@ -3,11 +3,21 @@
     <title>Things!</title>
   </head>
   <body>
-    <div id="id_thinglist">
-      {% for thing in things %}
-        <p><a class="edit" href="{% url "edit_thing" thing_id=thing.id %}">Edit {{ thing.name }}</a></p>
-      {% endfor %}
-    </div>
+    <form action="." method="GET">
+      <div id="id_thinglist">
+        {% for thing in things %}
+          <p><input type="checkbox" name="select_thing" value="{{ thing.id }}" {% if thing in selected_things %}checked{% endif %}></p>
+          <p><a class="edit" href="{% url "edit_thing" thing_id=thing.id %}">Edit {{ thing.name }}</a></p>
+        {% endfor %}
+      </div>
+      <input type="submit" name="select" value="select">
+    </form>
     <p><a class="javascriptonly">Some Javascript only link</a></p>
+    {% if selected_things %}
+      <p>Some things were selected:</p>
+      {% for thing in selected_things %}
+        <p>{{ thing.name }} is selected</p>
+      {% endfor %}
+    {% endif %}
   </body>
 </html>

@@ -185,6 +185,41 @@ class TestCommonBase(FuncBaseMixin):
         self.submit('input[name=change]')
         self._assertThingChanged()
 
+    def test_fill_checkbox_with_same_name(self):
+        # It is allowed to have two checkboxes with the same name. It should result
+        # in a submission with repeated values of
+        self.thing2 = Thing.objects.create(name="Flower",
+                                           big=False,
+                                           clever=True,
+                                           element_type=Thing.ELEMENT_EARTH,
+                                           category=Thing.CATEGORY_MONOID,
+                                           count=1,
+                                           description="Soft thing")
+        self.thing3 = Thing.objects.create(name="Water",
+                                           big=False,
+                                           clever=False,
+                                           element_type=Thing.ELEMENT_WATER,
+                                           category=Thing.CATEGORY_MAGMA,
+                                           count=1,
+                                           description="Wet thing")
+        self.get_url('list_things')
+
+        # Select:
+        self.fill({'input[name=select_thing][value="{0}"]'.format(self.thing.id): True,
+                   'input[name=select_thing][value="{0}"]'.format(self.thing2.id): True,
+                   })
+        self.submit('input[name=select]')
+        self.assertTextPresent("{0} is selected".format(self.thing.name))
+        self.assertTextPresent("{0} is selected".format(self.thing2.name))
+        self.assertTextAbsent("{0} is selected".format(self.thing3.name))
+
+        # Unselect:
+        self.fill({'input[name=select_thing][value="{0}"]'.format(self.thing.id): False})
+        self.submit('input[name=select]')
+        self.assertTextAbsent("{0} is selected".format(self.thing.name))
+        self.assertTextPresent("{0} is selected".format(self.thing2.name))
+        self.assertTextAbsent("{0} is selected".format(self.thing3.name))
+
     def test_submit(self):
         self.get_url('edit_thing', thing_id=self.thing.id)
         self.submit('button[name=clear]')
