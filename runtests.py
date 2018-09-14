@@ -131,6 +131,7 @@ settings_dict = dict(
             },
         }
     },
+    SECRET_KEY='foo',
 )
 
 if django.VERSION < (1, 10):
