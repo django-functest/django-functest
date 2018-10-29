@@ -3,8 +3,8 @@
 History
 -------
 
-1.0.4 (under development)
-+++++++++++++++++++++++++
+1.0.4
++++++
 
 * Fixed bug with setting checkboxes if a form with multiple checkboxes of the same name
 * Enabled installation on PyPy (doesn't necessarily work completely).
