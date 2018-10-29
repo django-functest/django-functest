@@ -7,6 +7,7 @@ History
 +++++++++++++++++++++++++
 
 * Fixed bug with setting checkboxes if a form with multiple checkboxes of the same name
+* Enabled installation on PyPy (doesn't necessarily work completely).
 
 1.0.3
 +++++

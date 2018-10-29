@@ -5,6 +5,7 @@ from __future__ import absolute_import, print_function
 
 
 import os
+import platform
 import sys
 
 try:
@@ -33,9 +34,10 @@ if sys.argv[-1] == 'tag':
 readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
-if sys.version_info < (3, 3):
+if sys.version_info < (3, 3) and platform.python_implementation() != 'PyPy':
     extra_requires = ['faulthandler>=2.4']
 else:
+    # PyPy and Python 3 have faulthandler built in
     extra_requires = []
 
 
