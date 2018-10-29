@@ -8,7 +8,7 @@ from django_functest.exceptions import (
 )
 from django_functest.tests.models import Thing
 
-from .base import ChromeBase, FirefoxBase, PhantomJSBase, WebTestBase
+from .base import ChromeBase, FirefoxBase, WebTestBase
 
 try:
     from django.urls import reverse
@@ -461,8 +461,4 @@ class TestFuncSeleniumCommonFirefox(TestFuncSeleniumCommonBase, FirefoxBase):
 
 
 class TestFuncSeleniumCommonChrome(TestFuncSeleniumCommonBase, ChromeBase):
-    pass
-
-
-class TestFuncSeleniumCommonPhantomJS(TestFuncSeleniumCommonBase, PhantomJSBase):
     pass

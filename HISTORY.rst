@@ -9,6 +9,8 @@ History
 * Fixed bug with setting checkboxes if a form with multiple checkboxes of the same name
 * Enabled installation on PyPy (doesn't necessarily work completely).
 * Test against Django 2.1
+* Removed tests and official support for PhantomJS. (No actual functionality
+  was changed regarding PhantomJS).
 
 1.0.3
 +++++

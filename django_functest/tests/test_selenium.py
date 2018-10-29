@@ -8,7 +8,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 from django_functest import AdminLoginMixin, FuncBaseMixin
 
-from .base import ChromeBase, FirefoxBase, PhantomJSBase
+from .base import ChromeBase, FirefoxBase
 from .models import Thing
 
 try:
@@ -139,13 +139,6 @@ class TestFuncSeleniumSpecificChrome(TestFuncSeleniumSpecificBase, ChromeBase):
     pass
 
 
-class TestFuncSeleniumSpecificPhantomJS(TestFuncSeleniumSpecificBase, PhantomJSBase):
-
-    # This fails for PhantomJS that is installed on Travis server, hard to debug
-    # why.
-    test_double_click_element_that_disappears = unittest.expectedFailure(TestFuncSeleniumSpecificBase.test_double_click_element_that_disappears)  # noqa
-
-
 # Test class attribute `browser_window_size` works correctly:
 
 class TestBrowserSizeBase(object):
@@ -174,8 +167,4 @@ class TestBrowserSizeFirefox(TestBrowserSizeBase, FirefoxBase):
 
 
 class TestBrowserSizeChrome(TestBrowserSizeBase, ChromeBase):
-    pass
-
-
-class TestBrowserSizePhantomJS(TestBrowserSizeBase, PhantomJSBase):
     pass

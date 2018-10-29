@@ -94,8 +94,6 @@ To run the full test suite, you will need to install:
 
 * `chromedriver <https://sites.google.com/a/chromium.org/chromedriver>`_
 
-* `PhantomJS <http://phantomjs.org/>`_.
-
 6. Commit your changes and push your branch to GitHub::
 
     $ git add .

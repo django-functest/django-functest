@@ -36,7 +36,6 @@ def binary_available(filename):
 
 firefox_available = binary_available("firefox")
 chrome_available = binary_available("chromedriver")
-phantomjs_available = binary_available("phantomjs")
 
 
 @override_settings(DEBUG=True)  # easier debugging
@@ -81,8 +80,3 @@ class FirefoxBase(HideBrowserMixin, SeleniumBaseMixin, FuncSeleniumMixin, MyLive
 class ChromeBase(HideBrowserMixin, SeleniumBaseMixin, FuncSeleniumMixin,
                  MultiThreadedLiveServerMixin, MyLiveServerTestCase):
     driver_name = "Chrome"
-
-
-@unittest.skipIf(not phantomjs_available, "PhantomJS not available, skipping")
-class PhantomJSBase(SeleniumBaseMixin, FuncSeleniumMixin, MyLiveServerTestCase):
-    driver_name = "PhantomJS"

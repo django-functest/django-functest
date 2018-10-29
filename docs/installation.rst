@@ -82,4 +82,7 @@ the browser to use, and note the following:
   Firefox (58.0), geckodriver (0.20.0) and Selenium (3.11), the django-functest
   suite passes fully.
 
-* If installed `PhantomJS <http://phantomjs.org/>`_ can be used.
+* If installed `PhantomJS <http://phantomjs.org/>`_ can be used. PhantomJS is no
+  longer officially supported - the test suite does not run against it and and
+  bugs for it will not be fixed. This is because the project has been abandoned,
+  and Selenium also no longer supports it.

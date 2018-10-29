@@ -44,8 +44,8 @@ Features
 * Many of the gotchas and difficulties of using WebTest and Selenium ironed out
   for you.
 
-* Well tested - as well as its own test suite, which is run against Firefox,
-  Chrome, and PhantomJS, it is also used by `Wolf & Badger
+* Well tested - as well as its own test suite, which is run against Firefox
+  and Chrome, it is also used by `Wolf & Badger
   <https://www.wolfandbadger.com/>`_ for tests covering many business critical
   functionalities.
 
