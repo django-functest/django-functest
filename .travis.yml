@@ -18,6 +18,8 @@ matrix:
       env: TEST_TYPE="django20"
     - python: "3.6"
       env: TEST_TYPE="django20"
+    - python: "3.6"
+      env: TEST_TYPE="django21"
     - python: "2.7"
       env: TEST_TYPE="checkmanifest"
     - python: "2.7"

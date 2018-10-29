@@ -8,6 +8,7 @@ History
 
 * Fixed bug with setting checkboxes if a form with multiple checkboxes of the same name
 * Enabled installation on PyPy (doesn't necessarily work completely).
+* Test against Django 2.1
 
 1.0.3
 +++++
