@@ -94,8 +94,9 @@ contributing to django-functest.
 Credits
 -------
 
-This library was built by developers at `Wolf & Badger
-<https://www.wolfandbadger.com/>`_, released with the kind permission of that
+This library was written originally by `spookylukey <https://github.com/spookylukey/>`_,
+further improved by developers at `Wolf & Badger
+<https://www.wolfandbadger.com/>`_, and released with the kind permission of that
 company.
 
 Tools used in rendering this package:
