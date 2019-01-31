@@ -86,3 +86,8 @@ the browser to use, and note the following:
   longer officially supported - the test suite does not run against it and and
   bugs for it will not be fixed. This is because the project has been abandoned,
   and Selenium also no longer supports it.
+
+* For the case of hiding the browser window (the default), `PyVirtualDisplay
+  <https://github.com/ponty/pyvirtualdisplay` is used. Please see the
+  `PyVirtualDisplay installation dependencies
+  <https://github.com/ponty/pyvirtualdisplay#installation>`.
