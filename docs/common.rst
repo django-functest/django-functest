@@ -146,11 +146,11 @@ followed the same pattern.
       results in a new browser instance with a separate profile being used. In
       this case, however, there are complications:
 
-      Django's ``LiveServerTestCase`` is currently single threaded. Some browsers
-      keep (mutliple) connections open to a domain, and Chrome especially can
-      lock up the test server when multiple sessions are open.
+      Before Django 2.0, ``LiveServerTestCase`` was single threaded. Some
+      browsers keep multiple connections open to a domain, and Chrome especially
+      can lock up the test server when multiple sessions are open.
 
-      A fix for this is to add
+      If you are using Django < 2.0, a fix for this is to add
       :class:`django_functest.MultiThreadedLiveServerMixin` to any test class
       that needs this functionality, especially if run against Chrome. However,
       please note the issues documented for that mixin.
