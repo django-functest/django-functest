@@ -91,6 +91,27 @@ Contributing and tests
 See CONTRIBUTING.rst for information about running the test suite and
 contributing to django-functest.
 
+
+Paid support
+------------
+
+Some of the maintainers are able to provide support on a paid basis for this
+Open Source project. This includes the following kinds of things:
+
+* Paying for bug fixes or new features (with the understanding that these
+  changes will become freely available as part of the project and are not
+  'owned' by the person who paid for them).
+
+* Debugging or other support for integrating django-functest into your project.
+
+* Writing a test suite for you from scratch using django-functest.
+
+If you are interested in these, you can contact the follower developers:
+
+* Luke Plant - `homepage <https://lukeplant.me.uk>`_,
+  `email <L.Plant.98@cantab.net>`_ - long time Django expert and contributor.
+
+
 Credits
 -------
 
