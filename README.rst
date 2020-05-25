@@ -52,7 +52,9 @@ Features
 Typical usage
 -------------
 
-In your tests.py::
+In your tests.py:
+
+.. code-block:: python
 
     from django.test import LiveServerTestCase, TestCase
     from django_functest import FuncWebTestMixin, FuncSeleniumMixin, FuncBaseMixin
@@ -88,7 +90,7 @@ own base class for tests.
 Contributing and tests
 ----------------------
 
-See CONTRIBUTING.rst for information about running the test suite and
+See `CONTRIBUTING.rst <CONTRIBUTING.rst>`_ for information about running the test suite and
 contributing to django-functest.
 
 
