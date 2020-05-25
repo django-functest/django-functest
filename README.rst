@@ -106,10 +106,9 @@ Open Source project. This includes the following kinds of things:
 
 * Writing a test suite for you from scratch using django-functest.
 
-If you are interested in these, you can contact the follower developers:
+If you are interested in these, you can contact the following developers:
 
-* Luke Plant - `homepage <https://lukeplant.me.uk>`_,
-  `email <L.Plant.98@cantab.net>`_ - long time Django expert and contributor.
+* Luke Plant - long time Django expert and contributor - `info and status <https://lukeplant.me.uk/development-work.html>`_.
 
 
 Credits
