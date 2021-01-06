@@ -3,6 +3,20 @@
 History
 -------
 
+1.1 - Under development
++++++++++++++++++++++++
+
+* Fixes for various things that broke with more recent versions
+  Firefox/Chrome/geckodriver/chromedriver etc.
+
+  * It is possible that if you are on older versions of Firefox you may have
+    regressions or different behaviour with handling of linebreaks e.g. sending
+    ``\r\n`` into textarea.
+
+* Installation fix so that it can be installed with poetry
+* Tested against more recent Django versions, and fixed issues.
+* Dropped support for Python 3.3 and 3.4
+
 1.0.4
 +++++
 
