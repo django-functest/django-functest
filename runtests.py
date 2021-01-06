@@ -2,6 +2,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import argparse
+import faulthandler
 import os
 import os.path
 import signal
@@ -9,7 +10,6 @@ import sys
 import warnings
 
 import django
-import faulthandler
 from django.conf import settings
 from django.core.management import execute_from_command_line
 
