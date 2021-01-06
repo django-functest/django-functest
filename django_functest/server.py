@@ -3,7 +3,6 @@ from __future__ import absolute_import, print_function, unicode_literals
 import django
 from django.test import testcases
 
-
 if django.VERSION < (2,):
 
     try:

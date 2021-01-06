@@ -87,8 +87,13 @@ development.
    tests::
 
     $ flake8 django_functest
-    $ isort -rc -c .
+    $ isort -c .
     $ ./runtests.py
+
+   You can also use `pre-commit <https://pre-commit.com/>`_ to run some of these
+   tests automatically when you commit::
+
+     $ pre-commit install
 
    It can help to test other Django/Python versions with tox::
 

@@ -3,7 +3,6 @@
 # flake8: noqa  (for FI14 error)
 from __future__ import absolute_import, print_function
 
-
 import os
 import platform
 import sys
