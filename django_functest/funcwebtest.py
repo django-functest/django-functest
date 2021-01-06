@@ -21,7 +21,7 @@ except ImportError:
 
 
 def html_norm(html):
-    return html.replace('&quot;', '"').replace('&apos;', "'").replace('&#39;', "'")
+    return html.replace('&quot;', '"').replace('&apos;', "'").replace('&#39;', "'").replace('&#x27;', "'")
 
 
 class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
