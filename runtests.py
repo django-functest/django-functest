@@ -174,8 +174,6 @@ if known_args.update_migration:
     argv = [sys.argv[0], "makemigrations", "tests"] + sys.argv[2:]
 else:
     argv = [sys.argv[0], "test", "--noinput"]
-    if django.VERSION >= (1, 8):
-        argv.append("--keepdb")
     if known_args.verbosity:
         argv.extend(["-v", str(known_args.verbosity)])
     if len(test_args) == 0:
