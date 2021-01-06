@@ -72,8 +72,9 @@ development.
     $ cd django-functest/
     $ python setup.py develop
 
-   You also need to install development tools::
+   You also need to install testing and development tools::
 
+    $ pip install -r requirements-test.txt
     $ pip install -r requirements-dev.txt
 
 4. Create a branch for local development::
