@@ -31,13 +31,12 @@ if sys.argv[-1] == 'tag':
     sys.exit()
 
 readme = open('README.rst').read()
-history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
     name='django-functest',
     version=version,
     description="""Helpers for creating functional tests in Django, with a unified API for WebTest and Selenium tests.""",  # noqa
-    long_description=readme + '\n\n' + history,
+    long_description=readme,
     author='Luke Plant',
     author_email='L.Plant.98@cantab.net',
     url='https://github.com/django-functest/django-functest',
