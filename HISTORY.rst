@@ -14,8 +14,9 @@ History
     ``\r\n`` into textarea.
 
 * Installation fix so that it can be installed with poetry
-* Tested against more recent Django versions, and fixed issues.
+* Tested against more recent Django versions (up to 3.1), and fixed issues.
 * Dropped support for Python 3.3 and 3.4
+* Dropped support for Django 1.8, 1.9, 1.10 (which seemed to be broken anyway?)
 
 1.0.4
 +++++
