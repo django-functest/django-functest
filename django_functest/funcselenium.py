@@ -544,7 +544,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         else:
             self._scroll_into_view(elem)
             elem.clear()
-            elem.send_keys(val)
+            elem.send_keys(self._normalize_linebreaks(val))
 
     def _fill_input_by_text(self, elem, val):
         if elem.tag_name == 'select':
@@ -684,3 +684,12 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         self._scroll_into_view(elem)
         s = Select(elem)
         s.select_by_visible_text(text)
+
+    def _normalize_linebreaks(self, possibly_text):
+        if not isinstance(possibly_text, text_type):
+            return possibly_text
+        text = possibly_text
+        # If you send \r\n to Firefox, it enters 2 line breaks (at least on
+        # Linux)
+        text = text.replace('\r\n', '\n')
+        return text
