@@ -1,0 +1,1 @@
+faulthandler>=2.4;python_version<"3.3"

@@ -1,7 +1,6 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import os
-import unittest
 
 from django.contrib.auth import get_user_model
 from selenium.common.exceptions import NoSuchElementException
@@ -129,10 +128,7 @@ class TestFuncSeleniumSpecificBase(AdminLoginMixin, FuncBaseMixin):
 
 
 class TestFuncSeleniumSpecificFirefox(TestFuncSeleniumSpecificBase, FirefoxBase):
-
-    # This fails on some Firefox versions, but not locally,
-    # so it is difficult to know how to write a better test.
-    test_hover = unittest.expectedFailure(TestFuncSeleniumSpecificBase.test_hover)
+    pass
 
 
 class TestFuncSeleniumSpecificChrome(TestFuncSeleniumSpecificBase, ChromeBase):

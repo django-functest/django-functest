@@ -2,6 +2,9 @@
 django-functest
 ===============
 
+.. image:: https://github.com/django-functest/django-functest/workflows/Python%20package/badge.svg
+   :target: https://github.com/django-functest/django-functest/actions?query=workflow%3A%22Python+package%22+branch%3Amaster
+
 .. image:: https://readthedocs.org/projects/django-functest/badge/?version=latest
    :target: https://django-functest.readthedocs.org/en/latest/
 
