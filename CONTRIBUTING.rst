@@ -72,11 +72,15 @@ development.
     $ cd django-functest/
     $ python setup.py develop
 
+   You also need to install development tools::
+
+    $ pip install -r requirements-dev.txt
+
 4. Create a branch for local development::
 
     $ git checkout -b name-of-your-bugfix-or-feature
 
-Now you can make your changes locally.
+   Now you can make your changes locally.
 
 5. When you're done making changes, check that your changes pass flake8 and the
    tests, including testing other Python versions with tox::
