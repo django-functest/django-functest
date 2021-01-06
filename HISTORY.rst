@@ -3,8 +3,8 @@
 History
 -------
 
-1.1 (under development)
-+++++++++++++++++++++++
+1.1 (2020-01-06)
+++++++++++++++++
 
 * Fixes for various things that broke with more recent versions
   Firefox/Chrome/geckodriver/chromedriver etc.
@@ -21,7 +21,7 @@ History
 1.0.4
 +++++
 
-* Fixed bug with setting checkboxes if a form with multiple checkboxes of the same name
+* Fixed bug with setting checkboxes if a form had multiple checkboxes of the same name
 * Enabled installation on PyPy (doesn't necessarily work completely).
 * Test against Django 2.1
 * Removed tests and official support for PhantomJS. (No actual functionality
