@@ -130,7 +130,7 @@ class TestFuncSeleniumSpecificBase(AdminLoginMixin, FuncBaseMixin):
 
 class TestFuncSeleniumSpecificFirefox(TestFuncSeleniumSpecificBase, FirefoxBase):
 
-    # This fails on some Firefox versions, at least on Travis, but not locally,
+    # This fails on some Firefox versions, but not locally,
     # so it is difficult to know how to write a better test.
     test_hover = unittest.expectedFailure(TestFuncSeleniumSpecificBase.test_hover)
 

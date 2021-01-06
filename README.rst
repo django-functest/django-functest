@@ -2,9 +2,6 @@
 django-functest
 ===============
 
-.. image:: https://travis-ci.org/django-functest/django-functest.png?branch=master
-   :target: https://travis-ci.org/django-functest/django-functest
-
 .. image:: https://coveralls.io/repos/django-functest/django-functest/badge.svg?branch=master&service=github
    :target: https://coveralls.io/github/django-functest/django-functest?branch=master
 

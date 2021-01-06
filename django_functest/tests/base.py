@@ -27,8 +27,6 @@ AVAILABLE_APPS = [
     "django_functest.tests",
 ]
 
-IN_TRAVIS = os.environ.get('TRAVIS')
-
 
 def binary_available(filename):
     return subprocess.call(["which", filename], stdout=subprocess.PIPE) == 0
@@ -54,9 +52,6 @@ class HideBrowserMixin(object):
 @unittest.skipIf(os.environ.get('TEST_SKIP_SELENIUM'), "Skipping Selenium tests")
 class SeleniumBaseMixin(object):
     browser_window_size = (1024, 768)
-    if IN_TRAVIS:
-        default_timeout = 40
-        page_load_timeout = 60
 
 
 @unittest.skipIf(not firefox_available, "Firefox not available, skipping")
@@ -74,9 +69,7 @@ class FirefoxBase(HideBrowserMixin, SeleniumBaseMixin, FuncSeleniumMixin, MyLive
         return kwargs
 
 
-# Chrome/ChromeDriver don't work on Travis
-# https://github.com/travis-ci/travis-ci/issues/272
-@unittest.skipIf(not chrome_available or IN_TRAVIS, "Chrome not available, skipping")
+@unittest.skipIf(not chrome_available, "Chrome not available, skipping")
 class ChromeBase(HideBrowserMixin, SeleniumBaseMixin, FuncSeleniumMixin,
                  MultiThreadedLiveServerMixin, MyLiveServerTestCase):
     driver_name = "Chrome"
