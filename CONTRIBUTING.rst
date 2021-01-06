@@ -83,20 +83,21 @@ development.
    Now you can make your changes locally.
 
 5. When you're done making changes, check that your changes pass flake8 and the
-   tests, including testing other Python versions with tox::
+   tests::
 
     $ flake8 django_functest
-    % isort -rc -c .
+    $ isort -rc -c .
     $ ./runtests.py
+
+   It can help to test other Django/Python versions with tox::
+
     $ tox
 
-To get flake8/tox/isort, just ``pip install`` them into your virtualenv.
+   To run the full test suite, you will need to install:
 
-To run the full test suite, you will need to install:
+   * Firefox and `geckodriver <https://github.com/mozilla/geckodriver>`_.
 
-* Firefox and `geckodriver <https://github.com/mozilla/geckodriver>`_.
-
-* `chromedriver <https://sites.google.com/a/chromium.org/chromedriver>`_
+   * `chromedriver <https://sites.google.com/a/chromium.org/chromedriver>`_
 
 6. Commit your changes and push your branch to GitHub::
 

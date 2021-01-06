@@ -1,2 +1,4 @@
 faulthandler>=2.4;python_version<"3.3"
 tox
+flake8==3.8.4
+isort==4.2.5
