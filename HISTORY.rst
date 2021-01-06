@@ -3,7 +3,7 @@
 History
 -------
 
-1.1 - Under development
+1.1 (under development)
 +++++++++++++++++++++++
 
 * Fixes for various things that broke with more recent versions

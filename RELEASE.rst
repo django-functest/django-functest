@@ -1,19 +1,17 @@
 Release process
 ===============
 
-* Tests, including flake8, isort and check-manifest
+* Tests, including flake8, isort and check-manifest:
 
-* Update HISTORY.rst, removing "(in development)". Commit.
+  https://github.com/django-functest/django-functest/actions?query=workflow%3A%22Python+package%22+branch%3Amaster
 
-* Update the version number, removing the ``-dev1`` part
+* Update HISTORY.rst, removing "(under development)" and adding date. Commit.
+
+* Update the version number, removing the ``-dev1`` part if present
 
   * setup.py
   * django_functest/__init__.py
   * docs/conf.py
-
-* Ensure correct file permissions::
-
-    git ls-tree --full-tree --name-only -r HEAD | xargs chmod ugo+r
 
 * Make sure all is committed
 
