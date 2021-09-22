@@ -7,6 +7,7 @@ History
 +++++++++++++++++++++++++
 
 * Fixed test suite failure under Django 3.2
+* Fixed warnings emitted under recent Django due to deprecations
 
 1.1 (2020-01-06)
 ++++++++++++++++
