@@ -1,7 +1,14 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import django
-from django.conf.urls import url
+
+try:
+    from django.urls import path
+    url = None
+except ImportError:
+    path = None
+    from django.conf.urls import url
+
 from django.http import HttpResponse
 
 
@@ -20,9 +27,15 @@ def emptypage(request):
 </html>""")
 
 
-urlpatterns = [
-    url(r'^__emptypage/$', emptypage, name='django_functest.emptypage'),
-]
+if path is None:
+    urlpatterns = [
+        url(r'^__emptypage/$', emptypage, name='django_functest.emptypage'),
+    ]
+else:
+    urlpatterns = [
+        path(r'__emptypage/', emptypage, name='django_functest.emptypage'),
+    ]
+
 
 if django.VERSION < (1, 9):
     from django.conf.urls import patterns
