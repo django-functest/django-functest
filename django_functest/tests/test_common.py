@@ -398,13 +398,13 @@ class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
         self.assertRaises(WebTestCantUseElement, lambda: self.follow_link('a.javascriptonly'))
 
     def test_get_literal_url_auto_follow(self):
-        url = '/admin/login'  # No trailing '/'
+        url = '/redirect_to_misc/'
         self.get_literal_url(url, auto_follow=True)
-        self.assertUrlsEqual(url + '/')
+        self.assertUrlsEqual('/test_misc/')
 
         self.get_literal_url(url, auto_follow=False)
         self.assertUrlsEqual(url)
-        self.assertEqual(self.last_response.status_int, 301)
+        self.assertEqual(self.last_response.status_int, 302)
 
     def test_get_literal_url_expect_errors(self):
         url = '/a_404_url/'

@@ -20,6 +20,10 @@ def test_misc(request):
                   {'name': request.session.get('name', None)})
 
 
+def redirect_to_misc(request):
+    return HttpResponseRedirect(reverse('django_functest.test_misc'))
+
+
 def set_sess_foo_to_bar(request):
     request.session['foo'] = 'bar'
     return render(request, "django_functest/tests/test_misc.html")

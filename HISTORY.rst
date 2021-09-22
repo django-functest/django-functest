@@ -6,6 +6,8 @@ History
 1.1.1 (under development)
 +++++++++++++++++++++++++
 
+* Fixed test suite failure under Django 3.2
+
 1.1 (2020-01-06)
 ++++++++++++++++
 

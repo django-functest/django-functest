@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^django_functest/', include('django_functest.urls')),
     url(r'^test_misc/', views.test_misc, name='django_functest.test_misc'),
+    url(r'^redirect_to_misc/', views.redirect_to_misc, name='django_functest.redirect_to_misc'),
     url(r'^set_sess_foo_to_bar/', views.set_sess_foo_to_bar, name='django_functest.set_sess_foo_to_bar'),
     url(r'^list_things/', views.list_things, name='list_things'),
     url(r'^edit_thing/(?P<thing_id>.*)/', views.edit_thing, name='edit_thing'),
