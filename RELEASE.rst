@@ -8,7 +8,7 @@ Release process
 * Update chromedriver and geckodriver, run tests locally. Add version numbers
   into table in installation.rst.
 
-* Update HISTORY.rst, removing "(under development)" and adding date. Commit.
+* Update HISTORY.rst, removing "(unreleased)" and adding date. Commit.
 
 * Update the version number, removing the ``-dev1`` part if present
 
