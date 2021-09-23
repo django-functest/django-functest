@@ -3,11 +3,12 @@
 History
 -------
 
-1.1.1 (under development)
-+++++++++++++++++++++++++
+1.1.1 (2021-09-23)
+++++++++++++++++++
 
 * Fixed test suite failure under Django 3.2
-* Fixed warnings emitted under recent Django due to deprecations
+* Fixed warnings emitted under recent Django due to deprecations.
+* Tested under Django 4.0a1
 
 1.1 (2020-01-06)
 ++++++++++++++++
