@@ -34,9 +34,9 @@ Dependencies
 ============
 
 Python dependencies are automatically installed, including the Python
-``selenium`` package automatically. However, due the nature of Selenium, if you
-are writing Selenium tests (i.e. if you are not simply using the WebTest
-wrapper), dependencies are quite complex.
+``selenium`` package. However, due the nature of Selenium, if you are writing
+Selenium tests (i.e. if you are not simply using the WebTest wrapper),
+dependencies are quite complex.
 
 Selenium uses a ``WebDriver`` protocol for talking to browsers that is more or
 less supported by different browsers. Please see the
