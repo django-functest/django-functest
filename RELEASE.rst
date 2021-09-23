@@ -5,6 +5,9 @@ Release process
 
   https://github.com/django-functest/django-functest/actions?query=workflow%3A%22Python+package%22+branch%3Amaster
 
+* Update chromedriver and geckodriver, run tests locally. Add version numbers
+  into table in installation.rst.
+
 * Update HISTORY.rst, removing "(under development)" and adding date. Commit.
 
 * Update the version number, removing the ``-dev1`` part if present
