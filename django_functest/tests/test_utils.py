@@ -97,14 +97,10 @@ class TestDocStrings(TestCase):
             for name, member in inspect.getmembers(cls):
                 if name.startswith('__'):
                     continue
-                if hasattr(member, 'im_func'):
-                    member = member.im_func  # Python 2 method
                 member_doc = getattr(member, '__doc__', None)
 
                 base_member = getattr(FuncBaseMixin, name, None)
                 if base_member is not None:
-                    if hasattr(base_member, 'im_func'):
-                        base_member = base_member.im_func  # Python 2 method
                     base_doc = getattr(base_member, '__doc__', None)
                     if base_doc is not None and member_doc != base_doc:
                         bad_docstrings.append((cls, name))

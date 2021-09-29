@@ -202,4 +202,4 @@ followed the same pattern.
    .. method:: __init__(filename, content=data)
 
       Construct an object for uploading in a normal file upload field. The
-      `content` parameter must be a bytestring (`str` on Python 2, `bytes` on Python 3)
+      ``content`` parameter must be a ``bytes`` instance.
