@@ -3,11 +3,9 @@ from __future__ import absolute_import, print_function, unicode_literals
 from collections import defaultdict
 
 import pyquery
-import six
 from django.conf import settings
 from django.utils.html import escape
 from django_webtest import WebTestMixin
-from six import text_type
 from webtest.forms import Checkbox
 
 from .base import FuncBaseMixin
@@ -137,7 +135,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         """
         session = self._get_session()
         for name, value in item_dict.items():
-            session[name] = text_type(value)
+            session[name] = str(value)
         session.save()
 
     def new_browser_session(self):
@@ -206,10 +204,6 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         return self._all_last_responses[self.app]
 
     def _set_cookie(self, name, value):
-        if six.PY2:
-            value = value.encode('utf-8')
-            name = name.encode('utf-8')
-
         self.app.set_cookie(name, value)
 
     def _get_session(self):

@@ -13,7 +13,6 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException, StaleElementReferenceException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select, WebDriverWait
-from six import string_types, text_type
 
 from .base import FuncBaseMixin
 from .exceptions import SeleniumCantUseElement
@@ -171,11 +170,11 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
 
         session = self._get_session()
         for name, value in item_dict.items():
-            session[name] = text_type(value)
+            session[name] = str(value)
         session.save()
 
         s2 = self._get_session()
-        if all(s2.get(name) == text_type(value) for name, value in item_dict.items()):
+        if all(s2.get(name) == str(value) for name, value in item_dict.items()):
             return
 
         raise RuntimeError("Session not saved correctly")
@@ -677,7 +676,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
     def _set_select_elem(self, elem, value):
         self._scroll_into_view(elem)
         s = Select(elem)
-        value = value if isinstance(value, string_types) else str(value)
+        value = value if isinstance(value, str) else str(value)
         s.select_by_value(value)
 
     def _set_select_elem_by_text(self, elem, text):
@@ -686,7 +685,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         s.select_by_visible_text(text)
 
     def _normalize_linebreaks(self, possibly_text):
-        if not isinstance(possibly_text, text_type):
+        if not isinstance(possibly_text, str):
             return possibly_text
         text = possibly_text
         # If you send \r\n to Firefox, it enters 2 line breaks (at least on

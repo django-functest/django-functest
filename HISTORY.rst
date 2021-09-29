@@ -3,8 +3,10 @@
 History
 -------
 
-1.1.2 (unreleased)
-++++++++++++++++++
+1.2 (unreleased)
+++++++++++++++++
+
+* Dropped support for Python 2.7 and Django < 2.0 (!)
 
 
 1.1.1 (2021-09-23)

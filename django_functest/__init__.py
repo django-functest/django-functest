@@ -7,7 +7,7 @@ from .funcwebtest import FuncWebTestMixin
 from .server import MultiThreadedLiveServerMixin
 from .utils import AdminLoginMixin, ShortcutLoginMixin
 
-__version__ = '1.1.1'
+__version__ = '1.2-dev'
 
 __all__ = ['FuncBaseMixin', 'FuncWebTestMixin', 'FuncSeleniumMixin', 'ShortcutLoginMixin',
            'AdminLoginMixin', 'MultiThreadedLiveServerMixin', 'Upload']

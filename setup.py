@@ -12,7 +12,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-version = "1.1.1"
+version = "1.2-dev"
 
 if sys.argv[-1] == 'publish':
     try:
@@ -43,18 +43,16 @@ setup(
     packages=[
         'django_functest',
     ],
+    python_requires=">=3.5",
     include_package_data=True,
     install_requires=[
         'django-webtest>=1.9.2',
         'selenium>=2.48.0,<4;python_version<"3.7"',
         'selenium>=2.48.0;python_version>="3.7"',
-        'PyVirtualDisplay>=0.1.4;python_version>="3"',
-        'PyVirtualDisplay>=0.1.4,<2;python_version<"3"',
-        'six>=1.10.0',
+        'PyVirtualDisplay>=0.1.4',
         'furl>=0.4.9',
-        'pyquery>=1.2.10;python_version>="3"',
-        'pyquery>=1.2.10,<1.4.2;python_version<"3"',
-        'Django>=1.8',
+        'pyquery>=1.2.10',
+        'Django>=2.0',
     ],
     license="BSD",
     zip_safe=False,
@@ -62,10 +60,6 @@ setup(
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Framework :: Django',
-        'Framework :: Django :: 1.8',
-        'Framework :: Django :: 1.9',
-        'Framework :: Django :: 1.10',
-        'Framework :: Django :: 1.11',
         'Framework :: Django :: 2.0',
         'Framework :: Django :: 2.1',
         'Framework :: Django :: 2.2',
@@ -75,8 +69,6 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
