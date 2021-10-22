@@ -44,8 +44,9 @@ There are two main ideas behind django-functest:
    Selenium tests are often hundreds of times slower than tests that simply use
    HTTP.
 
-   django-functest provides wrappers for WebTest and Selenium that use the **same** API.
-   This means you can write a test targetting both, and run in two different ways.
+   django-functest provides wrappers for WebTest and Selenium that use the
+   **same** API. This means you can write a test targeting both, and run in two
+   different ways.
 
    The fast WebTest tests can be used when you need to iterate quickly, but you can still
    run the full tests against a browser.
@@ -72,20 +73,21 @@ classes. These can have :ref:`configuration <selenium-configuration>`, helpers
 and functionality that are specific to your project as needed:
 
 
-``yourproject.tests.base``::
+``yourproject.tests.base``:
 
+.. code-block:: python
 
-  from django.test import TestCase
-  from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-  from django_functest import FuncSeleniumMixin, FuncWebTestMixin
+   from django.test import TestCase
+   from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+   from django_functest import FuncSeleniumMixin, FuncWebTestMixin
 
-  class WebTestBase(FuncWebTestMixin, TestCase):
-      def setUp(self):
-          super(WebTestBase, self).setUp()  # Remember to call this!
-          # Your custom stuff here etc.
+   class WebTestBase(FuncWebTestMixin, TestCase):
+       def setUp(self):
+           super(WebTestBase, self).setUp()  # Remember to call this!
+           # Your custom stuff here etc.
 
-  class SeleniumTestBase(FuncSeleniumMixin, StaticLiveServerTestCase):
-      driver_name = "Chrome"
+   class SeleniumTestBase(FuncSeleniumMixin, StaticLiveServerTestCase):
+       driver_name = "Firefox"
 
 
 Normally ``StaticLiveServerTestCase`` will be better than
@@ -172,7 +174,7 @@ Use FuncBaseMixin
 In the above example, ``FuncBaseMixin`` is not strictly needed at all - it
 provides method definitions which all raise ``NotImplementedError`` - so you
 could replace it with ``object``. However, it can be very useful for editors
-that provide code autocompletion help, which be able to find the docstrings on
+that provide code auto-completion help, which be able to find the docstrings on
 ``FuncBaseMixin`` when you are writing methods like
 ``ContactFormTestBase.test_contact_form``. You may want to inherit from it in
 your own base class.
