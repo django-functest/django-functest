@@ -46,6 +46,9 @@ Features
   <https://www.wolfandbadger.com/>`_ for tests covering many business critical
   functionalities.
 
+* Supports running with pytest (using pytest-django) as well as Django’s
+  ``manage.py test``
+
 Typical usage
 -------------
 

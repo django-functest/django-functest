@@ -13,6 +13,7 @@ Contents:
    selenium
    webtest
    utils
+   pytest
    contributing
    authors
    history

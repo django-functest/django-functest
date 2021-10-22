@@ -109,7 +109,8 @@ eventually returned by
 ``firefox_binary`` (see `tests/base.py
 <https://github.com/django-functest/django-functest/blob/master/django_functest/tests/base.py>`_).
 You could also make ``get_webdriver_options`` look in ``os.environ`` if that is
-easier to arrange.
+easier to arrange. If you are using pytest, see the :doc:`pytest` tips for some
+better patterns for doing this kind of thing.
 
 PhantomJS
 ---------
