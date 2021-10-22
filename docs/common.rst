@@ -201,5 +201,6 @@ followed the same pattern.
 
    .. method:: __init__(filename, content=data)
 
-      Construct an object for uploading in a normal file upload field. The
-      ``content`` parameter must be a ``bytes`` instance.
+      Construct an object for uploading in a normal file upload field.
+      ``filename`` is a string, and the ``content`` parameter must be a
+      ``bytes`` instance.
