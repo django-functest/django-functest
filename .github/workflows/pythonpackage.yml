@@ -33,7 +33,7 @@ jobs:
         - python-version: 3.9
           django-version: 3.2.7
         - python-version: 3.9
-          django-version: 4.0a1
+          django-version: 4.0b1
 
     steps:
     - uses: actions/checkout@v2
