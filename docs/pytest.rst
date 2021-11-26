@@ -41,7 +41,7 @@ In ``conftest.py``:
        SHOW_BROWSER = config.option.show_browser
 
 
-Then write your SeleniumTestBase something like this:
+Then write your ``SeleniumTestBase`` something like this:
 
 .. code-block:: python
 
@@ -59,4 +59,4 @@ Then write your SeleniumTestBase something like this:
 
 
 You can now de-select all Selenium tests by doing ``pytest -m 'not selenium'``,
-and use ``--show-browser`` or ``--browser=Chome`` etc. as needed.
+and use ``--show-browser`` or ``--browser=Chrome`` etc. as needed.
