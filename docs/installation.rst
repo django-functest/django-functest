@@ -50,12 +50,6 @@ their version, and the version of the browser. Our policy is to try to test
 against the latest version of the browser and latest version of the driver at
 the time of release - see table below.
 
-In addition, in order to hide the browser window (the default behaviour),
-`PyVirtualDisplay <https://github.com/ponty/pyvirtualdisplay>`_ is used. Please
-see the `PyVirtualDisplay installation dependencies
-<https://github.com/ponty/pyvirtualdisplay>`_ - it has various supported
-"backends", one of which needs to be installed.
-
 Tested browser versions:
 
 +-------------------+---------------------+----------------------------+

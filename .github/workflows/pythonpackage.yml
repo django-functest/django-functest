@@ -48,7 +48,6 @@ jobs:
         key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('requirements*.txt') }}
     - name: Install dependencies
       run: |
-        sudo apt install xvfb
         pip install Django==${{ matrix.django-version }}
         pip install -e .
         pip install -r requirements-test.txt

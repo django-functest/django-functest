@@ -49,7 +49,6 @@ setup(
         'django-webtest>=1.9.2',
         'selenium>=2.48.0,<4;python_version<"3.7"',
         'selenium>=2.48.0;python_version>="3.7"',
-        'PyVirtualDisplay>=0.1.4',
         'furl>=0.4.9',
         'pyquery>=1.2.10',
         'Django>=2.0',
