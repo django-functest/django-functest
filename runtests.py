@@ -32,6 +32,8 @@ parser.add_argument("--skip-selenium", action='store_true',
                     help="Skip Selenium tests")
 parser.add_argument("--update-migration", action='store_true',
                     help="Don't run tests - just update the migration used for tests")
+parser.add_argument("--signed-cookies", action='store_true',
+                    help="Use signed cookies session backend")
 parser.add_argument("-v", "--verbosity", action='store', dest="verbosity",
                     choices=[0, 1, 2, 3], type=int,
                     help="Verbosity")
@@ -134,6 +136,9 @@ settings_dict = dict(
     },
     SECRET_KEY='foo',
 )
+
+if known_args.signed_cookies:
+    settings_dict["SESSION_ENGINE"] = "django.contrib.sessions.backends.signed_cookies"
 
 if django.VERSION < (1, 10):
     settings_dict['MIDDLEWARE_CLASSES'] = settings_dict.pop('MIDDLEWARE')

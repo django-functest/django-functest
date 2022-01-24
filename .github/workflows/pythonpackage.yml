@@ -34,6 +34,9 @@ jobs:
           django-version: 3.2.7
         - python-version: 3.9
           django-version: 4.0b1
+        - python-version: 3.9
+          django-version: 4.0
+          extra-run-args: --signed-cookies
 
     steps:
     - uses: actions/checkout@v2
@@ -53,7 +56,7 @@ jobs:
         pip install -r requirements-test.txt
     - name: Tests
       run: |
-        ./runtests.py
+        ./runtests.py ${{ matrix.extra-run-args }}
 
   flake8:
     runs-on: ubuntu-latest

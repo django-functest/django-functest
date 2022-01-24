@@ -172,6 +172,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         for name, value in item_dict.items():
             session[name] = str(value)
         session.save()
+        self._update_session_cookie(session)  # Required for signed_cookie backend
 
         s2 = self._get_session()
         if all(s2.get(name) == str(value) for name, value in item_dict.items()):
@@ -489,27 +490,28 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
     def _have_visited_page(self):
         return self._driver in self._drivers_visited_pages
 
-    def _add_cookie(self, cookie_dict):
-        self._driver.add_cookie(cookie_dict)
-
     def _get_session(self):
         session_cookie = self._driver.get_cookie(settings.SESSION_COOKIE_NAME)
         if session_cookie is None:
             # Create new
             session = get_session_store()
-            cookie_data = {'name': settings.SESSION_COOKIE_NAME,
-                           'value': session.session_key,
-                           'path': '/',
-                           'secure': False,
-                           }
-            if self._driver.name == 'phantomjs':
-                # Not sure why this is needed, but it seems to do the trick
-                cookie_data['domain'] = '.localhost'
-
-            self._add_cookie(cookie_data)
+            self._update_session_cookie(session)
         else:
             session = get_session_store(session_key=session_cookie['value'])
         return session
+
+    def _update_session_cookie(self, session):
+        cookie_data = {
+            'name': settings.SESSION_COOKIE_NAME,
+            'value': session.session_key,
+            'path': '/',
+            'secure': False,
+        }
+        if self._driver.name == 'phantomjs':
+            # Not sure why this is needed, but it seems to do the trick
+            cookie_data['domain'] = '.localhost'
+
+        self._driver.add_cookie(cookie_data)
 
     def _get_window_size(self):
         if self._driver.name == "phantomjs":
