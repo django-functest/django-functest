@@ -7,6 +7,8 @@ History
 ++++++++++++++++
 
 * Dropped support for Python 2.7 and Django < 2.0 (!)
+* Dropped support for Python 3.5
+* Fixed ``set_session_data`` when using signed cookies session backend.
 
 
 1.1.1 (2021-09-23)

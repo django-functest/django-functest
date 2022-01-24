@@ -137,6 +137,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         for name, value in item_dict.items():
             session[name] = str(value)
         session.save()
+        self._update_session_cookie(session)  # Required for signed_cookie backend
 
     def new_browser_session(self):
         """
@@ -211,12 +212,14 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         if session_key is None:
             # Create new
             session = get_session_store()
-            self._set_cookie(settings.SESSION_COOKIE_NAME,
-                             session.session_key)
+            self._update_session_cookie(session)
         else:
             session_key = session_key.strip('"')
             session = get_session_store(session_key=session_key)
         return session
+
+    def _update_session_cookie(self, session):
+        self._set_cookie(settings.SESSION_COOKIE_NAME, session.session_key)
 
     def _get_url_raw(self, url, auto_follow=True, expect_errors=False):
         """
