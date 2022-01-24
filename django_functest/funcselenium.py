@@ -580,7 +580,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
                           text=text, text_parent_id=text_parent_id)
 
     def _make_temp_file_for_upload(self, upload):
-        fname = os.path.join(tempfile.tempdir,
+        fname = os.path.join(tempfile.gettempdir(),
                              "{0}-{1}".format(random.randint(0, 1000000),
                                               upload.filename))
         with open(fname, "wb") as f:
