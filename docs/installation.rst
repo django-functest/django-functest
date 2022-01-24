@@ -55,6 +55,9 @@ Tested browser versions:
 +-------------------+---------------------+----------------------------+
 | django-functest   | Firefox             | Chrome                     |
 +===================+=====================+============================+
+| 1.2               | Firefox 96.0        | Chrome 97.0                |
+|                   | geckodriver 0.30.0  | chromedriver 97.0.4692.71  |
++-------------------+---------------------+----------------------------+
 | 1.1.1             | Firefox 92.0        | Chrome 94                  |
 |                   | geckodriver 0.30.0  | chromedriver 94.0.4606.41  |
 +-------------------+---------------------+----------------------------+
@@ -82,16 +85,8 @@ the new `Marionette
 driver, also known as ``geckodriver`` (`download releases here
 <https://github.com/mozilla/geckodriver/releases>`_).
 
-This implementation currently is `incomplete
-<https://bugzilla.mozilla.org/show_bug.cgi?id=721859>`_ and has `bugs
-<https://bugzilla.mozilla.org/buglist.cgi?bug_status=__open__&columnlist=assigned_to,bug_status,resolution,short_desc,changeddate,keywords,status_whiteboard&component=Marionette&product=Testing>`_
-and various incompatibilities. However, with the most recent versions the
-django-functest suite passes fully.
-
-Firefox 45 and older can be used with Selenium < 3 without anything additional
-installed. Old versions of Firefox can be found here:
-https://ftp.mozilla.org/pub/firefox/releases/ You may need older versions of
-django-functest for this to work.
+Older versions of Firefox (45 and earlier) could be used with Selenium < 3 and
+without anything additional installed, but this has not been tested recently.
 
 If you need to run your own tests with a different version of Firefox than the
 default one on your system, it is recommended you follow the pattern used by
