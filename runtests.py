@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from __future__ import absolute_import, print_function, unicode_literals
 
 import argparse
 import faulthandler
@@ -21,31 +20,47 @@ warnings.simplefilter("once", PendingDeprecationWarning)
 warnings.simplefilter("once", DeprecationWarning)
 
 
-parser = argparse.ArgumentParser(description="Run the test suite, or some tests. "
-                                 "Also takes any options that can be passed to manage.py"
-                                 " e.g. --failfast and --noinput")
-parser.add_argument("--show-browser", action='store_true',
-                    help="Show the browser when running Selenium tests")
-parser.add_argument("--firefox-binary", action='store',
-                    help="Path to binary to use for Firefox tests")
-parser.add_argument("--skip-selenium", action='store_true',
-                    help="Skip Selenium tests")
-parser.add_argument("--update-migration", action='store_true',
-                    help="Don't run tests - just update the migration used for tests")
-parser.add_argument("--signed-cookies", action='store_true',
-                    help="Use signed cookies session backend")
-parser.add_argument("-v", "--verbosity", action='store', dest="verbosity",
-                    choices=[0, 1, 2, 3], type=int,
-                    help="Verbosity")
-parser.add_argument("--database", action='store',
-                    default="sqlite", choices=["sqlite", "postgres"],
-                    type=str, help="Database driver to test against")
+parser = argparse.ArgumentParser(
+    description="Run the test suite, or some tests. "
+    "Also takes any options that can be passed to manage.py"
+    " e.g. --failfast and --noinput"
+)
+parser.add_argument(
+    "--show-browser",
+    action="store_true",
+    help="Show the browser when running Selenium tests",
+)
+parser.add_argument("--firefox-binary", action="store", help="Path to binary to use for Firefox tests")
+parser.add_argument("--skip-selenium", action="store_true", help="Skip Selenium tests")
+parser.add_argument(
+    "--update-migration",
+    action="store_true",
+    help="Don't run tests - just update the migration used for tests",
+)
+parser.add_argument("--signed-cookies", action="store_true", help="Use signed cookies session backend")
+parser.add_argument(
+    "-v",
+    "--verbosity",
+    action="store",
+    dest="verbosity",
+    choices=[0, 1, 2, 3],
+    type=int,
+    help="Verbosity",
+)
+parser.add_argument(
+    "--database",
+    action="store",
+    default="sqlite",
+    choices=["sqlite", "postgres"],
+    type=str,
+    help="Database driver to test against",
+)
 
 
 known_args, remaining_args = parser.parse_known_args()
 
-remaining_options = [a for a in remaining_args if a.startswith('-')]
-test_args = [a for a in remaining_args if not a.startswith('-')]
+remaining_options = [a for a in remaining_args if a.startswith("-")]
+test_args = [a for a in remaining_args if not a.startswith("-")]
 
 if known_args.database == "sqlite":
     DATABASES = {
@@ -55,18 +70,18 @@ if known_args.database == "sqlite":
             "CONN_MAX_AGE": 0,
             "TEST": {
                 "NAME": "tests.db",
-            }
+            },
         }
     }
 elif known_args.database == "postgres":
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'djangofunctest',
-            'USER': 'djangofunctest',
-            'PASSWORD': 'djangofunctest',
-            'HOST': 'localhost',
-            'CONN_MAX_AGE': 0,
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": "djangofunctest",
+            "USER": "djangofunctest",
+            "PASSWORD": "djangofunctest",
+            "HOST": "localhost",
+            "CONN_MAX_AGE": 0,
         }
     }
 
@@ -90,58 +105,56 @@ settings_dict = dict(
     ],
     SITE_ID=1,
     MIDDLEWARE=[
-        'django.contrib.sessions.middleware.SessionMiddleware',
-        'django.middleware.common.CommonMiddleware',
-        'django.middleware.csrf.CsrfViewMiddleware',
-        'django.contrib.auth.middleware.AuthenticationMiddleware',
-        'django.contrib.messages.middleware.MessageMiddleware',
-        'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        "django.contrib.sessions.middleware.SessionMiddleware",
+        "django.middleware.common.CommonMiddleware",
+        "django.middleware.csrf.CsrfViewMiddleware",
+        "django.contrib.auth.middleware.AuthenticationMiddleware",
+        "django.contrib.messages.middleware.MessageMiddleware",
+        "django.middleware.clickjacking.XFrameOptionsMiddleware",
     ],
     STATIC_URL="/static/",
     STATIC_ROOT=os.path.join(os.path.abspath(os.path.dirname(__file__)), "/tmp_static/"),
     TEMPLATES=[
         {
-            'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'DIRS': [],
-            'APP_DIRS': True,
-            'OPTIONS': {
-                'context_processors': [
-                    'django.template.context_processors.debug',
-                    'django.template.context_processors.request',
-                    'django.contrib.auth.context_processors.auth',
-                    'django.contrib.messages.context_processors.messages',
+            "BACKEND": "django.template.backends.django.DjangoTemplates",
+            "DIRS": [],
+            "APP_DIRS": True,
+            "OPTIONS": {
+                "context_processors": [
+                    "django.template.context_processors.debug",
+                    "django.template.context_processors.request",
+                    "django.contrib.auth.context_processors.auth",
+                    "django.contrib.messages.context_processors.messages",
                 ],
             },
         },
     ],
     LOGGING={
-        'version': 1,
-        'disable_existing_loggers': True,
-        'root': {
-            'level': 'WARNING',
-            'handlers': ['console'],
+        "version": 1,
+        "disable_existing_loggers": True,
+        "root": {
+            "level": "WARNING",
+            "handlers": ["console"],
         },
-        'formatters': {
-            'verbose': {
-                'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        "formatters": {
+            "verbose": {"format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"},
+        },
+        "handlers": {
+            "console": {
+                "level": "DEBUG",
+                "class": "logging.StreamHandler",
+                "formatter": "verbose",
             },
         },
-        'handlers': {
-            'console': {
-                'level': 'DEBUG',
-                'class': 'logging.StreamHandler',
-                'formatter': 'verbose'
-            },
-        }
     },
-    SECRET_KEY='foo',
+    SECRET_KEY="foo",
 )
 
 if known_args.signed_cookies:
     settings_dict["SESSION_ENGINE"] = "django.contrib.sessions.backends.signed_cookies"
 
 if django.VERSION < (1, 10):
-    settings_dict['MIDDLEWARE_CLASSES'] = settings_dict.pop('MIDDLEWARE')
+    settings_dict["MIDDLEWARE_CLASSES"] = settings_dict.pop("MIDDLEWARE")
 
 
 settings.configure(**settings_dict)
@@ -156,21 +169,23 @@ else:
 
 if known_args.show_browser:
     from django_functest.tests.base import HideBrowserMixin
+
     HideBrowserMixin.display = True
 
 
 def set_firefox_binary(path):
     from django_functest.tests.base import FirefoxBase
+
     FirefoxBase.firefox_binary = path
 
 
 if known_args.firefox_binary:
     set_firefox_binary(known_args.firefox_binary)
-elif 'TEST_FIREFOX_BINARY' in os.environ:
-    set_firefox_binary(os.environ['TEST_FIREFOX_BINARY'])
+elif "TEST_FIREFOX_BINARY" in os.environ:
+    set_firefox_binary(os.environ["TEST_FIREFOX_BINARY"])
 
 if known_args.skip_selenium:
-    os.environ['TEST_SKIP_SELENIUM'] = "TRUE"
+    os.environ["TEST_SKIP_SELENIUM"] = "TRUE"
 
 if known_args.update_migration:
     initial_migration = "django_functest/tests/migrations/0001_initial.py"

@@ -1,5 +1,3 @@
-from __future__ import absolute_import, print_function, unicode_literals
-
 import django
 from django.test import testcases
 
@@ -8,11 +6,7 @@ if django.VERSION < (2,):
     try:
         from django.core.servers.basehttp import ThreadedWSGIServer
     except ImportError:
-        import sys
-        if sys.version_info < (3,):
-            import SocketServer as socketserver
-        else:
-            import socketserver
+        import socketserver
 
         # See
         #  https://code.djangoproject.com/ticket/20238
@@ -22,22 +16,30 @@ if django.VERSION < (2,):
 
         class MultiThreadedLiveServerThread(testcases.LiveServerThread):
             if django.VERSION < (1, 11, 2):
+
                 def _create_server(self, port):
-                    return ThreadedWSGIServer((self.host, port),
-                                              testcases.QuietWSGIRequestHandler,
-                                              allow_reuse_address=False)
+                    return ThreadedWSGIServer(
+                        (self.host, port),
+                        testcases.QuietWSGIRequestHandler,
+                        allow_reuse_address=False,
+                    )
+
             else:
                 # Django 1.11.2 changed the signature
                 def _create_server(self):
-                    return ThreadedWSGIServer((self.host, self.port),
-                                              testcases.QuietWSGIRequestHandler,
-                                              allow_reuse_address=False)
+                    return ThreadedWSGIServer(
+                        (self.host, self.port),
+                        testcases.QuietWSGIRequestHandler,
+                        allow_reuse_address=False,
+                    )
 
-    class MultiThreadedLiveServerMixin(object):
+    class MultiThreadedLiveServerMixin:
         """
         Mixin for a LiveServerTestCase to make it multi-threaded.
         """
+
         if django.VERSION < (1, 11):
+
             @classmethod
             def _create_server_thread(cls, host, possible_ports, connections_override):
                 return MultiThreadedLiveServerThread(
@@ -46,9 +48,11 @@ if django.VERSION < (2,):
                     cls.static_handler,
                     connections_override=connections_override,
                 )
+
         else:
             server_thread_class = MultiThreadedLiveServerThread
+
 else:
     # Django 2.0+ has the behavior we want built in
-    class MultiThreadedLiveServerMixin(object):
+    class MultiThreadedLiveServerMixin:
         pass
