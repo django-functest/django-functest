@@ -8,7 +8,6 @@ import time
 from datetime import datetime
 
 from django.conf import settings
-from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException, StaleElementReferenceException
 from selenium.webdriver.common.action_chains import ActionChains
@@ -39,16 +38,6 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
 
     @classmethod
     def setUpClass(cls):
-        if not cls.display_browser_window():
-            display_args = {'visible': False}
-            if cls.browser_window_size is not None:
-                # For some browsers, we need display to be bigger
-                # than the size we want the window to be.
-                width, height = cls.browser_window_size
-                display_args['size'] = (width + 500, height + 500)
-            cls.__display = Display(**display_args)
-            cls.__display.start()
-
         # We have one driver attached to the class, re-used between test runs
         # for speed. Manually started driver instances (using new_browser_session)
         # are cleaned up at the end of an individual test.
@@ -58,8 +47,6 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
     @classmethod
     def tearDownClass(cls):
         cls._cls_driver.quit()
-        if not cls.display_browser_window():
-            cls.__display.stop()
         super(FuncSeleniumMixin, cls).tearDownClass()
 
     def setUp(self):
@@ -450,9 +437,36 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
     def _create_browser_instance(cls):
         driver_name = cls.get_driver_name()
         kwargs = cls.get_webdriver_options()
+        if not cls.display_browser_window():
+            if 'options' in kwargs:
+                options = kwargs['options']
+            else:
+                options = cls._create_browser_options(driver_name)
+            if hasattr(options, 'headless'):
+                options.headless = True
+            else:
+                logger.warn(f"Cannot set headless mode for webdriver {driver_name}")
+            if options is not None:
+                kwargs['options'] = options
         driver = getattr(webdriver, driver_name)(**kwargs)
         driver.set_page_load_timeout(cls.get_page_load_timeout())
         return driver
+
+    @classmethod
+    def _create_browser_options(cls, driver_name):
+        opt_classes = {
+            # Use strings for laziness here, to cope with different selenium
+            # versions which don't all have same things available
+            'Firefox': 'FirefoxOptions',
+            'Chrome': 'ChromeOptions',
+            'Edge': 'EdgeOptions',
+            'ChromiumEdge': 'EdgeOptions',
+        }
+        try:
+            opt_class_name = opt_classes[driver_name]
+        except KeyError:
+            return None
+        return getattr(webdriver, opt_class_name)()
 
     def _fix_window_size(self):
         size = self.get_browser_window_size()
@@ -566,7 +580,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
                           text=text, text_parent_id=text_parent_id)
 
     def _make_temp_file_for_upload(self, upload):
-        fname = os.path.join(tempfile.tempdir,
+        fname = os.path.join(tempfile.gettempdir(),
                              "{0}-{1}".format(random.randint(0, 1000000),
                                               upload.filename))
         with open(fname, "wb") as f:

@@ -6,6 +6,7 @@ History
 1.2 (unreleased)
 ++++++++++++++++
 
+* Removed need for PyVirtualDisplay, by using “headless” options instead.
 * Dropped support for Python 2.7 and Django < 2.0 (!)
 * Dropped support for Python 3.5
 * Fixed ``set_session_data`` when using signed cookies session backend.
