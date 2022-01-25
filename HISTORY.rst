@@ -3,7 +3,7 @@
 History
 -------
 
-1.2 (unreleased)
+1.2 (2022-01-25)
 ++++++++++++++++
 
 * Removed need for PyVirtualDisplay, by using “headless” options instead.
