@@ -1,10 +1,8 @@
-from __future__ import absolute_import, print_function, unicode_literals
-
-
-class FuncBaseMixin(object):
+class FuncBaseMixin:
     """
     Abstract base class that exists only to provide autocomplete help.
     """
+
     # Any docstrings added here also need to be added to
     # FuncSeleniumMixin/FuncWebTestMixin/CommonMixin.
 

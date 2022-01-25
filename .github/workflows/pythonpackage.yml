@@ -43,7 +43,9 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - uses: actions/cache@v2
       with:
-        path: ~/.cache/pip
+        path: |
+          ~/.cache/pip
+          ~/.cache/pre-commit
         key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('requirements*.txt') }}
     - name: Install dependencies
       run: |
@@ -60,7 +62,7 @@ jobs:
       run: |
         ./runtests.py ${{ matrix.extra-run-args }}
 
-  flake8:
+  linters:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -70,42 +72,12 @@ jobs:
         python-version: 3.9
     - uses: actions/cache@v2
       with:
-        path: ~/.cache/pip
+        path: |
+          ~/.cache/pip
+          ~/.cache/pre-commit
         key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('requirements*.txt') }}
     - name: Install dependencies
       run: |
-        cat requirements-dev.txt | grep flake | xargs pip install
-    - name: Lint with flake8
-      run: flake8
-
-  isort:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
-    - uses: actions/cache@v2
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('requirements*.txt') }}
-    - name: Install dependencies
-      run: |
-        cat requirements-dev.txt | grep isort | xargs pip install
-    - name: isort
-      run: isort -c src tests
-
-  check-manifest:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
-    - name: Install dependencies
-      run: |
-        cat requirements-dev.txt | grep check-manifest | xargs pip install
-    - name: check-manifest
-      run: check-manifest
+        cat requirements-dev.txt | grep pre-commit | xargs pip install
+    - name: pre-commit linters
+      run: pre-commit run --all-files --show-diff-on-failure --color=always

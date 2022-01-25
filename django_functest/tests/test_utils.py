@@ -1,5 +1,3 @@
-from __future__ import absolute_import, print_function, unicode_literals
-
 import inspect
 from unittest import TestCase
 
@@ -14,7 +12,7 @@ LOGGED_OUT_URL = "/admin/login/?next=/admin/"
 
 class TestShortcutLoginBase(ShortcutLoginMixin):
     def setUp(self):
-        super(TestShortcutLoginBase, self).setUp()
+        super().setUp()
         User = get_user_model()
         self.user = User.objects.create_superuser("admin", "admin@example.com", "password")
 
@@ -24,7 +22,10 @@ class TestShortcutLoginBase(ShortcutLoginMixin):
         self.assertUrlsEqual("/admin/")
 
     def test_login_raises_exception_with_wrong_password(self):
-        self.assertRaises(ValueError, lambda: self.shortcut_login(username=self.user.username, password="foo"))
+        self.assertRaises(
+            ValueError,
+            lambda: self.shortcut_login(username=self.user.username, password="foo"),
+        )
 
     def test_logout_succeeds(self):
         self.shortcut_login(username=self.user.username, password="password")
@@ -46,9 +47,8 @@ class TestShortcutLoginChrome(TestShortcutLoginBase, ChromeBase):
 
 
 class TestAdminLoginBase(AdminLoginMixin):
-
     def setUp(self):
-        super(TestAdminLoginBase, self).setUp()
+        super().setUp()
         User = get_user_model()
         self.user = User.objects.create_superuser("admin", "admin@example.com", "password")
 
@@ -95,18 +95,18 @@ class TestDocStrings(TestCase):
         bad_docstrings = []
         for cls in [FuncSeleniumMixin, FuncWebTestMixin]:
             for name, member in inspect.getmembers(cls):
-                if name.startswith('__'):
+                if name.startswith("__"):
                     continue
-                member_doc = getattr(member, '__doc__', None)
+                member_doc = getattr(member, "__doc__", None)
 
                 base_member = getattr(FuncBaseMixin, name, None)
                 if base_member is not None:
-                    base_doc = getattr(base_member, '__doc__', None)
+                    base_doc = getattr(base_member, "__doc__", None)
                     if base_doc is not None and member_doc != base_doc:
                         bad_docstrings.append((cls, name))
 
         if bad_docstrings:
-            self.fail("The following methods have incorrect or missing docstrings "
-                      "compared to FuncBaseMixin: \n" +
-                      "\n".join("{0}.{1}".format(cls.__name__, name)
-                                for cls, name in bad_docstrings))
+            self.fail(
+                "The following methods have incorrect or missing docstrings "
+                "compared to FuncBaseMixin: \n" + "\n".join(f"{cls.__name__}.{name}" for cls, name in bad_docstrings)
+            )

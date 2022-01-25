@@ -1,5 +1,3 @@
-from __future__ import absolute_import, print_function, unicode_literals
-
 from collections import defaultdict
 
 import pyquery
@@ -19,13 +17,12 @@ except ImportError:
 
 
 def html_norm(html):
-    return html.replace('&quot;', '"').replace('&apos;', "'").replace('&#39;', "'").replace('&#x27;', "'")
+    return html.replace("&quot;", '"').replace("&apos;", "'").replace("&#39;", "'").replace("&#x27;", "'")
 
 
 class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
-
     def __init__(self, *args, **kwargs):
-        super(FuncWebTestMixin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._all_last_responses = defaultdict(list)
         self._all_apps = []
 
@@ -34,15 +31,19 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         """
         Asserts that the text is not present on the current page
         """
-        self.assertNotIn(html_norm(escape(text)),
-                         html_norm(self.last_response.content.decode('utf-8')))
+        self.assertNotIn(
+            html_norm(escape(text)),
+            html_norm(self.last_response.content.decode("utf-8")),
+        )
 
     def assertTextPresent(self, text):
         """
         Asserts that the text is present on the current page
         """
-        self.assertIn(html_norm(escape(text)),
-                      html_norm(self.last_response.content.decode('utf-8')))
+        self.assertIn(
+            html_norm(escape(text)),
+            html_norm(self.last_response.content.decode("utf-8")),
+        )
 
     def back(self):
         """
@@ -63,19 +64,20 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         """
         elems = self._make_pq(self.last_response).find(css_selector)
         if len(elems) == 0:
-            raise WebTestNoSuchElementException("Can't find element matching '{0}'".format(css_selector))
+            raise WebTestNoSuchElementException(f"Can't find element matching '{css_selector}'")
 
         hrefs = []
         for e in elems:
-            if 'href' in e.attrib:
-                hrefs.append(e.attrib['href'])
+            if "href" in e.attrib:
+                hrefs.append(e.attrib["href"])
 
         if not hrefs:
-            raise WebTestCantUseElement("No href attribute found for '{0}'".format(css_selector))
+            raise WebTestCantUseElement(f"No href attribute found for '{css_selector}'")
 
         if not all(h == hrefs[0] for h in hrefs):
-            raise WebTestMultipleElementsException("Different href values for links '{0}': '{1}'"
-                                                   .format(css_selector, ' ,'.join(hrefs)))
+            raise WebTestMultipleElementsException(
+                f"Different href values for links '{css_selector}': '{' ,'.join(hrefs)}'"
+            )
         self.get_literal_url(hrefs[0])
 
     def fill(self, data):
@@ -88,7 +90,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
             field_items = form.fields[field_name]
             if isinstance(field_items, list) and len(field_items) > 1:
                 # We've got something like a set of checkboxes with the same name.
-                selected_value = elem.attrib['value']
+                selected_value = elem.attrib["value"]
                 for checkbox in field_items:
                     if checkbox._value == selected_value:
                         checkbox.checked = value
@@ -150,8 +152,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         # that value around.
         last_app = self.app
         self.renew_app()
-        return (BrowserSessionToken(last_app),
-                BrowserSessionToken(self.app))
+        return (BrowserSessionToken(last_app), BrowserSessionToken(self.app))
 
     def switch_browser_session(self, session_token):
         """
@@ -160,17 +161,18 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         """
         last_app = self.app
         self.app = session_token.value
-        return (BrowserSessionToken(last_app),
-                BrowserSessionToken(self.app))
+        return (BrowserSessionToken(last_app), BrowserSessionToken(self.app))
 
     def submit(self, css_selector, wait_for_reload=None, auto_follow=True, window_closes=None):
         """
         Submit the form using the input given in the CSS selector
         """
-        form, field_name, _ = self._find_form_and_field_by_css_selector(self.last_response,
-                                                                        css_selector,
-                                                                        require_name=False,
-                                                                        filter_selector="input[type=submit], button")
+        form, field_name, _ = self._find_form_and_field_by_css_selector(
+            self.last_response,
+            css_selector,
+            require_name=False,
+            filter_selector="input[type=submit], button",
+        )
         response = form.submit(field_name)
         if auto_follow:
             while 300 <= response.status_int < 400:
@@ -181,9 +183,9 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         """
         Returns the value of the form input specified in the CSS selector
         """
-        form, field_name, _ = self._find_form_and_field_by_css_selector(self.last_response,
-                                                                        css_selector,
-                                                                        require_name=False)
+        form, field_name, _ = self._find_form_and_field_by_css_selector(
+            self.last_response, css_selector, require_name=False
+        )
         field = form[field_name]
         if isinstance(field, Checkbox):
             return field.checked
@@ -228,8 +230,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         self.last_responses.append(self.app.get(url, auto_follow=auto_follow, expect_errors=expect_errors))
         return self.last_response
 
-    def _find_form_and_field_by_css_selector(self, response, css_selector, filter_selector=None,
-                                             require_name=True):
+    def _find_form_and_field_by_css_selector(self, response, css_selector, filter_selector=None, require_name=True):
         pq = self._make_pq(response)
         items = pq.find(css_selector)
 
@@ -239,67 +240,64 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         for item in items:
             form_elem = self._find_parent_form(item)
             if form_elem is None:
-                raise WebTestCantUseElement("Can't find form for input {0}.".format(css_selector))
+                raise WebTestCantUseElement(f"Can't find form for input {css_selector}.")
             form = self._match_form_elem_to_webtest_form(form_elem, response)
-            field = item.name if hasattr(item, 'name') else item.attrib.get('name', None)
+            field = item.name if hasattr(item, "name") else item.attrib.get("name", None)
             if field is None and require_name:
-                raise WebTestCantUseElement(
-                    "Element {0} needs 'name' attribute in order to use it".format(css_selector))
+                raise WebTestCantUseElement(f"Element {css_selector} needs 'name' attribute in order to use it")
             found.append((form, field, item))
 
         if len(found) > 1:
             if not all(f[0:2] == found[0][0:2] for f in found):
-                raise WebTestMultipleElementsException(
-                    "Multiple elements found matching '{0}'".format(css_selector))
+                raise WebTestMultipleElementsException(f"Multiple elements found matching '{css_selector}'")
 
         if len(found) > 0:
             return found[0]
 
-        raise WebTestNoSuchElementException(
-            "Can't find element matching {0} in response {1}.".format(css_selector, response))
+        raise WebTestNoSuchElementException(f"Can't find element matching {css_selector} in response {response}.")
 
     def _find_parent_form(self, elem):
         p = elem.getparent()
         if p is None:
             return None
-        if p.tag == 'form':
+        if p.tag == "form":
             return p
         return self._find_parent_form(p)
 
     def _fill_field_by_text(self, form, field_name, text):
         field = form[field_name]
-        if field.tag == 'select':
+        if field.tag == "select":
             for val, _, t in field.options:
                 if t == text:
                     form[field_name] = val
                     break
             else:
-                raise ValueError("No option matched '{0}'".format(text))
+                raise ValueError(f"No option matched '{text}'")
         else:
-            raise WebTestCantUseElement("Don't know how to 'fill_by_text' for elements of type '{0}'"
-                                        .format(field.tag))
+            raise WebTestCantUseElement(f"Don't know how to 'fill_by_text' for elements of type '{field.tag}'")
 
     def _match_form_elem_to_webtest_form(self, form_elem, response):
         pq = self._make_pq(response)
-        forms = pq('form')
+        forms = pq("form")
         form_index = forms.index(form_elem)
         webtest_form = response.forms[form_index]
-        form_sig = {'action': form_elem.attrib.get('action', ''),
-                    'id': form_elem.attrib.get('id', ''),
-                    'method': form_elem.attrib.get('method', '').lower(),
-                    }
-        webtest_sig = {
-            'action': getattr(webtest_form, 'action', ''),
-            'id': getattr(webtest_form, 'id', ''),
-            'method': getattr(webtest_form, 'method', '').lower(),
+        form_sig = {
+            "action": form_elem.attrib.get("action", ""),
+            "id": form_elem.attrib.get("id", ""),
+            "method": form_elem.attrib.get("method", "").lower(),
         }
-        webtest_sig = {k: v if v is not None else '' for k, v in webtest_sig.items()}
+        webtest_sig = {
+            "action": getattr(webtest_form, "action", ""),
+            "id": getattr(webtest_form, "id", ""),
+            "method": getattr(webtest_form, "method", "").lower(),
+        }
+        webtest_sig = {k: v if v is not None else "" for k, v in webtest_sig.items()}
         assert form_sig == webtest_sig
         return webtest_form
 
     def _make_pq(self, response):
         # Cache to save parsing every time
-        if not hasattr(self, '_pq_cache'):
+        if not hasattr(self, "_pq_cache"):
             self._pq_cache = {}
         if response in self._pq_cache:
             return self._pq_cache[response]

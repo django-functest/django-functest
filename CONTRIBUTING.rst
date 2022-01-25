@@ -62,42 +62,43 @@ development.
 1. Fork the `django-functest` repo on GitHub.
 2. Clone your fork locally::
 
-    $ git clone git@github.com:your_name_here/django-functest.git
+     $ git clone git@github.com:your_name_here/django-functest.git
 
 3. Install your local copy into a virtualenv. Assuming you have
    virtualenvwrapper installed, this is how you set up your fork for local
    development::
 
-    $ mkvirtualenv django-functest
-    $ cd django-functest/
-    $ python setup.py develop
+     $ mkvirtualenv django-functest
+     $ cd django-functest/
+     $ python setup.py develop
 
    You also need to install testing and development tools::
 
-    $ pip install -r requirements-test.txt
-    $ pip install -r requirements-dev.txt
+     $ pip install -r requirements-test.txt
+     $ pip install -r requirements-dev.txt
 
 4. Create a branch for local development::
 
-    $ git checkout -b name-of-your-bugfix-or-feature
+     $ git checkout -b name-of-your-bugfix-or-feature
 
    Now you can make your changes locally.
 
 5. When you're done making changes, check that your changes pass flake8 and the
    tests::
 
-    $ flake8 django_functest
-    $ isort -c .
-    $ ./runtests.py
+     $ flake8 django_functest
+     $ isort -c .
+     $ black --check django_functest
+     $ ./runtests.py
 
-   You can also use `pre-commit <https://pre-commit.com/>`_ to run some of these
+   You can also use `pre-commit <https://pre-commit.com/>`_ to run all of
    tests automatically when you commit::
 
      $ pre-commit install
 
    It can help to test other Django/Python versions with tox::
 
-    $ tox
+     $ tox
 
    To run the full test suite, you will need to install:
 
@@ -107,9 +108,9 @@ development.
 
 6. Commit your changes and push your branch to GitHub::
 
-    $ git add .
-    $ git commit -m "Your detailed description of your changes."
-    $ git push origin name-of-your-bugfix-or-feature
+     $ git add .
+     $ git commit -m "Your detailed description of your changes."
+     $ git push origin name-of-your-bugfix-or-feature
 
 7. Submit a pull request through the GitHub website.
 
@@ -128,7 +129,7 @@ Tips
 
 To run a subset of tests::
 
-    $ ./runtests.py  django_functest.tests.SomeTestCase
+  $ ./runtests.py django_functest.tests.SomeTestCase
 
 Conduct
 -------

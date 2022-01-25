@@ -1,5 +1,3 @@
-from __future__ import absolute_import, print_function, unicode_literals
-
 import logging
 import os.path
 import random
@@ -31,33 +29,32 @@ def escape_selenium(text):
     #  &quot; gets converted back to "
     #  &#39; gets converted back to '
     # So we need a custom function here, instead of django.utils.html.escape
-    return text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
 class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
-
     @classmethod
     def setUpClass(cls):
         # We have one driver attached to the class, re-used between test runs
         # for speed. Manually started driver instances (using new_browser_session)
         # are cleaned up at the end of an individual test.
         cls._cls_driver = cls._create_browser_instance()
-        super(FuncSeleniumMixin, cls).setUpClass()
+        super().setUpClass()
 
     @classmethod
     def tearDownClass(cls):
         cls._cls_driver.quit()
-        super(FuncSeleniumMixin, cls).tearDownClass()
+        super().tearDownClass()
 
     def setUp(self):
         self._instance_drivers = []
         self._drivers_visited_pages = set()
-        super(FuncSeleniumMixin, self).setUp()
+        super().setUp()
         self._fix_window_size()
         self._driver.delete_all_cookies()
 
     def tearDown(self):
-        super(FuncSeleniumMixin, self).tearDown()
+        super().tearDown()
         for d in self._instance_drivers:
             if d != self._cls_driver:
                 d.quit()
@@ -117,7 +114,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         """
         Gets the named URL, passing *args and **kwargs to Django's URL 'reverse' function.
         """
-        kwargs.pop('expect_errors', None)
+        kwargs.pop("expect_errors", None)
         self.get_literal_url(reverse(name, args=args, kwargs=kwargs))
 
     def get_literal_url(self, url, auto_follow=None, expect_errors=None):
@@ -153,7 +150,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         """
         # Cookies don't work unless we visit a page first
         if not self._have_visited_page():
-            self.get_url('django_functest.emptypage')
+            self.get_url("django_functest.emptypage")
 
         session = self._get_session()
         for name, value in item_dict.items():
@@ -178,12 +175,12 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         Returns the value of the form input specified in the CSS selector
         """
         elem = self._find(css_selector=css_selector)
-        if elem.tag_name == 'input' and elem.get_attribute('type') == 'checkbox':
+        if elem.tag_name == "input" and elem.get_attribute("type") == "checkbox":
             return self._is_checked(elem)
-        elif elem.tag_name == 'input' and elem.get_attribute('type') == 'radio':
+        elif elem.tag_name == "input" and elem.get_attribute("type") == "radio":
             return self._get_radio_button_value(elem)
         else:
-            return elem.get_attribute('value')
+            return elem.get_attribute("value")
 
     # Full browser specific:
 
@@ -247,11 +244,18 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
 
     # Runtime methods:
 
-    def click(self, css_selector=None, xpath=None,
-              text=None, text_parent_id=None,
-              wait_for_reload=False,
-              wait_timeout=None,
-              double=False, scroll=True, window_closes=False):
+    def click(
+        self,
+        css_selector=None,
+        xpath=None,
+        text=None,
+        text_parent_id=None,
+        wait_for_reload=False,
+        wait_timeout=None,
+        double=False,
+        scroll=True,
+        window_closes=False,
+    ):
         """
         Clicks the button or control specified by the CSS selector
         or xpath
@@ -261,11 +265,13 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         if wait_for_reload:
             self._driver.execute_script("document.pageReloadedYetFlag='notyet';")
 
-        elem = self._find_with_timeout(css_selector=css_selector,
-                                       xpath=xpath,
-                                       text=text,
-                                       text_parent_id=text_parent_id,
-                                       timeout=wait_timeout)
+        elem = self._find_with_timeout(
+            css_selector=css_selector,
+            xpath=xpath,
+            text=text,
+            text_parent_id=text_parent_id,
+            timeout=wait_timeout,
+        )
         if scroll:
             self._scroll_into_view(elem)
         elem.click()
@@ -276,12 +282,14 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
                 pass
 
         if wait_for_reload:
+
             def f(driver):
                 obj = driver.execute_script("return document.pageReloadedYetFlag;")
 
                 if obj is None or obj != "notyet":
                     return True
                 return False
+
             try:
                 WebDriverWait(self._driver, self.get_default_timeout()).until(f)
             except NoSuchWindowException:
@@ -326,8 +334,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         new_driver = self._create_browser_instance()
         self._instance_drivers.insert(0, new_driver)
         self._fix_window_size()
-        return (BrowserSessionToken(old_driver),
-                BrowserSessionToken(new_driver))
+        return (BrowserSessionToken(old_driver), BrowserSessionToken(new_driver))
 
     def switch_browser_session(self, session_token):
         """
@@ -339,17 +346,16 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         if new_driver in self._instance_drivers:
             self._instance_drivers.remove(new_driver)
         self._instance_drivers.insert(0, new_driver)
-        return (BrowserSessionToken(old_driver),
-                BrowserSessionToken(new_driver))
+        return (BrowserSessionToken(old_driver), BrowserSessionToken(new_driver))
 
     def save_screenshot(self, dirname="./", filename=None):
         """
         Saves a screenshot of the browser window.
         """
         # Especially useful when hiding the browser window gives different behaviour.
-        testname = '%s.%s.%s' % (self.__class__.__module__, self.__class__.__name__, self._testMethodName)
+        testname = f"{self.__class__.__module__}.{self.__class__.__name__}.{self._testMethodName}"
         if filename is None:
-            filename = datetime.now().strftime('Screenshot %Y-%m-%d %H.%M.%S') + " " + testname + ".png"
+            filename = datetime.now().strftime("Screenshot %Y-%m-%d %H.%M.%S") + " " + testname + ".png"
         name = os.path.abspath(os.path.join(dirname, filename))
         self._driver.save_screenshot(name)
         return name
@@ -358,13 +364,14 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         """
         Sets the browser window size to specified width and height.
         """
+
         def f(driver):
             driver.set_window_size(width, height)
             time.sleep(0.1)
             win_width, win_height = self._get_window_size()
             # Some drivers fail to get it exactly
-            return ((width - 2 <= win_width <= width + 2) and
-                    (height - 2 <= win_height <= height + 2))
+            return (width - 2 <= win_width <= width + 2) and (height - 2 <= win_height <= height + 2)
+
         self.wait_until(f)
 
     def switch_window(self, handle=None):
@@ -383,8 +390,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             current_window_handle = None
         window_handles = self._driver.window_handles
         if handle is None:
-            possible_window_handles = [h for h in window_handles
-                                       if h != current_window_handle]
+            possible_window_handles = [h for h in window_handles if h != current_window_handle]
 
             if len(possible_window_handles) > 1:
                 raise AssertionError("Don't know which window to switch to!")
@@ -392,13 +398,13 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
                 handle = possible_window_handles[0]
 
         def f(driver):
-            if (hasattr(driver, 'switch_to') and
-                    hasattr(driver.switch_to, 'window')):
+            if hasattr(driver, "switch_to") and hasattr(driver.switch_to, "window"):
                 m = driver.switch_to.window
             else:
                 m = driver.switch_to_window
             m(handle)
             return driver.current_window_handle == handle
+
         self.wait_until(f)
         return current_window_handle, handle
 
@@ -406,7 +412,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         """
         Waits until the page has finished loading
         """
-        self.wait_until_loaded('body')
+        self.wait_until_loaded("body")
         self._wait_for_document_ready()
 
     def wait_until(self, callback, timeout=None):
@@ -420,16 +426,27 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             timeout = self.get_default_timeout()
         WebDriverWait(self._driver, timeout).until(callback)
 
-    def wait_until_loaded(self, css_selector=None, xpath=None,
-                          text=None, text_parent_id=None,
-                          timeout=None):
+    def wait_until_loaded(
+        self,
+        css_selector=None,
+        xpath=None,
+        text=None,
+        text_parent_id=None,
+        timeout=None,
+    ):
         """
         Helper function that blocks until the element with the given tag name
         is found on the page.
         """
-        self.wait_until(self._get_finder(css_selector=css_selector, xpath=xpath,
-                                         text=text, text_parent_id=text_parent_id),
-                        timeout=timeout)
+        self.wait_until(
+            self._get_finder(
+                css_selector=css_selector,
+                xpath=xpath,
+                text=text,
+                text_parent_id=text_parent_id,
+            ),
+            timeout=timeout,
+        )
 
     # Implementation methods - private
 
@@ -438,16 +455,16 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         driver_name = cls.get_driver_name()
         kwargs = cls.get_webdriver_options()
         if not cls.display_browser_window():
-            if 'options' in kwargs:
-                options = kwargs['options']
+            if "options" in kwargs:
+                options = kwargs["options"]
             else:
                 options = cls._create_browser_options(driver_name)
-            if hasattr(options, 'headless'):
+            if hasattr(options, "headless"):
                 options.headless = True
             else:
                 logger.warn(f"Cannot set headless mode for webdriver {driver_name}")
             if options is not None:
-                kwargs['options'] = options
+                kwargs["options"] = options
         driver = getattr(webdriver, driver_name)(**kwargs)
         driver.set_page_load_timeout(cls.get_page_load_timeout())
         return driver
@@ -457,10 +474,10 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         opt_classes = {
             # Use strings for laziness here, to cope with different selenium
             # versions which don't all have same things available
-            'Firefox': 'FirefoxOptions',
-            'Chrome': 'ChromeOptions',
-            'Edge': 'EdgeOptions',
-            'ChromiumEdge': 'EdgeOptions',
+            "Firefox": "FirefoxOptions",
+            "Chrome": "ChromeOptions",
+            "Edge": "EdgeOptions",
+            "ChromiumEdge": "EdgeOptions",
         }
         try:
             opt_class_name = opt_classes[driver_name]
@@ -487,10 +504,10 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             return lambda driver: driver.find_element_by_xpath(xpath)
         if text is not None:
             if text_parent_id is not None:
-                prefix = '//*[@id="{0}"]'.format(text_parent_id)
+                prefix = f'//*[@id="{text_parent_id}"]'
             else:
-                prefix = ''
-            _xpath = prefix + '//*[contains(text(), "{0}")]'.format(text)
+                prefix = ""
+            _xpath = prefix + f'//*[contains(text(), "{text}")]'
             return lambda driver: driver.find_element_by_xpath(_xpath)
         raise AssertionError("No selector passed in")
 
@@ -511,19 +528,19 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             session = get_session_store()
             self._update_session_cookie(session)
         else:
-            session = get_session_store(session_key=session_cookie['value'])
+            session = get_session_store(session_key=session_cookie["value"])
         return session
 
     def _update_session_cookie(self, session):
         cookie_data = {
-            'name': settings.SESSION_COOKIE_NAME,
-            'value': session.session_key,
-            'path': '/',
-            'secure': False,
+            "name": settings.SESSION_COOKIE_NAME,
+            "value": session.session_key,
+            "path": "/",
+            "secure": False,
         }
-        if self._driver.name == 'phantomjs':
+        if self._driver.name == "phantomjs":
             # Not sure why this is needed, but it seems to do the trick
-            cookie_data['domain'] = '.localhost'
+            cookie_data["domain"] = ".localhost"
 
         self._driver.add_cookie(cookie_data)
 
@@ -546,13 +563,13 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         return self._driver.page_source
 
     def _fill_input(self, elem, val):
-        if elem.tag_name == 'select':
+        if elem.tag_name == "select":
             self._set_select_elem(elem, val)
-        elif elem.tag_name == 'input' and elem.get_attribute('type') == 'checkbox':
+        elif elem.tag_name == "input" and elem.get_attribute("type") == "checkbox":
             self._set_check_box(elem, val)
-        elif elem.tag_name == 'input' and elem.get_attribute('type') == 'radio':
+        elif elem.tag_name == "input" and elem.get_attribute("type") == "radio":
             self._set_radio_button(elem, val)
-        elif elem.tag_name == 'input' and elem.get_attribute('type') == 'file':
+        elif elem.tag_name == "input" and elem.get_attribute("type") == "file":
             # val is an Upload instance
             fname = self._make_temp_file_for_upload(val)
             elem.send_keys(fname)
@@ -562,27 +579,44 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             elem.send_keys(self._normalize_linebreaks(val))
 
     def _fill_input_by_text(self, elem, val):
-        if elem.tag_name == 'select':
+        if elem.tag_name == "select":
             self._set_select_elem_by_text(elem, val)
         else:
-            raise SeleniumCantUseElement("Can't do 'fill_by_text' on elements of type {0}".format(elem.tag_name))
+            raise SeleniumCantUseElement(f"Can't do 'fill_by_text' on elements of type {elem.tag_name}")
 
     def _find(self, css_selector=None, xpath=None, text=None, text_parent_id=None):
-        return self._get_finder(css_selector=css_selector, xpath=xpath,
-                                text=text, text_parent_id=text_parent_id)(self._driver)
+        return self._get_finder(
+            css_selector=css_selector,
+            xpath=xpath,
+            text=text,
+            text_parent_id=text_parent_id,
+        )(self._driver)
 
-    def _find_with_timeout(self, css_selector=None, xpath=None, text=None, text_parent_id=None, timeout=None):
+    def _find_with_timeout(
+        self,
+        css_selector=None,
+        xpath=None,
+        text=None,
+        text_parent_id=None,
+        timeout=None,
+    ):
         if timeout != 0:
-            self.wait_until_loaded(css_selector=css_selector, xpath=xpath,
-                                   text=text, text_parent_id=text_parent_id,
-                                   timeout=timeout)
-        return self._find(css_selector=css_selector, xpath=xpath,
-                          text=text, text_parent_id=text_parent_id)
+            self.wait_until_loaded(
+                css_selector=css_selector,
+                xpath=xpath,
+                text=text,
+                text_parent_id=text_parent_id,
+                timeout=timeout,
+            )
+        return self._find(
+            css_selector=css_selector,
+            xpath=xpath,
+            text=text,
+            text_parent_id=text_parent_id,
+        )
 
     def _make_temp_file_for_upload(self, upload):
-        fname = os.path.join(tempfile.gettempdir(),
-                             "{0}-{1}".format(random.randint(0, 1000000),
-                                              upload.filename))
+        fname = os.path.join(tempfile.gettempdir(), f"{random.randint(0, 1000000)}-{upload.filename}")
         with open(fname, "wb") as f:
             f.write(upload.content)
 
@@ -599,9 +633,14 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         # Attempt to scroll to the center of the screen. This is the best
         # location to avoid fixed navigation bars which tend to be at the
         # top and bottom.
-        viewport_width, viewport_height, doc_width, doc_height = self._scroll_center_data()
-        elem_x, elem_y = elem.location['x'], elem.location['y']
-        elem_w, elem_h = elem.size['width'], elem.size['height']
+        (
+            viewport_width,
+            viewport_height,
+            doc_width,
+            doc_height,
+        ) = self._scroll_center_data()
+        elem_x, elem_y = elem.location["x"], elem.location["y"]
+        elem_w, elem_h = elem.size["width"], elem.size["height"]
         scroll_to_x = elem_x + elem_w / 2 - viewport_width / 2
         scroll_to_y = elem_y + elem_h / 2 - viewport_height / 2
 
@@ -611,8 +650,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         scroll_to_x = clip(scroll_to_x, 0, doc_width)
         scroll_to_y = clip(scroll_to_y, 0, doc_height)
 
-        self._driver.execute_script("window.scrollTo({0}, {1});".format(
-            scroll_to_x, scroll_to_y))
+        self._driver.execute_script(f"window.scrollTo({scroll_to_x}, {scroll_to_y});")
         x, y = self._scroll_position()
         if (x, y) != (scroll_to_x, scroll_to_y):
             # Probably in the middle of another scroll. Wait and try again.
@@ -627,18 +665,23 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
 
     def _scroll_center_data(self):
         # http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
-        return self.execute_script("""return [window.innerWidth,
+        return self.execute_script(
+            """return [window.innerWidth,
                                               window.innerHeight,
                                               document.documentElement.scrollWidth,
-                                              document.documentElement.scrollHeight];""")
+                                              document.documentElement.scrollHeight];"""
+        )
 
     def _scroll_position(self):
-        return self.execute_script("""return [document.documentElement.scrollTop,
-                                              document.documentElement.scrollLeft];""")
+        return self.execute_script(
+            """return [document.documentElement.scrollTop,
+                                              document.documentElement.scrollLeft];"""
+        )
 
     def _is_center_visible(self, elem):
         # Thanks http://stackoverflow.com/a/15203639/182604
-        return self.execute_script("""return (function (el) {
+        return self.execute_script(
+            """return (function (el) {
     var rect     = el.getBoundingClientRect(),
         vWidth   = window.innerWidth || doc.documentElement.clientWidth,
         vHeight  = window.innerHeight || doc.documentElement.clientHeight,
@@ -653,10 +696,12 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
 
     // Return true if its center is visible
     return el.contains(efp(e_x, e_y));
-})(arguments[0])""", elem)
+})(arguments[0])""",
+            elem,
+        )
 
     def _is_checked(self, elem):
-        return elem.get_attribute('checked') == 'true'
+        return elem.get_attribute("checked") == "true"
 
     def _set_check_box(self, elem, state):
         if self._is_checked(elem) != state:
@@ -669,10 +714,8 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         # used). We need to find the actual one that is has the correct value.
         # We also need to be aware of multiple forms that might be on the page.
         form_elem = elem.find_element_by_xpath("./ancestor::form")
-        name = elem.get_attribute('name')
-        correct_elem = form_elem.find_element_by_xpath(
-            '//input[@type="radio"][@name="{0}"][@value="{1}"]'.format(
-                name, value))
+        name = elem.get_attribute("name")
+        correct_elem = form_elem.find_element_by_xpath(f'//input[@type="radio"][@name="{name}"][@value="{value}"]')
         if not self._is_checked(correct_elem):
             self._scroll_into_view(correct_elem)
             correct_elem.click()
@@ -682,12 +725,11 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         # returned the first one that matched, especially if a 'name' selector was
         # used). We need to find the actual one that is set.
         form_elem = elem.find_element_by_xpath("./ancestor::form")
-        name = elem.get_attribute('name')
-        elems = form_elem.find_elements_by_xpath(
-            '//input[@type="radio"][@name="{0}"]'.format(name))
+        name = elem.get_attribute("name")
+        elems = form_elem.find_elements_by_xpath(f'//input[@type="radio"][@name="{name}"]')
         for e in elems:
-            if e.get_attribute('checked'):
-                return e.get_attribute('value')
+            if e.get_attribute("checked"):
+                return e.get_attribute("value")
 
     def _set_select_elem(self, elem, value):
         self._scroll_into_view(elem)
@@ -706,5 +748,5 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         text = possibly_text
         # If you send \r\n to Firefox, it enters 2 line breaks (at least on
         # Linux)
-        text = text.replace('\r\n', '\n')
+        text = text.replace("\r\n", "\n")
         return text

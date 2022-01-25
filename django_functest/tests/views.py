@@ -1,5 +1,3 @@
-from __future__ import absolute_import, print_function, unicode_literals
-
 import uuid
 
 from django import forms
@@ -16,40 +14,50 @@ except ImportError:
 
 
 def test_misc(request):
-    return render(request, "django_functest/tests/test_misc.html",
-                  {'name': request.session.get('name', None)})
+    return render(
+        request,
+        "django_functest/tests/test_misc.html",
+        {"name": request.session.get("name", None)},
+    )
 
 
 def redirect_to_misc(request):
-    return HttpResponseRedirect(reverse('django_functest.test_misc'))
+    return HttpResponseRedirect(reverse("django_functest.test_misc"))
 
 
 def set_sess_foo_to_bar(request):
-    request.session['foo'] = 'bar'
+    request.session["foo"] = "bar"
     return render(request, "django_functest/tests/test_misc.html")
 
 
-class AddSpacersMixin(object):
+class AddSpacersMixin:
     def __init__(self, add_spacers=False, **kwargs):
-        super(AddSpacersMixin, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.add_spacers = add_spacers
 
     def as_p(self):
-        retval = super(AddSpacersMixin, self).as_p()
+        retval = super().as_p()
         if self.add_spacers:
             # Hack to help test interacting with elements
             # that aren't in view.
-            retval = mark_safe(retval.replace('</p>', '</p>' + ('<br>' * 100)))
+            retval = mark_safe(retval.replace("</p>", "</p>" + ("<br>" * 100)))
         return retval
 
 
 class ThingForm(AddSpacersMixin, forms.ModelForm):
-    category = forms.ChoiceField(choices=Thing.CATEGORY_CHOICES,
-                                 widget=forms.RadioSelect)
+    category = forms.ChoiceField(choices=Thing.CATEGORY_CHOICES, widget=forms.RadioSelect)
 
     class Meta:
         model = Thing
-        fields = ['name', 'big', 'clever', 'element_type', 'category', 'count', 'description']
+        fields = [
+            "name",
+            "big",
+            "clever",
+            "element_type",
+            "category",
+            "count",
+            "description",
+        ]
 
 
 class ThingFormWithSelectForCategory(AddSpacersMixin, forms.ModelForm):
@@ -62,45 +70,50 @@ class ThingFormWithSelectForCategory(AddSpacersMixin, forms.ModelForm):
 class ThingFormWithUpload(AddSpacersMixin, forms.ModelForm):
     class Meta:
         model = Thing
-        fields = ['name', 'notes_file']
+        fields = ["name", "notes_file"]
 
 
 def edit_thing(request, thing_id, with_upload=False):
     thing = Thing.objects.get(id=int(thing_id))
-    add_spacers = 'add_spacers' in request.GET
-    add_js_delay = int(request.GET.get('add_js_delay', '0'))
+    add_spacers = "add_spacers" in request.GET
+    add_js_delay = int(request.GET.get("add_js_delay", "0"))
 
     if with_upload:
         form_class = ThingFormWithUpload
-        redirect_url = reverse('edit_thing_with_upload', kwargs={'thing_id': thing_id})
+        redirect_url = reverse("edit_thing_with_upload", kwargs={"thing_id": thing_id})
     else:
-        select_for_category = 'select_for_category' in request.GET
+        select_for_category = "select_for_category" in request.GET
         form_class = ThingFormWithSelectForCategory if select_for_category else ThingForm
-        redirect_url = reverse('edit_thing', kwargs={'thing_id': thing_id})
+        redirect_url = reverse("edit_thing", kwargs={"thing_id": thing_id})
 
     if request.method == "POST":
-        if 'clear' in request.POST:
+        if "clear" in request.POST:
             thing = Thing(id=thing.id, category=Thing.CATEGORY_MAGMA)
             thing.save()
-            return HttpResponseRedirect(reverse('thing_cleared', kwargs={'thing_id': thing_id}))
+            return HttpResponseRedirect(reverse("thing_cleared", kwargs={"thing_id": thing_id}))
         else:
-            thing_form = form_class(data=request.POST,
-                                    files=request.FILES,
-                                    instance=thing,
-                                    add_spacers=add_spacers)
+            thing_form = form_class(
+                data=request.POST,
+                files=request.FILES,
+                instance=thing,
+                add_spacers=add_spacers,
+            )
             if thing_form.is_valid():
                 thing_form.save()
                 return HttpResponseRedirect(redirect_url)
     else:
-        thing_form = form_class(instance=thing,
-                                add_spacers=add_spacers)
+        thing_form = form_class(instance=thing, add_spacers=add_spacers)
 
-    return render(request, "django_functest/tests/edit_thing.html",
-                  {'thing_form': thing_form,
-                   'thing': thing,
-                   'add_js_delay': add_js_delay,
-                   'upload': with_upload,
-                   })
+    return render(
+        request,
+        "django_functest/tests/edit_thing.html",
+        {
+            "thing_form": thing_form,
+            "thing": thing,
+            "add_js_delay": add_js_delay,
+            "upload": with_upload,
+        },
+    )
 
 
 def edit_thing_with_upload(request, thing_id):
@@ -109,33 +122,40 @@ def edit_thing_with_upload(request, thing_id):
 
 def list_things(request):
     things = Thing.objects.all()
-    if 'select_thing' in request.GET:
-        id_list = map(int, request.GET.getlist('select_thing'))
+    if "select_thing" in request.GET:
+        id_list = map(int, request.GET.getlist("select_thing"))
         selected_things = things.filter(id__in=id_list)
     else:
         selected_things = []
-    return render(request, "django_functest/tests/list_things.html",
-                  {'things': things,
-                   'selected_things': selected_things,
-                   })
+    return render(
+        request,
+        "django_functest/tests/list_things.html",
+        {
+            "things": things,
+            "selected_things": selected_things,
+        },
+    )
 
 
 def thing_cleared(request, thing_id):
     thing = Thing.objects.get(id=int(thing_id))
-    return render(request, "django_functest/tests/thing_cleared.html",
-                  {'thing': thing})
+    return render(request, "django_functest/tests/thing_cleared.html", {"thing": thing})
 
 
 def new_browser_session_test(request):
-    if 'UID' in request.session:
-        uid = request.session['UID']
+    if "UID" in request.session:
+        uid = request.session["UID"]
         message = "Welcome back"
     else:
         uid = uuid.uuid1()
-        request.session['UID'] = str(uid)
+        request.session["UID"] = str(uid)
         message = "Hello new user"
 
-    return render(request, "django_functest/tests/new_browser_session_test.html",
-                  {'uid': uid,
-                   'message': message,
-                   })
+    return render(
+        request,
+        "django_functest/tests/new_browser_session_test.html",
+        {
+            "uid": uid,
+            "message": message,
+        },
+    )

@@ -1,5 +1,3 @@
-from __future__ import absolute_import, print_function, unicode_literals
-
 import os
 import subprocess
 import unittest
@@ -45,12 +43,12 @@ class WebTestBase(FuncWebTestMixin, TestCase):
     available_apps = AVAILABLE_APPS
 
 
-class HideBrowserMixin(object):
+class HideBrowserMixin:
     display = False  # hacked by runtests.py
 
 
-@unittest.skipIf(os.environ.get('TEST_SKIP_SELENIUM'), "Skipping Selenium tests")
-class SeleniumBaseMixin(object):
+@unittest.skipIf(os.environ.get("TEST_SKIP_SELENIUM"), "Skipping Selenium tests")
+class SeleniumBaseMixin:
     browser_window_size = (1024, 768)
 
 
@@ -62,14 +60,20 @@ class FirefoxBase(HideBrowserMixin, SeleniumBaseMixin, FuncSeleniumMixin, MyLive
 
     @classmethod
     def get_webdriver_options(cls):
-        kwargs = super(FirefoxBase, cls).get_webdriver_options()
+        kwargs = super().get_webdriver_options()
         if cls.firefox_binary is not None:
             from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
-            kwargs['firefox_binary'] = FirefoxBinary(firefox_path=cls.firefox_binary)
+
+            kwargs["firefox_binary"] = FirefoxBinary(firefox_path=cls.firefox_binary)
         return kwargs
 
 
 @unittest.skipIf(not chrome_available, "Chrome not available, skipping")
-class ChromeBase(HideBrowserMixin, SeleniumBaseMixin, FuncSeleniumMixin,
-                 MultiThreadedLiveServerMixin, MyLiveServerTestCase):
+class ChromeBase(
+    HideBrowserMixin,
+    SeleniumBaseMixin,
+    FuncSeleniumMixin,
+    MultiThreadedLiveServerMixin,
+    MyLiveServerTestCase,
+):
     driver_name = "Chrome"

@@ -4,8 +4,8 @@
   </head>
   <body>
     <form id="id_form" action="" method="POST"
-          {% if upload %}enctype="multipart/form-data" {% endif %}
-          >
+      {% if upload %}enctype="multipart/form-data" {% endif %}
+    >
       {% csrf_token %}
       {{ thing_form.as_p }}
 
@@ -34,33 +34,33 @@
     <script>
       var clickCount = 0;
       document.getElementById("id_check_button").onclick = function (event) {
-          event.preventDefault();
-          var emphasize = function (n) {
-              if (n <= 0) {
-                  return "";
-              }
-              return "really " + emphasize(n - 1);
+        event.preventDefault();
+        var emphasize = function (n) {
+          if (n <= 0) {
+            return "";
           }
-          event.preventDefault();
-          document.getElementById("id_check_messages").innerHTML = "Everything is " + emphasize(clickCount) + "fine";
-          clickCount++;
+          return "really " + emphasize(n - 1);
+        }
+        event.preventDefault();
+        document.getElementById("id_check_messages").innerHTML = "Everything is " + emphasize(clickCount) + "fine";
+        clickCount++;
       };
 
       var pressMeClickCount = 0;
       document.getElementById("id_debounced").onclick = function (event) {
-          event.preventDefault();
-          pressMeClickCount++;
-          document.getElementById("id_check_messages").innerHTML = "Pressed x " + pressMeClickCount.toString();
-          document.getElementById("id_debounced").disabled = true;
-          document.getElementById("id_debounced").cssClass = "aclass";
+        event.preventDefault();
+        pressMeClickCount++;
+        document.getElementById("id_check_messages").innerHTML = "Pressed x " + pressMeClickCount.toString();
+        document.getElementById("id_debounced").disabled = true;
+        document.getElementById("id_debounced").cssClass = "aclass";
       };
 
       var pressMeTooClickCount = 0;
       document.getElementById("id_disappears").onclick = function (event) {
-          event.preventDefault();
-          pressMeTooClickCount++;
-          document.getElementById("id_check_messages").innerHTML = "Pressed x " + pressMeTooClickCount.toString();
-          document.getElementById("id_disappears").remove();
+        event.preventDefault();
+        pressMeTooClickCount++;
+        document.getElementById("id_check_messages").innerHTML = "Pressed x " + pressMeTooClickCount.toString();
+        document.getElementById("id_disappears").remove();
       };
 
     </script>
@@ -68,10 +68,10 @@
     {% if add_js_delay %}
       <script>
         document.getElementById('id_change').onclick = function (event) {
-            event.preventDefault();
-            window.setTimeout(function () {
-                document.getElementById('id_form').submit();
-            }, {{ add_js_delay }} * 1000);
+          event.preventDefault();
+          window.setTimeout(function () {
+            document.getElementById('id_form').submit();
+          }, {{ add_js_delay }} * 1000);
         }
 
       </script>
