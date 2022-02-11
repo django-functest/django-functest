@@ -3,7 +3,7 @@
 History
 -------
 
-1.3 (2022-02-11)
+1.3 (unreleased)
 ++++++++++++++++
 * Added :meth:`~django_functest.FuncCommonApi.get_element_inner_text`
 
