@@ -1,6 +1,5 @@
 from collections import defaultdict
 
-import pyquery
 from django.conf import settings
 from django.utils.html import escape
 from django_webtest import WebTestMixin
@@ -313,7 +312,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
             self._pq_cache = {}
         if response in self._pq_cache:
             return self._pq_cache[response]
-        pq = pyquery.PyQuery(response.content)
+        pq = response.pyquery
         self._pq_cache[response] = pq
         return pq
 
