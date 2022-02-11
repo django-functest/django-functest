@@ -91,8 +91,10 @@ development.
      $ black --check django_functest
      $ ./runtests.py
 
+   See ``./runtests.py --help`` for more options.
+
    You can also use `pre-commit <https://pre-commit.com/>`_ to run all of
-   tests automatically when you commit::
+   the linters automatically when you commit::
 
      $ pre-commit install
 

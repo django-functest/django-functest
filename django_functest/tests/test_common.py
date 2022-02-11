@@ -392,6 +392,13 @@ class TestCommonBase(FuncBaseMixin):
         self.assertTextPresent(uid_2)
         self.assertTextAbsent(uid_1)
 
+    def test_get_element_inner_text(self):
+        self.get_url("django_functest.test_misc")
+        self.assertEqual(self.get_element_inner_text("#inner-text-test-1"), "A paragraph with “this” & that 😄")
+        self.assertEqual(self.get_element_inner_text("#inner-text-test-2"), "Some text with bold and italic.")
+        self.assertEqual(self.get_element_inner_text("#inner-text-test-3"), "")
+        self.assertEqual(self.get_element_inner_text("#does-not-exist-3"), None)
+
 
 class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
 
@@ -445,6 +452,10 @@ class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
         self.get_literal_url(url, expect_errors=True)
         self.assertEqual(self.last_response.status_int, 404)
         self.assertRaises(Exception, lambda: self.get_literal_url(url, expect_errors=False))
+
+    def test_get_element_inner_text_multiple(self):
+        self.get_url("django_functest.test_misc")
+        self.assertRaises(WebTestMultipleElementsException, lambda: self.get_element_inner_text("p"))
 
 
 class TestFuncSeleniumCommonBase(TestCommonBase):

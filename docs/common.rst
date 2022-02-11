@@ -93,6 +93,15 @@ followed the same pattern.
       Same as :meth:`fill`, except the values are text captions. This can be
       used only for ``select`` elements.
 
+   .. method:: get_element_inner_text(css_selector)
+
+      Returns the "inner text" (``innerText`` in JS) of the element matching
+      the ``css_selector``, or ``None`` if there is no match.
+
+      For :class:`django_functest.FuncWebTestMixin`, you will get an exception
+      if multiple elements match.
+
+
    .. method:: get_url(name, *args, **kwargs)
 
       Gets the named URL, passing it through ``django.core.urlresolvers.reverse`` with ``*args`` and ``**kwargs``.

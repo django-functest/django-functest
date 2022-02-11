@@ -73,6 +73,13 @@ class FuncBaseMixin:
         """
         raise NotImplementedError()
 
+    def get_element_inner_text(self, css_selector):
+        """
+        Returns the "inner text" (innerText in JS) of the element matching
+        the css_selector, or None if there is none.
+        """
+        raise NotImplementedError()
+
     def get_url(self, name, *args, **kwargs):
         """
         Gets the named URL, passing *args and **kwargs to Django's URL 'reverse' function.
