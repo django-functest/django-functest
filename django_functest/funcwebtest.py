@@ -105,6 +105,18 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
             form, field_name, _ = self._find_form_and_field_by_css_selector(self.last_response, selector)
             self._fill_field_by_text(form, field_name, text)
 
+    def get_element_inner_text(self, css_selector):
+        """
+        Returns the "inner text" (innerText in JS) of the element matching
+        the css_selector, or None if there is none.
+        """
+        elems = self._make_pq(self.last_response).find(css_selector)
+        if len(elems) == 0:
+            return None
+        if len(elems) > 1:
+            raise WebTestMultipleElementsException(f"Multiple elements found matching '{css_selector}'")
+        return inner_text(elems[0])
+
     def get_url(self, name, *args, **kwargs):
         """
         Gets the named URL, passing *args and **kwargs to Django's URL 'reverse' function.
@@ -304,3 +316,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         pq = pyquery.PyQuery(response.content)
         self._pq_cache[response] = pq
         return pq
+
+
+def inner_text(elem, root=True):
+    return (elem.text or "") + "".join(inner_text(e, root=False) for e in elem) + ("" if root else (elem.tail or ""))

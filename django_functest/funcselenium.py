@@ -110,6 +110,17 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             elem = self._find_with_timeout(css_selector=selector)
             self._fill_input_by_text(elem, text)
 
+    def get_element_inner_text(self, css_selector):
+        """
+        Returns the "inner text" (innerText in JS) of the element matching
+        the css_selector, or None if there is none.
+        """
+        try:
+            element = self._driver.find_element_by_css_selector(css_selector)
+        except NoSuchElementException:
+            return None
+        return element.text
+
     def get_url(self, name, *args, **kwargs):
         """
         Gets the named URL, passing *args and **kwargs to Django's URL 'reverse' function.
