@@ -106,6 +106,18 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
             form, field_name, _ = self._find_form_and_field_by_css_selector(self.last_response, selector)
             self._fill_field_by_text(form, field_name, text)
 
+    def get_element_attribute(self, css_selector, attribute):
+        """
+        Returns the value of the attribute of the element matching the css_selector,
+        or None if there is no such element or attribute.
+        """
+        elems = self._make_pq(self.last_response).find(css_selector)
+        if len(elems) == 0:
+            return None
+        if len(elems) > 1:
+            raise WebTestMultipleElementsException(f"Multiple elements found matching '{css_selector}'")
+        return elems[0].attrib.get(attribute, None)
+
     def get_element_inner_text(self, css_selector):
         """
         Returns the "inner text" (innerText in JS) of the element matching

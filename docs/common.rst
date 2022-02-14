@@ -93,6 +93,14 @@ followed the same pattern.
       Same as :meth:`fill`, except the values are text captions. This can be
       used only for ``select`` elements.
 
+   .. method:: get_element_attribute(css_selector, attribute)
+
+      Returns the value of the attribute of the element matching the css_selector,
+      or None if there is no such element or attribute.
+
+      For :class:`django_functest.FuncWebTestMixin`, you will get an exception
+      if multiple elements match.
+
    .. method:: get_element_inner_text(css_selector)
 
       Returns the "inner text" (``innerText`` in JS) of the element matching
