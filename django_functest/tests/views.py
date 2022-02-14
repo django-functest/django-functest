@@ -22,7 +22,7 @@ def test_misc(request):
 
 
 def redirect_to_misc(request):
-    return HttpResponseRedirect(reverse("django_functest.test_misc"))
+    return HttpResponseRedirect(reverse("test_misc"))
 
 
 def set_sess_foo_to_bar(request):

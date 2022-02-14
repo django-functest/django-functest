@@ -79,7 +79,7 @@ class TestCommonBase(FuncBaseMixin):
         )
 
     def test_assertTextPresent(self):
-        self.get_url("django_functest.test_misc")
+        self.get_url("test_misc")
         self.assertTextPresent("Hello world")
         # Check escaping
         self.assertTextPresent("from 'me' & \"friends\"")
@@ -91,7 +91,7 @@ class TestCommonBase(FuncBaseMixin):
         )
 
     def test_assertTextAbsent(self):
-        self.get_url("django_functest.test_misc")
+        self.get_url("test_misc")
         self.assertTextAbsent("Something definitely not there")
         self.assertRaises(AssertionError, lambda: self.assertTextAbsent("Hello world"))
         self.assertRaises(AssertionError, lambda: self.assertTextAbsent("from 'me' & \"friends\""))
@@ -301,11 +301,11 @@ class TestCommonBase(FuncBaseMixin):
 
     def test_set_session_data(self):
         self.set_session_data({"name": "The Jabberwocky"})
-        self.get_url("django_functest.test_misc")
+        self.get_url("test_misc")
         self.assertTextPresent("Hello to The Jabberwocky")
 
     def test_get_session_data(self):
-        self.get_url("django_functest.set_sess_foo_to_bar")
+        self.get_url("set_sess_foo_to_bar")
         sess_dict = self.get_session_data()
         self.assertEqual(sess_dict, {"foo": "bar"})
 
@@ -393,7 +393,7 @@ class TestCommonBase(FuncBaseMixin):
         self.assertTextAbsent(uid_1)
 
     def test_get_element_inner_text(self):
-        self.get_url("django_functest.test_misc")
+        self.get_url("test_misc")
         self.assertEqual(self.get_element_inner_text("#inner-text-test-1"), "A paragraph with “this” & that 😄")
         self.assertEqual(self.get_element_inner_text("#inner-text-test-2"), "Some text with bold and italic.")
         self.assertEqual(self.get_element_inner_text("#inner-text-test-3"), "")
@@ -454,7 +454,7 @@ class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
         self.assertRaises(Exception, lambda: self.get_literal_url(url, expect_errors=False))
 
     def test_get_element_inner_text_multiple(self):
-        self.get_url("django_functest.test_misc")
+        self.get_url("test_misc")
         self.assertRaises(WebTestMultipleElementsException, lambda: self.get_element_inner_text("p"))
 
 
