@@ -276,6 +276,20 @@ class TestCommonBase(FuncBaseMixin):
         self.get_url("list_things")
         self.assertRaises(self.ElementNotFoundException, lambda: self.follow_link("a.foobar"))
 
+    def test_follow_link_path_relative(self):
+        self.get_url("test_misc")
+        self.follow_link('a[href="."]')
+        self.assertUrlsEqual(reverse("test_misc"))
+
+        self.follow_link('a[href="?param1=val1"]')
+        self.assertUrlsEqual(reverse("test_misc") + "?param1=val1")
+
+        self.follow_link('a[href="?param1=val2&param2"]')
+        self.assertUrlsEqual(reverse("test_misc") + "?param1=val2&param2")
+
+        self.follow_link('a[href="."]')  # This should clear queries
+        self.assertUrlsEqual(reverse("test_misc"))
+
     def test_back(self):
         self.get_url("list_things")
         self.follow_link("a.edit")

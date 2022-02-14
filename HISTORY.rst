@@ -6,6 +6,7 @@ History
 1.3 (unreleased)
 ++++++++++++++++
 * Added :meth:`~django_functest.FuncCommonApi.get_element_inner_text`
+* Fixed bugs with ``follow_link()`` and path-relative URLs
 
 1.2 (2022-01-25)
 ++++++++++++++++

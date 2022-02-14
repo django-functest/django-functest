@@ -1,3 +1,4 @@
+import urllib
 from collections import defaultdict
 
 from django.conf import settings
@@ -77,7 +78,8 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
             raise WebTestMultipleElementsException(
                 f"Different href values for links '{css_selector}': '{' ,'.join(hrefs)}'"
             )
-        self.get_literal_url(hrefs[0])
+        final_url = urllib.parse.urljoin(self.current_url, hrefs[0])
+        self.get_literal_url(final_url)
 
     def fill(self, data):
         """
