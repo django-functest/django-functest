@@ -8,6 +8,7 @@ History
 * Added :meth:`~django_functest.FuncCommonApi.get_element_inner_text`
 * Added :meth:`~django_functest.FuncCommonApi.get_element_attribute`.
 * Fixed bugs with ``follow_link()`` and path-relative URLs
+* Added support for Python 3.10
 * Dropped support for Python 3.6. This is because:
   * The new ``get_element_attribute`` required Selenium >= 4, which
     is not available for Python 3.6 and below

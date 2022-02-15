@@ -41,7 +41,8 @@ setup(
     python_requires=">=3.6",
     include_package_data=True,
     install_requires=[
-        "django-webtest>=1.9.2",
+        "django-webtest>=1.9.9",
+        "WebTest>=3",
         "selenium>=4",
         "furl>=0.4.9",
         "pyquery>=1.2.10",
@@ -66,5 +67,6 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
     ],
 )

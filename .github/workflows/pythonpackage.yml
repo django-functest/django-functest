@@ -28,6 +28,8 @@ jobs:
           django-version: 3.2.11
         - python-version: 3.9
           django-version: 4.0.1
+        - python-version: "3.10"
+          django-version: 4.0.1
         - python-version: 3.7
           django-version: 3.2.11
           extra-run-args: --signed-cookies
@@ -51,7 +53,6 @@ jobs:
       run: |
         pip install Django==${{ matrix.django-version }}
         pip install -e .
-        pip install -r requirements-test.txt
     - name: Versions
       run: |
         firefox --version
