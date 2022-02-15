@@ -5,10 +5,11 @@ Release process
 
   https://github.com/django-functest/django-functest/actions?query=workflow%3A%22Python+package%22+branch%3Amaster
 
-* Update chromedriver and geckodriver, run tests locally. Add version numbers
-  into table in installation.rst.
 
-* Update HISTORY.rst, removing "(unreleased)" and adding date. Commit.
+* Update HISTORY.rst, removing "(unreleased)" and adding date.
+
+* From the last test run on CI, add version numbers of Firefox/Chrome etc. into
+  the table in installation.rst.
 
 * Update the version number, removing the ``-dev1`` part if present
 
@@ -16,7 +17,7 @@ Release process
   * django_functest/__init__.py
   * docs/conf.py
 
-* Make sure all is committed
+* Commit.
 
 * Release to PyPI::
 

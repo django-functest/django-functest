@@ -5,7 +5,7 @@ from .funcwebtest import FuncWebTestMixin
 from .server import MultiThreadedLiveServerMixin
 from .utils import AdminLoginMixin, ShortcutLoginMixin
 
-__version__ = "1.2"
+__version__ = "1.3"
 
 __all__ = [
     "FuncBaseMixin",
