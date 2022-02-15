@@ -38,7 +38,7 @@ setup(
     packages=[
         "django_functest",
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     include_package_data=True,
     install_requires=[
         "django-webtest>=1.9.9",
