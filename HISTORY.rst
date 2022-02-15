@@ -6,8 +6,13 @@ History
 1.3 (unreleased)
 ++++++++++++++++
 * Added :meth:`~django_functest.FuncCommonApi.get_element_inner_text`
-* Added :meth:`~django_functest.FuncCommonApi.get_element_attribute`
+* Added :meth:`~django_functest.FuncCommonApi.get_element_attribute`.
 * Fixed bugs with ``follow_link()`` and path-relative URLs
+* Dropped support for Python 3.6. This is because:
+  * The new ``get_element_attribute`` required Selenium >= 4, which
+    is not available for Python 3.6 and below
+  * Python 3.6 is now End Of Life
+
 
 1.2 (2022-01-25)
 ++++++++++++++++
