@@ -79,14 +79,10 @@ Chrome can be used if `chromedriver
 Firefox
 -------
 
-For recent versions of Firefox, you can use Selenium 3 or later, if you install
-the new `Marionette
+You need to install the `Marionette
 <https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette/WebDriver>`_
 driver, also known as ``geckodriver`` (`download releases here
 <https://github.com/mozilla/geckodriver/releases>`_).
-
-Older versions of Firefox (45 and earlier) could be used with Selenium < 3 and
-without anything additional installed, but this has not been tested recently.
 
 If you need to run your own tests with a different version of Firefox than the
 default one on your system, it is recommended you follow the pattern used by
@@ -100,20 +96,3 @@ eventually returned by
 You could also make ``get_webdriver_options`` look in ``os.environ`` if that is
 easier to arrange. If you are using pytest, see the :doc:`pytest` tips for some
 better patterns for doing this kind of thing.
-
-PhantomJS
----------
-
-If installed, `PhantomJS <http://phantomjs.org/>`_ can be used. PhantomJS is no
-longer officially supported - the test suite does not run against it and bugs
-for it will not be fixed. This is because the project has been abandoned, and
-Selenium also no longer supports it.
-
-
-Other notes about old versions
-------------------------------
-
-* If you are using Django < 1.11, you should install django-functest < 1.0.1 and
-  django-webtest < 1.9.1.
-
-* If you are using Firefox 45 or older, you will need Selenium < 3

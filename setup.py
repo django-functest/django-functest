@@ -41,9 +41,9 @@ setup(
     python_requires=">=3.6",
     include_package_data=True,
     install_requires=[
-        "django-webtest>=1.9.2",
-        'selenium>=2.48.0,<4;python_version<"3.7"',
-        'selenium>=2.48.0;python_version>="3.7"',
+        "django-webtest>=1.9.9",
+        "WebTest>=3",
+        "selenium>=4",
         "furl>=0.4.9",
         "pyquery>=1.2.10",
         "Django>=2.0",
@@ -64,9 +64,9 @@ setup(
         "License :: OSI Approved :: BSD License",
         "Natural Language :: English",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
     ],
 )

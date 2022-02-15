@@ -9,6 +9,7 @@ from django.conf import settings
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException, StaleElementReferenceException
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
 from .base import FuncBaseMixin
@@ -110,13 +111,24 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             elem = self._find_with_timeout(css_selector=selector)
             self._fill_input_by_text(elem, text)
 
+    def get_element_attribute(self, css_selector, attribute):
+        """
+        Returns the value of the attribute of the element matching the css_selector,
+        or None if there is no such element or attribute.
+        """
+        try:
+            element = self._driver.find_element(By.CSS_SELECTOR, css_selector)
+        except NoSuchElementException:
+            return None
+        return element.get_dom_attribute(attribute)
+
     def get_element_inner_text(self, css_selector):
         """
         Returns the "inner text" (innerText in JS) of the element matching
         the css_selector, or None if there is none.
         """
         try:
-            element = self._driver.find_element_by_css_selector(css_selector)
+            element = self._driver.find_element(By.CSS_SELECTOR, css_selector)
         except NoSuchElementException:
             return None
         return element.text
@@ -143,7 +155,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         False otherwise.
         """
         try:
-            self._driver.find_element_by_css_selector(css_selector)
+            self._driver.find_element(By.CSS_SELECTOR, css_selector)
         except NoSuchElementException:
             return False
         return True
@@ -329,7 +341,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         present and visible on the page.
         """
         try:
-            elem = self._driver.find_element_by_css_selector(css_selector)
+            elem = self._driver.find_element(By.CSS_SELECTOR, css_selector)
         except NoSuchElementException:
             return False
         return elem.is_displayed()
@@ -510,16 +522,16 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
 
     def _get_finder(self, css_selector=None, xpath=None, text=None, text_parent_id=None):
         if css_selector is not None:
-            return lambda driver: driver.find_element_by_css_selector(css_selector)
+            return lambda driver: driver.find_element(By.CSS_SELECTOR, css_selector)
         if xpath is not None:
-            return lambda driver: driver.find_element_by_xpath(xpath)
+            return lambda driver: driver.find_element(By.XPATH, xpath)
         if text is not None:
             if text_parent_id is not None:
                 prefix = f'//*[@id="{text_parent_id}"]'
             else:
                 prefix = ""
             _xpath = prefix + f'//*[contains(text(), "{text}")]'
-            return lambda driver: driver.find_element_by_xpath(_xpath)
+            return lambda driver: driver.find_element(By.XPATH, _xpath)
         raise AssertionError("No selector passed in")
 
     def _get_url_raw(self, url):
@@ -724,9 +736,9 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         # returned the first one that matched, especially if a 'name' selector was
         # used). We need to find the actual one that is has the correct value.
         # We also need to be aware of multiple forms that might be on the page.
-        form_elem = elem.find_element_by_xpath("./ancestor::form")
+        form_elem = elem.find_element(By.XPATH, "./ancestor::form")
         name = elem.get_attribute("name")
-        correct_elem = form_elem.find_element_by_xpath(f'//input[@type="radio"][@name="{name}"][@value="{value}"]')
+        correct_elem = form_elem.find_element(By.XPATH, f'//input[@type="radio"][@name="{name}"][@value="{value}"]')
         if not self._is_checked(correct_elem):
             self._scroll_into_view(correct_elem)
             correct_elem.click()
@@ -735,7 +747,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         # The 'elem' found might be one of several (previous Selenium code will have
         # returned the first one that matched, especially if a 'name' selector was
         # used). We need to find the actual one that is set.
-        form_elem = elem.find_element_by_xpath("./ancestor::form")
+        form_elem = elem.find_element(By.XPATH, "./ancestor::form")
         name = elem.get_attribute("name")
         elems = form_elem.find_elements_by_xpath(f'//input[@type="radio"][@name="{name}"]')
         for e in elems:

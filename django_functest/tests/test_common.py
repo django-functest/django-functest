@@ -413,6 +413,15 @@ class TestCommonBase(FuncBaseMixin):
         self.assertEqual(self.get_element_inner_text("#inner-text-test-3"), "")
         self.assertEqual(self.get_element_inner_text("#does-not-exist-3"), None)
 
+    def test_get_element_attribute(self):
+        self.get_url("test_misc")
+        self.assertEqual(self.get_element_attribute("#inner-text-test-1", "id"), "inner-text-test-1")
+        # href tests are important here, because of the difference between
+        # Selenium's `WebElement.get_attribute` and `get_dom_attribute`
+        self.assertEqual(self.get_element_attribute("#self-link-3", "href"), "?param1=val2&param2")
+        self.assertEqual(self.get_element_attribute("#self-link-3", "does-not-exist"), None)
+        self.assertEqual(self.get_element_attribute("#does-not-exist-3", "id"), None)
+
 
 class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
 
@@ -470,6 +479,10 @@ class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
     def test_get_element_inner_text_multiple(self):
         self.get_url("test_misc")
         self.assertRaises(WebTestMultipleElementsException, lambda: self.get_element_inner_text("p"))
+
+    def test_get_element_attribute_multiple(self):
+        self.get_url("test_misc")
+        self.assertRaises(WebTestMultipleElementsException, lambda: self.get_element_attribute("a", "id"))
 
 
 class TestFuncSeleniumCommonBase(TestCommonBase):

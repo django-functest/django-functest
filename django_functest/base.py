@@ -73,6 +73,13 @@ class FuncBaseMixin:
         """
         raise NotImplementedError()
 
+    def get_element_attribute(self, css_selector, attribute):
+        """
+        Returns the value of the attribute of the element matching the css_selector,
+        or None if there is no such element or attribute.
+        """
+        raise NotImplementedError()
+
     def get_element_inner_text(self, css_selector):
         """
         Returns the "inner text" (innerText in JS) of the element matching
