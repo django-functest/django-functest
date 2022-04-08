@@ -18,8 +18,8 @@ There are two main ideas behind django-functest:
 
        response = self.app.get(reverse("contact_form"))
        form = response.form
-       form['email'] = 'my@email.com'
-       form['message'] = 'Hello'
+       form["email"] = "my@email.com"
+       form["message"] = "Hello"
        response2 = form.submit().follow()
 
    Both of these are verbose, and much lower-level than you would like to write
@@ -32,9 +32,14 @@ There are two main ideas behind django-functest:
    would write::
 
        self.get_url("contact_form")
-       self.fill({'#id_email': 'my@email.com',
-                  '#id_message': 'Hello'})
-       self.submit('input[type=submit]')
+       self.fill(
+           {
+               "#id_email": "my@email.com",
+               "#id_message": "Hello",
+           }
+       )
+       self.submit("input[type=submit]")
+
 
 2. Write two sets of tests at once, by using an API that is unified as well as high level.
 
@@ -105,16 +110,18 @@ Then:
     from yourproject.tests.base import SeleniumTestBase, WebTestBase
     from django_functest import FuncBaseMixin
 
+
     class ContactFormTestBase(FuncBaseMixin):
         def test_contact_form(self):
             self.get_url("contact_form")
-            self.fill({'#id_email': 'my@email.com',
-                       '#id_message': 'Hello'})
-            self.submit('input[type=submit]')
-            self.assertTextPresent('Thanks for your message!')
+            self.fill({"#id_email": "my@email.com", "#id_message": "Hello"})
+            self.submit("input[type=submit]")
+            self.assertTextPresent("Thanks for your message!")
+
 
     class ContactFormWebTests(ContactFormTestBase, WebTestBase):
         pass
+
 
     class ContactFormSeleniumTests(ContactFormTestBase, SeleniumTestBase):
         pass
@@ -138,29 +145,31 @@ In this case, there are several options:
 
        class ContactFormTestBase(FuncBaseMixin):
            def test_foo(self):
-               self.get_url('foo')
+               self.get_url("foo")
                self.do_thing()
-               self.assertTextPresent('Success!')
+               self.assertTextPresent("Success!")
+
 
        class ContactFormWebTests(ContactFormTestBase, WebTestBase):
            def do_thing(self):
-               pass # etc.
+               pass  # etc.
+
 
        class ContactFormSeleniumTests(ContactFormTestBase, SeleniumTestBase):
            def do_thing(self):
-               pass # etc.
+               pass  # etc.
 
 2) Test the attribute ``is_full_browser_test``. This is ``True`` for Selenium,
    and ``False`` for WebTest. For example::
 
        def test_foo(self):
-           self.get_url('foo')
+           self.get_url("foo")
            if self.is_full_browser_test:
                # Form is not visible until we click this button
-               self.click('input.foo')
+               self.click("input.foo")
            self.fill_form()
-           self.submit('input[type=submit]')
-           self.assertTextPresent('Success!')
+           self.submit("input[type=submit]")
+           self.assertTextPresent("Success!")
 
 
 Tips

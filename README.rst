@@ -65,7 +65,12 @@ In your tests.py:
 
        def test_contact_form(self):
            self.get_url("contact_form")
-           self.fill({"#id_name": "Joe", "#id_message": "Hello"})
+           self.fill(
+               {
+                   "#id_name": "Joe",
+                   "#id_message": "Hello",
+               }
+           )
            self.submit("input[type=submit]")
            self.assertTextPresent("Thanks for your message")
 
