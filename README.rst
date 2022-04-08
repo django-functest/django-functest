@@ -56,36 +56,39 @@ In your tests.py:
 
 .. code-block:: python
 
-    from django.test import LiveServerTestCase, TestCase
-    from django_functest import FuncWebTestMixin, FuncSeleniumMixin, FuncBaseMixin
+   from django.test import LiveServerTestCase, TestCase
+   from django_functest import FuncWebTestMixin, FuncSeleniumMixin, FuncBaseMixin
 
-    class ContactTestBase(FuncBaseMixin):
-        # Abstract class, doesn't inherit from TestCase
 
-        def test_contact_form(self):
-            self.get_url('contact_form')
-            self.fill({'#id_name': 'Joe',
-                       '#id_message': 'Hello'})
-            self.submit('input[type=submit]')
-            self.assertTextPresent("Thanks for your message")
+   class ContactTestBase(FuncBaseMixin):
+       # Abstract class, doesn't inherit from TestCase
 
-     class ContactWebTest(ContactTestBase, FuncWebTestMixin, TestCase):
-         pass
+       def test_contact_form(self):
+           self.get_url("contact_form")
+           self.fill({"#id_name": "Joe", "#id_message": "Hello"})
+           self.submit("input[type=submit]")
+           self.assertTextPresent("Thanks for your message")
 
-     class ContactSeleniumTest(ContactTestBase, FuncSeleniumMixin, LiveServerTestCase):
-         pass
+
+   class ContactWebTest(ContactTestBase, FuncWebTestMixin, TestCase):
+       pass
+
+
+   class ContactSeleniumTest(ContactTestBase, FuncSeleniumMixin, LiveServerTestCase):
+       pass
+
 
 In this way, you can write a single test with a high-level API, and run it in
 two ways - using a fast, WSGI-based method which emulates typical HTTP usage of a
 browser, and using a full browser that actually executes Javascript (if present)
 etc.
 
-The approach taken by django-functest is ideal if your web app is mostly a "classic"
-app with server-side rendered HTML combined with a careful sprinkling of Javascript
-to enhance the UI, which you also need to be able to test. If you such an approach
-seems old-fashioned to you, have a look at `htmx.org <https://htmx.org/>`_ or
-`hotwire <https://hotwired.dev/>`_ and get with the new kids! (OK most of are actually
-quite old but we make fast web sites...)
+The approach taken by django-functest is ideal if your web app is mostly a
+"classic" app with server-side rendered HTML combined with a careful sprinkling
+of Javascript to enhance the UI, which you also need to be able to test. If such
+an approach seems old-fashioned to you, have a look at `htmx.org
+<https://htmx.org/>`_ or `hotwire <https://hotwired.dev/>`_ and get with the new
+kids! (OK most of are actually quite old but we make fast web sites...)
 
 Under the hood, the WSGI-based method uses and builds upon `WebTest
 <http://webtest.pythonpaste.org/en/latest/>`_ and `django-webtest
