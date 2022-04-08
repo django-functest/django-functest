@@ -1,7 +1,7 @@
 
 [tool.black]
 line-length = 120
-# required-version = '21.12b0' # see https://github.com/psf/black/issues/2493
+# required-version = '22.3.0' # see https://github.com/psf/black/issues/2493
 target-version = ['py39']
 
 
