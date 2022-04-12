@@ -3,7 +3,7 @@
 History
 -------
 
-1.4 (unreleased)
+1.4 (2022-04-12)
 ++++++++++++++++
 
 * Fixed bug with ``get_session_data()`` not being empty after
