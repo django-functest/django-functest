@@ -77,6 +77,22 @@ class TestAdminLoginBase(AdminLoginMixin):
         self.get_url("admin:index")
         self.assertUrlsEqual(LOGGED_OUT_URL)
 
+    def test_shortcut_session_data(self):
+        self.do_login(username="admin", password="password", shortcut=False)
+        logged_in_session_data = self.get_session_data()
+        self.get_url("admin:logout")
+        logged_out_session_data = self.get_session_data()
+        assert not logged_out_session_data
+
+        # The shortcut method should produce the same session data
+        # as the real method.
+        self.shortcut_login(username="admin", password="password")
+        logged_in_session_data_shortcut = self.get_session_data()
+        self.shortcut_logout()
+        logged_out_session_data_shortcut = self.get_session_data()
+        self.assertEqual(logged_in_session_data, logged_in_session_data_shortcut)
+        self.assertEqual(logged_out_session_data, logged_out_session_data_shortcut)
+
 
 class TestAdminLoginWebTest(TestAdminLoginBase, WebTestBase):
     pass

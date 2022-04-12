@@ -156,6 +156,12 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         """
         return False
 
+    def get_session_data(self):
+        """
+        Returns the current Django session dictionary
+        """
+        return dict(self._get_session())
+
     def set_session_data(self, item_dict):
         """
         Set a dictionary of items directly into the Django session.
@@ -226,10 +232,23 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         """
         return self.last_responses[-1]
 
+    # Semi-public (used by mixins)
+
+    def flush_session(self):
+        session = self._get_session()
+        session.flush()
+        self._update_session_cookie(session)  # Required for signed_cookie backend
+
     # Implementation methods - private
     @property
     def last_responses(self):
         return self._all_last_responses[self.app]
+
+    def _delete_cookie(self, name):
+        # Awkward cookiejar interface
+        for cookie in self.app.cookiejar:
+            if cookie.name == name:
+                self.app.cookiejar.clear(name=cookie.name, path=cookie.path, domain=cookie.domain)
 
     def _set_cookie(self, name, value):
         self.app.set_cookie(name, value)
@@ -246,7 +265,10 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         return session
 
     def _update_session_cookie(self, session):
-        self._set_cookie(settings.SESSION_COOKIE_NAME, session.session_key)
+        if session.is_empty():
+            self._delete_cookie(settings.SESSION_COOKIE_NAME)
+        else:
+            self._set_cookie(settings.SESSION_COOKIE_NAME, session.session_key)
 
     def _get_url_raw(self, url, auto_follow=True, expect_errors=False):
         """
