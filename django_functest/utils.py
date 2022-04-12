@@ -11,7 +11,7 @@ from furl import furl
 
 class ShortcutLoginMixin:
     """
-    A mixin that provides a fast way of logging in.
+    A mixin that provides a fast way of logging in and out.
     """
 
     def shortcut_login(self, **credentials):
@@ -33,7 +33,7 @@ class ShortcutLoginMixin:
         )
 
     def shortcut_logout(self):
-        self.set_session_data({AUTH_BACKEND_SESSION_KEY: ""})
+        self.flush_session()
 
 
 def get_session_store(session_key=None):
@@ -78,12 +78,6 @@ class CommonMixin:
         Same as ``fill`` except the keys are input names
         """
         self.fill({f'[name="{prefix}{k}"]': v for k, v in fields.items()})
-
-    def get_session_data(self):
-        """
-        Returns the current Django session dictionary
-        """
-        return dict(self._get_session())
 
 
 class AdminLoginMixin(ShortcutLoginMixin):

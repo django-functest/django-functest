@@ -6,6 +6,9 @@ History
 1.4 (unreleased)
 ++++++++++++++++
 
+* Fixed bug with ``get_session_data()`` not being empty after
+  ``shortcut_logout`` when using signed cookies backend.
+
 1.3 (2022-02-15)
 ++++++++++++++++
 * Added :meth:`~django_functest.FuncCommonApi.get_element_inner_text`

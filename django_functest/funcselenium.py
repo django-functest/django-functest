@@ -167,6 +167,12 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         """
         return True
 
+    def get_session_data(self):
+        """
+        Returns the current Django session dictionary
+        """
+        return dict(self._get_session())
+
     def set_session_data(self, item_dict):
         """
         Set a dictionary of items directly into the Django session.
@@ -471,6 +477,13 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             timeout=timeout,
         )
 
+    # Semi-public (used by mixins)
+
+    def flush_session(self):
+        session = self._get_session()
+        session.flush()
+        self._update_session_cookie(session)  # Required for signed_cookie backend
+
     # Implementation methods - private
 
     @classmethod
@@ -565,7 +578,10 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             # Not sure why this is needed, but it seems to do the trick
             cookie_data["domain"] = ".localhost"
 
-        self._driver.add_cookie(cookie_data)
+        if session.is_empty():
+            self._driver.delete_cookie(settings.SESSION_COOKIE_NAME)
+        else:
+            self._driver.add_cookie(cookie_data)
 
     def _get_window_size(self):
         if self._driver.name == "phantomjs":
