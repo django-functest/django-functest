@@ -131,7 +131,7 @@ You now have two tests for the price of one!
 
 Of course:
 
-* You don't have to use both - the high level API provided by django-functest is
+* You don't have to use both — the high level API provided by django-functest is
   still useful for writing either kind of test.
 
 * Sometimes you have pages that require Javascript to work for some parts. This
@@ -180,13 +180,12 @@ The following are various tips for writing reliable tests.
 Use FuncBaseMixin
 -----------------
 
-In the above example, ``FuncBaseMixin`` is not strictly needed at all - it
-provides method definitions which all raise ``NotImplementedError`` - so you
-could replace it with ``object``. However, it can be very useful for editors
-that provide code auto-completion help, which be able to find the docstrings on
-``FuncBaseMixin`` when you are writing methods like
-``ContactFormTestBase.test_contact_form``. You may want to inherit from it in
-your own base class.
+In the above example, ``FuncBaseMixin`` is not strictly needed at all — it
+provides method definitions which all raise ``NotImplementedError`` — so you
+could remove it. However, it can be very useful for editors that provide code
+auto-completion help, which can find the docstrings on ``FuncBaseMixin`` when
+you are writing methods like ``ContactFormTestBase.test_contact_form``. You may
+want to inherit from it in your own base class.
 
 
 Avoid 404s
