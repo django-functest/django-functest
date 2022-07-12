@@ -3,9 +3,10 @@
 History
 -------
 
-1.5 (unreleased)
-++++++++++++++++
+1.4.1 (unreleased)
+++++++++++++++++++
 
+* Fixed crasher with Selenium 4.3 due to removed method.
 
 1.4 (2022-04-12)
 ++++++++++++++++

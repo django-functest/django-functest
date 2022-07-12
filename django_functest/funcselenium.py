@@ -765,7 +765,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         # used). We need to find the actual one that is set.
         form_elem = elem.find_element(By.XPATH, "./ancestor::form")
         name = elem.get_attribute("name")
-        elems = form_elem.find_elements_by_xpath(f'//input[@type="radio"][@name="{name}"]')
+        elems = form_elem.find_elements(By.XPATH, f'//input[@type="radio"][@name="{name}"]')
         for e in elems:
             if e.get_attribute("checked"):
                 return e.get_attribute("value")
