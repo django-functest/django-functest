@@ -7,6 +7,11 @@ You can use django-functest with pytest, using the `pytest-django
 supported pattern is that you write your tests in the unittest style as per the
 :doc:`usage` docs, and run them with pytest, as per the pytest-django docs.
 
+You may need to be careful with naming — pytest collects classes whose names
+start with ``Test``. But in our case, the abstract test classes (which don’t
+inherit from ``WebTestBase`` or ``SeleniumBase``) should not be collected, so be
+careful to name your tests accordingly.
+
 Below are some optional but very helpful tips to make things nicer:
 
 1. Use `conftest.py
@@ -40,7 +45,6 @@ In ``conftest.py``:
        BROWSER = config.option.browser
        SHOW_BROWSER = config.option.show_browser
 
-
 Then write your ``SeleniumTestBase`` something like this:
 
 .. code-block:: python
@@ -57,6 +61,15 @@ Then write your ``SeleniumTestBase`` something like this:
    class SeleniumTestBase(FuncSeleniumMixin, StaticLiveServerTestCase):
        driver_name = conftest.BROWSER
        display = conftest.SHOW_BROWSER
+
+
+You can additional give a description for your marker by putting this in pytest.ini:
+
+.. code-block:: ini
+
+   [pytest]
+   markers =
+       selenium: Full browser test using Selenium
 
 
 You can now de-select all Selenium tests by doing ``pytest -m 'not selenium'``,

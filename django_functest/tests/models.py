@@ -4,7 +4,7 @@ UPLOAD_DIR = "django_functest/tests/uploads"
 
 
 # After making changes here, run:
-#   ./runtests.py --update-migration
+#   ./update_migration.py
 class Thing(models.Model):
     ELEMENT_EARTH = "e"
     ELEMENT_WATER = "w"
