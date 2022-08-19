@@ -2,13 +2,8 @@
 Installation
 ============
 
-At the command line::
+In your virtualenv::
 
-    $ easy_install django-functest
-
-Or, if you have virtualenvwrapper installed::
-
-    $ mkvirtualenv django-functest
     $ pip install django-functest
 
 You will also need to add django-functest to your URLs. In your URLconf::
