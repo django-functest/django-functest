@@ -7,7 +7,7 @@ History
 ++++++++++++++++
 
 * Added the ability to do
-  meth:`~django_functest.ShortcutLoginMixin.shortcut_login` with just a user
+  :meth:`~django_functest.ShortcutLoginMixin.shortcut_login` with just a user
   object (no password needed).
 
 1.4.1 (2022-07-12)
