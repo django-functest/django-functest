@@ -14,10 +14,28 @@ class ShortcutLoginMixin:
     A mixin that provides a fast way of logging in and out.
     """
 
-    def shortcut_login(self, **credentials):
-        user = authenticate(**credentials)
-        if not user:
-            raise ValueError(f"User {user} was not authenticated")
+    def shortcut_login(self, user=None, **credentials):
+        """
+        Login a user directly. Pass the user object, without a password,
+        or pass in credentials like: username="me", password="my_password"
+        """
+        if user is not None:
+            if credentials:
+                raise AssertionError("Either pass 'user' or **credentials, not both")
+
+            def get_backend():
+                from django.contrib.auth import load_backend
+
+                for backend_path in settings.AUTHENTICATION_BACKENDS:
+                    backend = load_backend(backend_path)
+                    if hasattr(backend, "get_user"):
+                        return backend_path
+
+            user.backend = get_backend()
+        else:
+            user = authenticate(**credentials)
+            if not user:
+                raise ValueError(f"User {user} was not authenticated")
 
         session_auth_hash = ""
         if hasattr(user, "get_session_auth_hash"):

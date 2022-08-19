@@ -35,11 +35,16 @@ Utilities
    that normally happen (such as session key rotation, or anything that
    responds to the ``user_logged_in`` signal etc.) will not be done.
 
-   .. method:: shortcut_login(**credentials)
+   .. method:: shortcut_login(user=None, **credentials)
 
-      Pass credentials (typically ``username`` and ``password``), as accepted by
-      ``django.contrib.auth.authenticate``, and if they are valid, you will get
-      a session where the user is logged in. Otherwise an exception is raised.
+      Pass either a user object, or credentials.
+
+      For a user object, you don’t need to provide a password or any
+      authentication.
+
+      For credentials, it will typically be ``username`` and ``password``, or
+      anything else accepted by ``django.contrib.auth.authenticate``. If they
+      are not valid, an exception is raised.
 
       Manipulates the session and cookies directly.
 
