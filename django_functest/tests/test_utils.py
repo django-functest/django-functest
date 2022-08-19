@@ -33,6 +33,11 @@ class ShortcutLoginBase(ShortcutLoginMixin):
         self.get_url("admin:index")
         self.assertUrlsEqual(LOGGED_OUT_URL)
 
+    def test_login_by_user(self):
+        self.shortcut_login(user=self.user)
+        self.get_url("admin:index")
+        self.assertUrlsEqual("/admin/")
+
 
 class TestShortcutLoginWebTest(ShortcutLoginBase, WebTestBase):
     pass
