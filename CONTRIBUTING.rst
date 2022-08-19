@@ -89,9 +89,9 @@ development.
      $ flake8 django_functest
      $ isort -c .
      $ black --check django_functest
-     $ ./runtests.py
+     $ pytest
 
-   See ``./runtests.py --help`` for more options.
+   See ``pytest --help`` for more options on test selection
 
    You can also use `pre-commit <https://pre-commit.com/>`_ to run all of
    the linters automatically when you commit::
@@ -126,12 +126,6 @@ Before you submit a pull request, check that it meets these guidelines:
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
 
-Tips
-----
-
-To run a subset of tests::
-
-  $ ./runtests.py django_functest.tests.SomeTestCase
 
 Conduct
 -------

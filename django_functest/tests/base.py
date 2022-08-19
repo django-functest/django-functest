@@ -1,10 +1,11 @@
-import os
 import subprocess
 import unittest
 
+import pytest
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import TestCase, override_settings
 
+import conftest
 from django_functest import FuncSeleniumMixin, FuncWebTestMixin, MultiThreadedLiveServerMixin
 
 # Getting some errors that seem related to this:
@@ -44,10 +45,10 @@ class WebTestBase(FuncWebTestMixin, TestCase):
 
 
 class HideBrowserMixin:
-    display = False  # hacked by runtests.py
+    display = conftest.SHOW_BROWSER
 
 
-@unittest.skipIf(os.environ.get("TEST_SKIP_SELENIUM"), "Skipping Selenium tests")
+@pytest.mark.selenium
 class SeleniumBaseMixin:
     browser_window_size = (1024, 768)
 

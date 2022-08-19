@@ -10,7 +10,7 @@ from .base import ChromeBase, FirefoxBase, WebTestBase
 LOGGED_OUT_URL = "/admin/login/?next=/admin/"
 
 
-class TestShortcutLoginBase(ShortcutLoginMixin):
+class ShortcutLoginBase(ShortcutLoginMixin):
     def setUp(self):
         super().setUp()
         User = get_user_model()
@@ -34,19 +34,19 @@ class TestShortcutLoginBase(ShortcutLoginMixin):
         self.assertUrlsEqual(LOGGED_OUT_URL)
 
 
-class TestShortcutLoginWebTest(TestShortcutLoginBase, WebTestBase):
+class TestShortcutLoginWebTest(ShortcutLoginBase, WebTestBase):
     pass
 
 
-class TestShortcutLoginFirefox(TestShortcutLoginBase, FirefoxBase):
+class TestShortcutLoginFirefox(ShortcutLoginBase, FirefoxBase):
     pass
 
 
-class TestShortcutLoginChrome(TestShortcutLoginBase, ChromeBase):
+class TestShortcutLoginChrome(ShortcutLoginBase, ChromeBase):
     pass
 
 
-class TestAdminLoginBase(AdminLoginMixin):
+class AdminLoginBase(AdminLoginMixin):
     def setUp(self):
         super().setUp()
         User = get_user_model()
@@ -94,15 +94,15 @@ class TestAdminLoginBase(AdminLoginMixin):
         self.assertEqual(logged_out_session_data, logged_out_session_data_shortcut)
 
 
-class TestAdminLoginWebTest(TestAdminLoginBase, WebTestBase):
+class TestAdminLoginWebTest(AdminLoginBase, WebTestBase):
     pass
 
 
-class TestAdminLoginFirefox(TestAdminLoginBase, FirefoxBase):
+class TestAdminLoginFirefox(AdminLoginBase, FirefoxBase):
     pass
 
 
-class TestAdminLoginChrome(TestAdminLoginBase, ChromeBase):
+class TestAdminLoginChrome(AdminLoginBase, ChromeBase):
     pass
 
 

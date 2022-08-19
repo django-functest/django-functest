@@ -69,7 +69,7 @@ You can additional give a description for your marker by putting this in pytest.
 
    [pytest]
    markers =
-       selenium: Mark test as Selenium
+       selenium: Full browser test using Selenium
 
 
 You can now de-select all Selenium tests by doing ``pytest -m 'not selenium'``,

@@ -52,7 +52,9 @@ jobs:
     - name: Install dependencies
       run: |
         pip install Django==${{ matrix.django-version }}
+        pip install -r requirements-dev.txt
         pip install -e .
+        python setup.py develop
     - name: Versions
       run: |
         firefox --version
@@ -61,7 +63,7 @@ jobs:
         chromedriver --version
     - name: Tests
       run: |
-        ./runtests.py ${{ matrix.extra-run-args }}
+        pytest ${{ matrix.extra-run-args }}
 
   linters:
     runs-on: ubuntu-latest

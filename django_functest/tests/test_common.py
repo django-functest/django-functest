@@ -17,7 +17,7 @@ except ImportError:
     from django.core.urlresolvers import reverse
 
 
-class TestCommonBase(FuncBaseMixin):
+class CommonBase(FuncBaseMixin):
     def setUp(self):
         super().setUp()
         self.thing = Thing.objects.create(
@@ -423,7 +423,7 @@ class TestCommonBase(FuncBaseMixin):
         self.assertEqual(self.get_element_attribute("#does-not-exist-3", "id"), None)
 
 
-class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
+class TestFuncWebTestCommon(CommonBase, WebTestBase):
 
     ElementNotFoundException = WebTestNoSuchElementException
     TextNotFoundException = ValueError
@@ -485,7 +485,7 @@ class TestFuncWebTestCommon(TestCommonBase, WebTestBase):
         self.assertRaises(WebTestMultipleElementsException, lambda: self.get_element_attribute("a", "id"))
 
 
-class TestFuncSeleniumCommonBase(TestCommonBase):
+class FuncSeleniumCommonBase(CommonBase):
 
     ElementNotFoundException = TimeoutException
     TextNotFoundException = NoSuchElementException
@@ -534,9 +534,9 @@ class TestFuncSeleniumCommonBase(TestCommonBase):
         self._assertThingChanged()
 
 
-class TestFuncSeleniumCommonFirefox(TestFuncSeleniumCommonBase, FirefoxBase):
+class TestFuncSeleniumCommonFirefox(FuncSeleniumCommonBase, FirefoxBase):
     pass
 
 
-class TestFuncSeleniumCommonChrome(TestFuncSeleniumCommonBase, ChromeBase):
+class TestFuncSeleniumCommonChrome(FuncSeleniumCommonBase, ChromeBase):
     pass

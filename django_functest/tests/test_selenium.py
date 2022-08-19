@@ -17,7 +17,7 @@ except ImportError:
 # Tests for Selenium specific methods
 
 
-class TestFuncSeleniumSpecificBase(AdminLoginMixin, FuncBaseMixin):
+class FuncSeleniumSpecificBase(AdminLoginMixin, FuncBaseMixin):
     def setUp(self):
         super().setUp()
         self.thing = Thing.objects.create(
@@ -125,18 +125,18 @@ class TestFuncSeleniumSpecificBase(AdminLoginMixin, FuncBaseMixin):
                 os.unlink(fname)
 
 
-class TestFuncSeleniumSpecificFirefox(TestFuncSeleniumSpecificBase, FirefoxBase):
+class TestFuncSeleniumSpecificFirefox(FuncSeleniumSpecificBase, FirefoxBase):
     pass
 
 
-class TestFuncSeleniumSpecificChrome(TestFuncSeleniumSpecificBase, ChromeBase):
+class TestFuncSeleniumSpecificChrome(FuncSeleniumSpecificBase, ChromeBase):
     pass
 
 
 # Test class attribute `browser_window_size` works correctly:
 
 
-class TestBrowserSizeBase:
+class BrowserSizeBase:
     browser_window_size = (800, 700)
 
     def _get_window_size(self):
@@ -157,9 +157,9 @@ class TestBrowserSizeBase:
         self.assertTrue(495 < height < 505)
 
 
-class TestBrowserSizeFirefox(TestBrowserSizeBase, FirefoxBase):
+class TestBrowserSizeFirefox(BrowserSizeBase, FirefoxBase):
     pass
 
 
-class TestBrowserSizeChrome(TestBrowserSizeBase, ChromeBase):
+class TestBrowserSizeChrome(BrowserSizeBase, ChromeBase):
     pass
