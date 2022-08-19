@@ -49,7 +49,7 @@ Then write your ``SeleniumTestBase`` something like this:
    from django.contrib.staticfiles.testing import StaticLiveServerTestCase
    from django_functest import FuncSeleniumMixin
 
-   import conftest
+   import pytest
 
 
    @pytest.mark.selenium
