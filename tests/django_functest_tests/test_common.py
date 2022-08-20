@@ -7,9 +7,9 @@ from django_functest.exceptions import (
     WebTestMultipleElementsException,
     WebTestNoSuchElementException,
 )
-from django_functest.tests.models import Thing
 
 from .base import ChromeBase, FirefoxBase, WebTestBase
+from .models import Thing
 
 try:
     from django.urls import reverse

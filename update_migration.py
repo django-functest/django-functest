@@ -21,7 +21,7 @@ settings_dict = dict(
     },
     INSTALLED_APPS=[
         "django_functest",
-        "django_functest.tests",
+        "django_functest_tests",
     ],
 )
 
@@ -36,7 +36,7 @@ except AttributeError:
 else:
     setup()
 
-initial_migration = "django_functest/tests/migrations/0001_initial.py"
+initial_migration = "tests/django_functest_tests/migrations/0001_initial.py"
 if os.path.exists(initial_migration):
     os.unlink(initial_migration)
 argv = [sys.argv[0], "makemigrations", "tests"] + sys.argv[2:]

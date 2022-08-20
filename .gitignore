@@ -46,4 +46,4 @@ docs/_build
 
 # Tests
 tmp_static/
-django_functest/tests/uploads
+tests/django_functest_tests/uploads

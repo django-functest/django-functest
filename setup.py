@@ -38,6 +38,9 @@ setup(
     packages=[
         "django_functest",
     ],
+    package_dir={
+        "django_functest": "src/django_functest",
+    },
     python_requires=">=3.7",
     include_package_data=True,
     install_requires=[

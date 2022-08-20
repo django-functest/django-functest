@@ -1,6 +1,6 @@
 from django.db import models
 
-UPLOAD_DIR = "django_functest/tests/uploads"
+UPLOAD_DIR = "tests/uploads"
 
 
 # After making changes here, run:

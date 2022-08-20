@@ -16,7 +16,7 @@ except ImportError:
 def test_misc(request):
     return render(
         request,
-        "django_functest/tests/test_misc.html",
+        "tests/test_misc.html",
         {"name": request.session.get("name", None)},
     )
 
@@ -27,7 +27,7 @@ def redirect_to_misc(request):
 
 def set_sess_foo_to_bar(request):
     request.session["foo"] = "bar"
-    return render(request, "django_functest/tests/test_misc.html")
+    return render(request, "tests/test_misc.html")
 
 
 class AddSpacersMixin:
@@ -106,7 +106,7 @@ def edit_thing(request, thing_id, with_upload=False):
 
     return render(
         request,
-        "django_functest/tests/edit_thing.html",
+        "tests/edit_thing.html",
         {
             "thing_form": thing_form,
             "thing": thing,
@@ -129,7 +129,7 @@ def list_things(request):
         selected_things = []
     return render(
         request,
-        "django_functest/tests/list_things.html",
+        "tests/list_things.html",
         {
             "things": things,
             "selected_things": selected_things,
@@ -139,7 +139,7 @@ def list_things(request):
 
 def thing_cleared(request, thing_id):
     thing = Thing.objects.get(id=int(thing_id))
-    return render(request, "django_functest/tests/thing_cleared.html", {"thing": thing})
+    return render(request, "tests/thing_cleared.html", {"thing": thing})
 
 
 def new_browser_session_test(request):
@@ -153,7 +153,7 @@ def new_browser_session_test(request):
 
     return render(
         request,
-        "django_functest/tests/new_browser_session_test.html",
+        "tests/new_browser_session_test.html",
         {
             "uid": uid,
             "message": message,

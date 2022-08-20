@@ -113,7 +113,7 @@ class FuncSeleniumSpecificBase(AdminLoginMixin, FuncBaseMixin):
         self.assertEqual(user.first_name, "My first name")
 
     def test_save_screenshot(self):
-        testname = f"django_functest.tests.test_selenium.{self.__class__.__name__}.test_save_screenshot"
+        testname = f"tests.test_selenium.{self.__class__.__name__}.test_save_screenshot"
 
         fname = None
         try:
