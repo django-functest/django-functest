@@ -59,22 +59,19 @@ Get Started!
 Ready to contribute? Here's how to set up ``django-functest`` for local
 development.
 
-1. Fork the `django-functest` repo on GitHub.
+1. Fork the ``django-functest`` repo on GitHub.
 2. Clone your fork locally::
 
      $ git clone git@github.com:your_name_here/django-functest.git
 
-3. Install your local copy into a virtualenv. Assuming you have
-   virtualenvwrapper installed, this is how you set up your fork for local
-   development::
+3. Create a virtualenv for the project, and then install django-functest into it
+   locally for development::
 
-     $ mkvirtualenv django-functest
      $ cd django-functest/
-     $ python setup.py develop
+     $ pip install -e .
 
    You also need to install testing and development tools::
 
-     $ pip install -r requirements-test.txt
      $ pip install -r requirements-dev.txt
 
 4. Create a branch for local development::
@@ -83,12 +80,8 @@ development.
 
    Now you can make your changes locally.
 
-5. When you're done making changes, check that your changes pass flake8 and the
-   tests::
+5. When you're done making changes, check that your changes pass the tests::
 
-     $ flake8 django_functest
-     $ isort -c .
-     $ black --check django_functest
      $ pytest
 
    See ``pytest --help`` for more options on test selection

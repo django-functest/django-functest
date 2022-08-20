@@ -1,11 +1,11 @@
 import subprocess
 import unittest
 
+import conftest
 import pytest
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import TestCase, override_settings
 
-import conftest
 from django_functest import FuncSeleniumMixin, FuncWebTestMixin, MultiThreadedLiveServerMixin
 
 # Getting some errors that seem related to this:
@@ -23,7 +23,7 @@ AVAILABLE_APPS = [
     "django.contrib.sessions",
     "django.contrib.sites",
     "django_functest",
-    "django_functest.tests",
+    "django_functest_tests",
 ]
 
 

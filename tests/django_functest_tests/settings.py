@@ -16,7 +16,7 @@ DATABASES = {
 
 DEBUG = True
 USE_TZ = True
-ROOT_URLCONF = "django_functest.tests.urls"
+ROOT_URLCONF = "django_functest_tests.urls"
 INSTALLED_APPS = [
     # First, see http://stackoverflow.com/questions/18281137/selenium-django-gives-foreign-key-error/18292090#18292090 # noqa
     "django.contrib.contenttypes",
@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.sites",
     "django_functest",
-    "django_functest.tests",
+    "django_functest_tests",
 ]
 SITE_ID = 1
 MIDDLEWARE = [
