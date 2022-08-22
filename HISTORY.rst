@@ -3,7 +3,7 @@
 History
 -------
 
-1.5 (unreleased)
+1.5 (2022-08-22)
 ++++++++++++++++
 
 * Added the ability to do
@@ -20,6 +20,11 @@ History
 
 * Added the ability to :meth:`~django_functest.FuncCommonApi.submit` a form by
   specifying the form element itself, rather than a button.
+
+* Added :doc:`interactive` documentation.
+
+* Lots of internal cleanups and layout reorg, including switching to pytest for
+  our own test suite.
 
 1.4.1 (2022-07-12)
 ++++++++++++++++++
