@@ -63,7 +63,7 @@ Then write your ``SeleniumTestBase`` something like this:
        display = conftest.SHOW_BROWSER
 
 
-You can additional give a description for your marker by putting this in pytest.ini:
+You should also give a description for your marker by putting this in pytest.ini:
 
 .. code-block:: ini
 
