@@ -120,6 +120,17 @@ def edit_thing_with_upload(request, thing_id):
     return edit_thing(request, thing_id, with_upload=True)
 
 
+def auto_submit_form(request):
+    return render(
+        request,
+        "tests/auto_submit_form.html",
+        {
+            "method": request.method,
+            "chosen": request.POST["food"] if request.method == "POST" else None,
+        },
+    )
+
+
 def list_things(request):
     things = Thing.objects.all()
     if "select_thing" in request.GET:

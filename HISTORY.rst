@@ -18,6 +18,9 @@ History
   ``<title>`` element inside ``<head>``, those assertions will now fail. You
   can pass something like ``within="title"`` for those cases.
 
+* Added the ability to :meth:`~django_functest.FuncCommonApi.submit` a form by
+  specifying the form element itself, rather than a button.
+
 1.4.1 (2022-07-12)
 ++++++++++++++++++
 

@@ -186,7 +186,13 @@ followed the same pattern.
 
    .. method:: submit(css_selector, wait_for_reload=True, auto_follow=True, window_closes=False)
 
-      Submits a form via the button specified in ``css_selector``.
+      Submits a form via the button specified in ``css_selector``, or via the
+      form specified in ``css_selector``.
+
+      (Normally forms are submitted by specific input/button elements, and it is
+      difficult to submit otherwise. In some cases when Javascript is used,
+      there might not be any button used, in which to trigger submission
+      manually you can specify the form element itself.)
 
       For :class:`~django_functest.FuncSeleniumMixin`, ``wait_for_reload=True``
       causes it to wait until a whole new page is loaded (which always happens
