@@ -190,9 +190,10 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
 
     def submit(self, css_selector, wait_for_reload=True, auto_follow=None, window_closes=False):
         """
-        Submit the form using the input given in the CSS selector
+        Submit the form. css_selector should refer to a form, or a button/input to use
+        to submit the form.
         """
-        self.click(css_selector, wait_for_reload=wait_for_reload, window_closes=window_closes)
+        self.click(css_selector, wait_for_reload=wait_for_reload, window_closes=window_closes, _expect_form=True)
 
     def value(self, css_selector):
         """
@@ -279,11 +280,14 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         double=False,
         scroll=True,
         window_closes=False,
+        _expect_form=False,
     ):
         """
         Clicks the button or control specified by the CSS selector
-        or xpath
+        or xpath.
         """
+        # (Also used internally to submit forms)
+
         if window_closes:
             wait_for_reload = False
         if wait_for_reload:
@@ -296,14 +300,17 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             text_parent_id=text_parent_id,
             timeout=wait_timeout,
         )
-        if scroll:
-            self._scroll_into_view(elem)
-        elem.click()
-        if double:
-            try:
-                elem.click()
-            except StaleElementReferenceException:
-                pass
+        if _expect_form and elem.tag_name == "form":
+            elem.submit()
+        else:
+            if scroll:
+                self._scroll_into_view(elem)
+            elem.click()
+            if double:
+                try:
+                    elem.click()
+                except StaleElementReferenceException:
+                    pass
 
         if wait_for_reload:
 

@@ -145,7 +145,8 @@ class FuncBaseMixin:
 
     def submit(self, css_selector, wait_for_reload=True, auto_follow=None, window_closes=False):
         """
-        Submit the form using the input given in the CSS selector
+        Submit the form. css_selector should refer to a form, or a button/input to use
+        to submit the form.
         """
         raise NotImplementedError()
 

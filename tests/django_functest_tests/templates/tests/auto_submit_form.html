@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Auto submit form</title>
+  </head>
+  <body>
+    <p id="method">Method used: {{ method }}</p>
+    <form id="the-form" action="" method="POST">
+      {% csrf_token %}
+      <select name="food" onchange="this.form.submit()">
+        <option value="">Please select a food</option>
+        <option value="ice-cream">Ice Cream</option>
+        <option value="chocolate">Chocoloate</option>
+      </select>
+    </form>
+    {% if chosen %}
+      <p id="chosen">You chose {{ chosen }}</p>
+    {% endif %}
+
+
+    <form id="other-form" action="" method="POST">
+    </form>
+  </body>
+
+</html>

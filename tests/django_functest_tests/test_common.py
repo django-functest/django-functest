@@ -275,6 +275,19 @@ class CommonBase(FuncBaseMixin):
         thing = self.refresh_thing()
         assert thing.name == ""
 
+    def test_submit_form(self):
+        self.get_url("auto_submit_form")
+        self.assertTextPresent("Method used: GET", within="#method")
+        self.fill({"select": "ice-cream"})
+        if not self.is_full_browser_test:
+            # Need to manually submit
+            self.submit("#the-form")
+        self.assertTextPresent("Method used: POST", within="#method")
+        self.assertTextPresent("You chose ice-cream")
+
+        # Test that we can use the same API with Selenium
+        self.submit("#the-form")
+
     def test_follow_link(self):
         self.get_url("list_things")
         self.follow_link("a.edit")
@@ -497,6 +510,11 @@ class TestFuncWebTestCommon(CommonBase, WebTestBase):
         self.get_url("test_misc")
         with pytest.raises(WebTestMultipleElementsException):
             self.get_element_attribute("a", "id")
+
+    def test_submit_form_multiple_matching(self):
+        self.get_url("auto_submit_form")
+        with pytest.raises(WebTestMultipleElementsException):
+            self.submit("form")
 
 
 class FuncSeleniumCommonBase(CommonBase):

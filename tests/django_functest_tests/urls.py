@@ -43,6 +43,11 @@ if path is None:
             views.new_browser_session_test,
             name="new_browser_session_test",
         ),
+        url(
+            r"^auto_submit_form/",
+            views.auto_submit_form,
+            name="auto_submit_form",
+        ),
     ]
 else:
     urlpatterns = [
@@ -71,6 +76,11 @@ else:
             "new_browser_session_test/",
             views.new_browser_session_test,
             name="new_browser_session_test",
+        ),
+        path(
+            r"auto_submit_form/",
+            views.auto_submit_form,
+            name="auto_submit_form",
         ),
     ]
 

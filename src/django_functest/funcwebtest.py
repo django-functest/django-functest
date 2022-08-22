@@ -187,14 +187,20 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
 
     def submit(self, css_selector, wait_for_reload=None, auto_follow=True, window_closes=None):
         """
-        Submit the form using the input given in the CSS selector
+        Submit the form. css_selector should refer to a form, or a button/input to use
+        to submit the form.
         """
-        form, field_name, _ = self._find_form_and_field_by_css_selector(
-            self.last_response,
-            css_selector,
-            require_name=False,
-            filter_selector="input[type=submit], button",
-        )
+        try:
+            form = self._find_form_by_css_selector(self.last_response, css_selector)
+            field_name = None
+        except WebTestNoSuchElementException:
+            form, field_name, _ = self._find_form_and_field_by_css_selector(
+                self.last_response,
+                css_selector,
+                require_name=False,
+                filter_selector="input[type=submit], button",
+            )
+
         response = form.submit(field_name)
         if auto_follow:
             while 300 <= response.status_int < 400:
@@ -267,6 +273,16 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         """
         self.last_responses.append(self.app.get(url, auto_follow=auto_follow, expect_errors=expect_errors))
         return self.last_response
+
+    def _find_form_by_css_selector(self, response, css_selector):
+        pq = self._make_pq(response)
+        items = pq.find(css_selector)
+        if any(item.tag == "form" for item in items):
+            if len(items) > 1:
+                raise WebTestMultipleElementsException(f"Found multiple forms matching {css_selector}")
+            return self._match_form_elem_to_webtest_form(items[0], response)
+        else:
+            raise WebTestNoSuchElementException(f"Can't find form matching {css_selector}")
 
     def _find_form_and_field_by_css_selector(self, response, css_selector, filter_selector=None, require_name=True):
         pq = self._make_pq(response)
