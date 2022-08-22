@@ -1,6 +1,7 @@
 import inspect
 from unittest import TestCase
 
+import pytest
 from django.contrib.auth import get_user_model
 
 from django_functest import AdminLoginMixin, FuncBaseMixin, FuncSeleniumMixin, FuncWebTestMixin, ShortcutLoginMixin
@@ -22,10 +23,8 @@ class ShortcutLoginBase(ShortcutLoginMixin):
         self.assertUrlsEqual("/admin/")
 
     def test_login_raises_exception_with_wrong_password(self):
-        self.assertRaises(
-            ValueError,
-            lambda: self.shortcut_login(username=self.user.username, password="foo"),
-        )
+        with pytest.raises(ValueError):
+            self.shortcut_login(username=self.user.username, password="foo")
 
     def test_logout_succeeds(self):
         self.shortcut_login(username=self.user.username, password="password")
@@ -68,7 +67,8 @@ class AdminLoginBase(AdminLoginMixin):
         self.assertUrlsEqual("/admin/")
 
     def test_login_raises_exception_with_wrong_password(self):
-        self.assertRaises(ValueError, lambda: self.do_login(username="admin", password="password_2"))
+        with pytest.raises(ValueError):
+            self.do_login(username="admin", password="password_2")
 
     def test_logout_succeeds(self):
         self.shortcut_login(username="admin", password="password")
@@ -95,8 +95,8 @@ class AdminLoginBase(AdminLoginMixin):
         logged_in_session_data_shortcut = self.get_session_data()
         self.shortcut_logout()
         logged_out_session_data_shortcut = self.get_session_data()
-        self.assertEqual(logged_in_session_data, logged_in_session_data_shortcut)
-        self.assertEqual(logged_out_session_data, logged_out_session_data_shortcut)
+        assert logged_in_session_data == logged_in_session_data_shortcut
+        assert logged_out_session_data == logged_out_session_data_shortcut
 
 
 class TestAdminLoginWebTest(AdminLoginBase, WebTestBase):

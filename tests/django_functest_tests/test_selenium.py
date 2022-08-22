@@ -1,5 +1,6 @@
 import os
 
+import pytest
 from django.contrib.auth import get_user_model
 from selenium.common.exceptions import NoSuchElementException
 
@@ -32,10 +33,10 @@ class FuncSeleniumSpecificBase(AdminLoginMixin, FuncBaseMixin):
 
     def test_is_element_displayed(self):
         self.get_url("admin:login")
-        self.assertTrue(self.is_element_displayed("#id_username"))
-        self.assertFalse(self.is_element_displayed("#id_something_else"))
+        assert self.is_element_displayed("#id_username")
+        assert not self.is_element_displayed("#id_something_else")
         self.execute_script("document.querySelector('#id_username').style.display = 'none';")
-        self.assertFalse(self.is_element_displayed("#id_username"))
+        assert not self.is_element_displayed("#id_username")
 
     def test_click(self):
         self.get_url("edit_thing", thing_id=self.thing.id)
@@ -54,14 +55,10 @@ class FuncSeleniumSpecificBase(AdminLoginMixin, FuncBaseMixin):
 
     def test_click_text_missing(self):
         self.get_url("list_things")
-        self.assertRaises(
-            NoSuchElementException,
-            lambda: self.click(text="Edit Fridge", wait_timeout=0),
-        )
-        self.assertRaises(
-            NoSuchElementException,
-            lambda: self.click(text="Edit Rock", text_parent_id="fribble", wait_timeout=0),
-        )
+        with pytest.raises(NoSuchElementException):
+            self.click(text="Edit Fridge", wait_timeout=0)
+        with pytest.raises(NoSuchElementException):
+            self.click(text="Edit Rock", text_parent_id="fribble", wait_timeout=0)
 
     def test_double_click(self):
         self.get_url("edit_thing", thing_id=self.thing.id)
@@ -80,19 +77,19 @@ class FuncSeleniumSpecificBase(AdminLoginMixin, FuncBaseMixin):
 
     def test_execute_script(self):
         self.get_url("test_misc")
-        self.assertEqual(self.execute_script("return 1 + 1;"), 2)
+        assert self.execute_script("return 1 + 1;") == 2
 
     def test_execute_script_with_args(self):
         self.get_url("test_misc")
         retval = self.execute_script("return arguments[0] + arguments[1];", 1, 2)
-        self.assertEqual(retval, 3)
+        assert retval == 3
 
     def test_hover(self):
         self.get_url("test_misc")
         get_style = "return document.defaultView.getComputedStyle(document.querySelector('#hoverable'))['font-style']"
-        self.assertEqual(self.execute_script(get_style), "normal")
+        assert self.execute_script(get_style) == "normal"
         self.hover("#hoverable")
-        self.assertEqual(self.execute_script(get_style), "italic")
+        assert self.execute_script(get_style) == "italic"
 
     def test_switch_window(self):
         self.do_login(username="admin", password="password")
@@ -109,8 +106,8 @@ class FuncSeleniumSpecificBase(AdminLoginMixin, FuncBaseMixin):
 
         User = get_user_model()
         user = User.objects.get(id=self.user.id)
-        self.assertEqual([g.name for g in user.groups.all()], ["My new group"])
-        self.assertEqual(user.first_name, "My first name")
+        assert [g.name for g in user.groups.all()] == ["My new group"]
+        assert user.first_name == "My first name"
 
     def test_save_screenshot(self):
         testname = f"tests.test_selenium.{self.__class__.__name__}.test_save_screenshot"
@@ -118,8 +115,8 @@ class FuncSeleniumSpecificBase(AdminLoginMixin, FuncBaseMixin):
         fname = None
         try:
             fname = self.save_screenshot()
-            self.assertIn(testname, fname)
-            self.assertTrue(os.path.exists(fname))
+            assert testname in fname
+            assert os.path.exists(fname)
         finally:
             if fname is not None:
                 os.unlink(fname)
@@ -147,14 +144,14 @@ class BrowserSizeBase:
 
     def test_size(self):
         width, height = self._get_window_size()
-        self.assertTrue(795 < width < 805)
-        self.assertTrue(695 < height < 705)
+        assert 795 < width < 805
+        assert 695 < height < 705
 
     def test_resize(self):
         self.set_window_size(700, 500)
         width, height = self._get_window_size()
-        self.assertTrue(695 < width < 705)
-        self.assertTrue(495 < height < 505)
+        assert 695 < width < 705
+        assert 495 < height < 505
 
 
 class TestBrowserSizeFirefox(BrowserSizeBase, FirefoxBase):

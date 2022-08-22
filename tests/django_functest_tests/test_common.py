@@ -1,3 +1,4 @@
+import pytest
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 from django_functest import FuncBaseMixin, Upload
@@ -33,8 +34,8 @@ class CommonBase(FuncBaseMixin):
     def test_get_url(self):
         self.get_url("admin:login")
         url = self.current_url
-        self.assertTrue(url.endswith("/admin/login/"))
-        self.assertTrue(url.startswith("http://"))
+        assert url.endswith("/admin/login/")
+        assert url.startswith("http://")
 
     def test_get_literal_url(self):
         url = reverse("admin:login")
@@ -50,33 +51,33 @@ class CommonBase(FuncBaseMixin):
 
     def test_assertUrlsEqual_default(self):
         self.get_url("admin:login")
-        self.assertRaises(AssertionError, lambda: self.assertUrlsEqual("foo"))
+        with pytest.raises(AssertionError):
+            self.assertUrlsEqual("foo")
         self.assertUrlsEqual("/admin/login/")
 
     def test_assertUrlsEqual_path(self):
-        self.assertRaises(AssertionError, lambda: self.assertUrlsEqual("/login/", "/admin/login/"))
+        with pytest.raises(AssertionError):
+            self.assertUrlsEqual("/login/", "/admin/login/")
         self.assertUrlsEqual("/login/", "/login/")
 
     def test_assertUrlsEqual_query(self):
-        self.assertRaises(AssertionError, lambda: self.assertUrlsEqual("/foo/?q=1", "/foo/"))
-        self.assertRaises(AssertionError, lambda: self.assertUrlsEqual("/foo/?q=1", "/foo/?q=2"))
+        with pytest.raises(AssertionError):
+            self.assertUrlsEqual("/foo/?q=1", "/foo/")
+        with pytest.raises(AssertionError):
+            self.assertUrlsEqual("/foo/?q=1", "/foo/?q=2")
         self.assertUrlsEqual("/foo/?q=1", "/foo/?q=1")
 
     def test_assertUrlsEqual_host(self):
         self.assertUrlsEqual("/foo/", "//example.com/foo/")
         self.assertUrlsEqual("//example.com/foo/", "//example.com/foo/")
-        self.assertRaises(
-            AssertionError,
-            lambda: self.assertUrlsEqual("//example.com/foo/", "//other.com/foo/"),
-        )
+        with pytest.raises(AssertionError):
+            self.assertUrlsEqual("//example.com/foo/", "//other.com/foo/")
 
     def test_assertUrlsEqual_protocol(self):
         self.assertUrlsEqual("http://example.com/foo/", "//example.com/foo/")
         self.assertUrlsEqual("http://example.com/foo/", "http://example.com/foo/")
-        self.assertRaises(
-            AssertionError,
-            lambda: self.assertUrlsEqual("http://example.com/foo/", "https://example.com/foo/"),
-        )
+        with pytest.raises(AssertionError):
+            self.assertUrlsEqual("http://example.com/foo/", "https://example.com/foo/")
 
     def test_assertTextPresent(self):
         self.get_url("test_misc")
@@ -85,32 +86,30 @@ class CommonBase(FuncBaseMixin):
         self.assertTextPresent("from 'me' & \"friends\"")
         self.assertTextPresent("""It's also allowed to have "quotes" without escaping in text in valid HTML""")
 
-        self.assertRaises(
-            AssertionError,
-            lambda: self.assertTextPresent("Something definitely not there"),
-        )
+        with pytest.raises(AssertionError):
+            self.assertTextPresent("Something definitely not there")
 
     def test_assertTextAbsent(self):
         self.get_url("test_misc")
         self.assertTextAbsent("Something definitely not there")
-        self.assertRaises(AssertionError, lambda: self.assertTextAbsent("Hello world"))
-        self.assertRaises(AssertionError, lambda: self.assertTextAbsent("from 'me' & \"friends\""))
-        self.assertRaises(
-            AssertionError,
-            lambda: self.assertTextAbsent(
+        with pytest.raises(AssertionError):
+            self.assertTextAbsent("Hello world")
+        with pytest.raises(AssertionError):
+            self.assertTextAbsent("from 'me' & \"friends\"")
+        with pytest.raises(AssertionError):
+            self.assertTextAbsent(
                 """It's also allowed to have "quotes" """ """without escaping in text in valid HTML"""
-            ),
-        )
+            )
 
     def test_current_url(self):
         self.get_url("admin:login")
         # Check it really is a full URL
-        self.assertTrue(self.current_url.startswith("http"))
+        assert self.current_url.startswith("http")
 
     def test_is_element_present(self):
         self.get_url("admin:login")
-        self.assertTrue(self.is_element_present("#id_username"))
-        self.assertFalse(self.is_element_present("#id_something_not_there"))
+        assert self.is_element_present("#id_username")
+        assert not self.is_element_present("#id_something_not_there")
 
     def refresh_thing(self):
         self.thing = Thing.objects.get(id=self.thing.id)
@@ -169,38 +168,32 @@ class CommonBase(FuncBaseMixin):
         self.fill_by_text({"#id_element_type": "Water"})
         self.submit("input[name=change]")
         self.refresh_thing()
-        self.assertEqual(self.thing.element_type, Thing.ELEMENT_WATER)
+        assert self.thing.element_type == Thing.ELEMENT_WATER
 
     def test_fill_by_text_missing(self):
         self.get_url("edit_thing", thing_id=self.thing.id)
-        self.assertRaises(
-            self.TextNotFoundException,
-            lambda: self.fill_by_text({"#id_element_type": "Plasma"}),
-        )
+        with pytest.raises(self.TextNotFoundException):
+            self.fill_by_text({"#id_element_type": "Plasma"})
 
     def test_fill_by_text_for_unsupported(self):
         self.get_url("edit_thing", thing_id=self.thing.id)
-        self.assertRaises(
-            self.ElementUnusableException,
-            lambda: self.fill_by_text({"#id_count": "Water"}),
-        )
+        with pytest.raises(self.ElementUnusableException):
+            self.fill_by_text({"#id_count": "Water"})
 
     def _assertThingChanged(self):
         thing = self.refresh_thing()
-        self.assertEqual(thing.name, "New name")
-        self.assertEqual(thing.big, False)
-        self.assertEqual(thing.clever, True)
-        self.assertEqual(thing.element_type, Thing.ELEMENT_AIR)
-        self.assertEqual(thing.category, Thing.CATEGORY_QUASIGROUP)
-        self.assertEqual(thing.count, 5)
-        self.assertEqual(thing.description, "Soft thing\r\nwith line breaks")
+        assert thing.name == "New name"
+        assert not thing.big
+        assert thing.clever
+        assert thing.element_type == Thing.ELEMENT_AIR
+        assert thing.category == Thing.CATEGORY_QUASIGROUP
+        assert thing.count == 5
+        assert thing.description == "Soft thing\r\nwith line breaks"
 
     def test_fill_no_element_error(self):
         self.get_url("edit_thing", thing_id=self.thing.id)
-        self.assertRaises(
-            self.ElementNotFoundException,
-            lambda: self.fill({"#id_blahblah": "New name"}),
-        )
+        with pytest.raises(self.ElementNotFoundException):
+            self.fill({"#id_blahblah": "New name"})
 
     def test_fill_select_by_integer(self):
         url = reverse("edit_thing", kwargs=dict(thing_id=self.thing.id)) + "?select_for_category=1"
@@ -265,7 +258,7 @@ class CommonBase(FuncBaseMixin):
         self.get_url("edit_thing", thing_id=self.thing.id)
         self.submit("button[name=clear]")
         thing = self.refresh_thing()
-        self.assertEqual(thing.name, "")
+        assert thing.name == ""
 
     def test_follow_link(self):
         self.get_url("list_things")
@@ -274,7 +267,8 @@ class CommonBase(FuncBaseMixin):
 
     def test_follow_link_not_found(self):
         self.get_url("list_things")
-        self.assertRaises(self.ElementNotFoundException, lambda: self.follow_link("a.foobar"))
+        with pytest.raises(self.ElementNotFoundException):
+            self.follow_link("a.foobar")
 
     def test_follow_link_path_relative(self):
         self.get_url("test_misc")
@@ -321,16 +315,16 @@ class CommonBase(FuncBaseMixin):
     def test_get_session_data(self):
         self.get_url("set_sess_foo_to_bar")
         sess_dict = self.get_session_data()
-        self.assertEqual(sess_dict, {"foo": "bar"})
+        assert sess_dict == {"foo": "bar"}
 
     def test_value(self):
         self.get_url("edit_thing", thing_id=self.thing.id)
-        self.assertEqual(self.value("#id_name"), "Rock")
-        self.assertEqual(self.value("#id_big"), True)
-        self.assertEqual(self.value("#id_clever"), False)
-        self.assertEqual(self.value("#id_element_type"), "e")
-        self.assertEqual(self.value("[name=category]"), str(Thing.CATEGORY_MAGMA))
-        self.assertEqual(self.value("#id_description"), "Hard thing")
+        assert self.value("#id_name") == "Rock"
+        assert self.value("#id_big") is True
+        assert self.value("#id_clever") is False
+        assert self.value("#id_element_type") == "e"
+        assert self.value("[name=category]") == str(Thing.CATEGORY_MAGMA)
+        assert self.value("#id_description") == "Hard thing"
 
     def test_value_immediately_after_fill(self):
         self.get_url("edit_thing", thing_id=self.thing.id)
@@ -344,12 +338,12 @@ class CommonBase(FuncBaseMixin):
                 "description": "Some changed description",
             }
         )
-        self.assertEqual(self.value("#id_name"), "Some changed name")
-        self.assertEqual(self.value("#id_big"), False)
-        self.assertEqual(self.value("#id_clever"), True)
-        self.assertEqual(self.value("#id_element_type"), "w")
-        self.assertEqual(self.value("#id_description"), "Some changed description")
-        self.assertEqual(self.value("[name=category]"), str(Thing.CATEGORY_MONOID))
+        assert self.value("#id_name") == "Some changed name"
+        assert self.value("#id_big") is False
+        assert self.value("#id_clever") is True
+        assert self.value("#id_element_type") == "w"
+        assert self.value("#id_description") == "Some changed description"
+        assert self.value("[name=category]") == str(Thing.CATEGORY_MONOID)
 
     def test_file_upload(self):
         self.get_url("edit_thing_with_upload", thing_id=self.thing.id)
@@ -357,7 +351,7 @@ class CommonBase(FuncBaseMixin):
         self.fill({"#id_notes_file": Upload("notes.txt", content=data)})
         self.submit("[name=change]")
         thing = self.refresh_thing()
-        self.assertEqual(thing.notes_file.file.read(), data)
+        assert thing.notes_file.file.read() == data
 
     def test_new_browser_session(self):
         self.get_url("new_browser_session_test")
@@ -370,30 +364,30 @@ class CommonBase(FuncBaseMixin):
         self.assertTextPresent("Welcome back")
         uid_1b = self.get_session_data()["UID"]
 
-        self.assertEqual(uid_1, uid_1b)
+        assert uid_1 == uid_1b
 
         first_session_token, second_session_token = self.new_browser_session()
         self.get_url("new_browser_session_test")
         self.assertTextPresent("Hello new user")
         self.assertTextAbsent("Welcome back")
         uid_2 = self.get_session_data()["UID"]
-        self.assertNotEqual(uid_1, uid_2)
+        assert uid_1 != uid_2
 
         # Tests for switch_browser_session
         ot2, nt2 = self.switch_browser_session(first_session_token)
-        self.assertEqual(nt2, first_session_token)
-        self.assertEqual(ot2, second_session_token)
+        assert nt2 == first_session_token
+        assert ot2 == second_session_token
 
         self.get_url("new_browser_session_test")
         self.assertTextPresent("Welcome back")
         self.assertTextPresent(uid_1)
-        self.assertEqual(self.get_session_data()["UID"], uid_1)
+        assert self.get_session_data()["UID"] == uid_1
 
         self.switch_browser_session(second_session_token)
         self.get_url("new_browser_session_test")
         self.assertTextPresent("Welcome back")
         self.assertTextPresent(uid_2)
-        self.assertEqual(self.get_session_data()["UID"], uid_2)
+        assert self.get_session_data()["UID"] == uid_2
 
         # assertTextPresent (etc.) should work without refetching
         # a page. This requires things like `last_response`
@@ -408,19 +402,19 @@ class CommonBase(FuncBaseMixin):
 
     def test_get_element_inner_text(self):
         self.get_url("test_misc")
-        self.assertEqual(self.get_element_inner_text("#inner-text-test-1"), "A paragraph with “this” & that 😄")
-        self.assertEqual(self.get_element_inner_text("#inner-text-test-2"), "Some text with bold and italic.")
-        self.assertEqual(self.get_element_inner_text("#inner-text-test-3"), "")
-        self.assertEqual(self.get_element_inner_text("#does-not-exist-3"), None)
+        assert self.get_element_inner_text("#inner-text-test-1") == "A paragraph with “this” & that 😄"
+        assert self.get_element_inner_text("#inner-text-test-2") == "Some text with bold and italic."
+        assert self.get_element_inner_text("#inner-text-test-3") == ""
+        assert self.get_element_inner_text("#does-not-exist-3") is None
 
     def test_get_element_attribute(self):
         self.get_url("test_misc")
-        self.assertEqual(self.get_element_attribute("#inner-text-test-1", "id"), "inner-text-test-1")
+        assert self.get_element_attribute("#inner-text-test-1", "id") == "inner-text-test-1"
         # href tests are important here, because of the difference between
         # Selenium's `WebElement.get_attribute` and `get_dom_attribute`
-        self.assertEqual(self.get_element_attribute("#self-link-3", "href"), "?param1=val2&param2")
-        self.assertEqual(self.get_element_attribute("#self-link-3", "does-not-exist"), None)
-        self.assertEqual(self.get_element_attribute("#does-not-exist-3", "id"), None)
+        assert self.get_element_attribute("#self-link-3", "href") == "?param1=val2&param2"
+        assert self.get_element_attribute("#self-link-3", "does-not-exist") is None
+        assert self.get_element_attribute("#does-not-exist-3", "id") is None
 
 
 class TestFuncWebTestCommon(CommonBase, WebTestBase):
@@ -430,36 +424,38 @@ class TestFuncWebTestCommon(CommonBase, WebTestBase):
     ElementUnusableException = WebTestCantUseElement
 
     def test_is_full_browser_attribute(self):
-        self.assertEqual(self.is_full_browser_test, False)
+        assert self.is_full_browser_test is False
 
     def test_fill_multiple_matches(self):
         self.get_url("edit_thing", thing_id=self.thing.id)
-        self.assertRaises(
-            WebTestMultipleElementsException,
-            lambda: self.fill({"input[type=checkbox]": True}),
-        )
+        with pytest.raises(WebTestMultipleElementsException):
+            self.fill({"input[type=checkbox]": True})
 
     def test_fill_element_without_name(self):
         self.get_url("edit_thing", thing_id=self.thing.id)
-        self.assertRaises(WebTestCantUseElement, lambda: self.fill({"#id_badinput1": "Hello"}))
+        with pytest.raises(WebTestCantUseElement):
+            self.fill({"#id_badinput1": "Hello"})
 
     def test_fill_element_outside_form(self):
         self.get_url("edit_thing", thing_id=self.thing.id)
-        self.assertRaises(WebTestCantUseElement, lambda: self.fill({"#id_badinput2": "Hello"}))
+        with pytest.raises(WebTestCantUseElement):
+            self.fill({"#id_badinput2": "Hello"})
 
     def test_submit_no_auto_follow(self):
         self.get_url("edit_thing", thing_id=self.thing.id)
         self.submit("input[name=change]", auto_follow=False)
-        self.assertEqual(self.last_response.status_int, 302)
+        assert self.last_response.status_int == 302
 
     def test_follow_link_multiple_matches(self):
         Thing.objects.create(name="Another")
         self.get_url("list_things")
-        self.assertRaises(WebTestMultipleElementsException, lambda: self.follow_link("a.edit"))
+        with pytest.raises(WebTestMultipleElementsException):
+            self.follow_link("a.edit")
 
     def test_follow_link_no_href(self):
         self.get_url("list_things")
-        self.assertRaises(WebTestCantUseElement, lambda: self.follow_link("a.javascriptonly"))
+        with pytest.raises(WebTestCantUseElement):
+            self.follow_link("a.javascriptonly")
 
     def test_get_literal_url_auto_follow(self):
         url = "/redirect_to_misc/"
@@ -468,21 +464,24 @@ class TestFuncWebTestCommon(CommonBase, WebTestBase):
 
         self.get_literal_url(url, auto_follow=False)
         self.assertUrlsEqual(url)
-        self.assertEqual(self.last_response.status_int, 302)
+        assert self.last_response.status_int == 302
 
     def test_get_literal_url_expect_errors(self):
         url = "/a_404_url/"
         self.get_literal_url(url, expect_errors=True)
-        self.assertEqual(self.last_response.status_int, 404)
-        self.assertRaises(Exception, lambda: self.get_literal_url(url, expect_errors=False))
+        assert self.last_response.status_int == 404
+        with pytest.raises(Exception):
+            self.get_literal_url(url, expect_errors=False)
 
     def test_get_element_inner_text_multiple(self):
         self.get_url("test_misc")
-        self.assertRaises(WebTestMultipleElementsException, lambda: self.get_element_inner_text("p"))
+        with pytest.raises(WebTestMultipleElementsException):
+            self.get_element_inner_text("p")
 
     def test_get_element_attribute_multiple(self):
         self.get_url("test_misc")
-        self.assertRaises(WebTestMultipleElementsException, lambda: self.get_element_attribute("a", "id"))
+        with pytest.raises(WebTestMultipleElementsException):
+            self.get_element_attribute("a", "id")
 
 
 class FuncSeleniumCommonBase(CommonBase):
@@ -492,7 +491,7 @@ class FuncSeleniumCommonBase(CommonBase):
     ElementUnusableException = SeleniumCantUseElement
 
     def test_is_full_browser_attribute(self):
-        self.assertEqual(self.is_full_browser_test, True)
+        assert self.is_full_browser_test is True
 
     def test_fill_with_scrolling(self):
         url = reverse("edit_thing", kwargs=dict(thing_id=self.thing.id)) + "?add_spacers=1"
