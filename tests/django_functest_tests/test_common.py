@@ -83,6 +83,7 @@ class CommonBase(FuncBaseMixin):
         self.get_url("test_misc")
         self.assertTextPresent("Hello world")
         # Check escaping
+        # NB we are using " here, not the &quot; found in the template source.
         self.assertTextPresent("from 'me' & \"friends\"")
         self.assertTextPresent("""It's also allowed to have "quotes" without escaping in text in valid HTML""")
 
@@ -100,6 +101,20 @@ class CommonBase(FuncBaseMixin):
             self.assertTextAbsent(
                 """It's also allowed to have "quotes" """ """without escaping in text in valid HTML"""
             )
+
+    def test_assertTextPresent_within(self):
+        self.get_url("test_misc")
+        self.assertTextPresent("Hello world", within="p")
+        with pytest.raises(AssertionError):
+            self.assertTextPresent("Hello world", within="p.myclass")
+        with pytest.raises(AssertionError, match="No elements matched the CSS selector 'p.not-a-real-class'"):
+            self.assertTextPresent("Hello world", within="p.not-a-real-class")
+
+    def test_assertTextAbsent_within(self):
+        self.get_url("test_misc")
+        self.assertTextAbsent("Hello world", within="p.myclass")
+        with pytest.raises(AssertionError):
+            self.assertTextAbsent("Hello world", within="p")
 
     def test_current_url(self):
         self.get_url("admin:login")

@@ -2,7 +2,6 @@ import urllib
 from collections import defaultdict
 
 from django.conf import settings
-from django.utils.html import escape
 from django_webtest import WebTestMixin
 from webtest.forms import Checkbox
 
@@ -16,10 +15,6 @@ except ImportError:
     from django.core.urlresolvers import reverse
 
 
-def html_norm(html):
-    return html.replace("&quot;", '"').replace("&apos;", "'").replace("&#39;", "'").replace("&#x27;", "'")
-
-
 class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -27,23 +22,19 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         self._all_apps = []
 
     # Public Common API
-    def assertTextAbsent(self, text):
+    def assertTextAbsent(self, text, within="body"):
         """
-        Asserts that the text is not present on the current page
+        Asserts that the text is not present within the body of the current page,
+        or within any element matching the CSS selector passed as `within`.
         """
-        self.assertNotIn(
-            html_norm(escape(text)),
-            html_norm(self.last_response.content.decode("utf-8")),
-        )
+        self._assertTextAbsent(text, self.last_response.pyquery, within)
 
-    def assertTextPresent(self, text):
+    def assertTextPresent(self, text, within="body"):
         """
-        Asserts that the text is present on the current page
+        Asserts that the text is present within the body of the current page,
+        or within an element matching the CSS selector passed as `within`.
         """
-        self.assertIn(
-            html_norm(escape(text)),
-            html_norm(self.last_response.content.decode("utf-8")),
-        )
+        self._assertTextPresent(text, self.last_response.pyquery, within)
 
     def back(self):
         """

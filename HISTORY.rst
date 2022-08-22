@@ -10,6 +10,14 @@ History
   :meth:`~django_functest.ShortcutLoginMixin.shortcut_login` with just a user
   object (no password needed).
 
+* Added ``within`` parameter to :meth:`~django_functest.FuncCommonApi.assertTextPresent`
+  and :meth:`~django_functest.FuncCommonApi.assertTextAbsent`.
+
+  This brings a small **backwards incompatibility**. If you were using these
+  methods to do assertions on something outside the body element, such as the
+  ``<title>`` element inside ``<head>``, those assertions will now fail. You
+  can pass something like ``within="title"`` for those cases.
+
 1.4.1 (2022-07-12)
 ++++++++++++++++++
 

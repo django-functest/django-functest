@@ -6,6 +6,7 @@ import time
 from datetime import datetime
 
 from django.conf import settings
+from pyquery import PyQuery
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException, StaleElementReferenceException
 from selenium.webdriver.common.action_chains import ActionChains
@@ -23,14 +24,6 @@ except ImportError:
 
 
 logger = logging.getLogger(__name__)
-
-
-def escape_selenium(text):
-    # Selenium seems to do something strange with its page source function:
-    #  &quot; gets converted back to "
-    #  &#39; gets converted back to '
-    # So we need a custom function here, instead of django.utils.html.escape
-    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
 class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
@@ -63,17 +56,19 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
 
     # Common API:
 
-    def assertTextPresent(self, text):
+    def assertTextPresent(self, text, within="body"):
         """
-        Asserts that the text is present on the current page
+        Asserts that the text is present within the body of the current page,
+        or within an element matching the CSS selector passed as `within`.
         """
-        self.assertIn(escape_selenium(text), self._get_page_source())
+        return self._assertTextPresent(text, PyQuery(self._get_page_source()), within)
 
-    def assertTextAbsent(self, text):
+    def assertTextAbsent(self, text, within="body"):
         """
-        Asserts that the text is not present on the current page
+        Asserts that the text is not present within the body of the current page,
+        or within any element matching the CSS selector passed as `within`.
         """
-        self.assertNotIn(escape_selenium(text), self._get_page_source())
+        return self._assertTextAbsent(text, PyQuery(self._get_page_source()), within)
 
     def back(self):
         """

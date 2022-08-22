@@ -25,13 +25,17 @@ followed the same pattern.
       URLs contain a domain name and/or protocol, these are also checked. This
       means that relative URLs can be used, or protocol-relative URLs.
 
-   .. method:: assertTextPresent(text)
+   .. method:: assertTextPresent(text, within="body")
 
-      Asserts that the text is present on the current page
+      Asserts that the text is present in the body of the current page. You can pass
+      ``within`` as some other CSS selector to narrow the assertion to within the
+      matching element(s).
 
-   .. method:: assertTextAbsent(text)
+   .. method:: assertTextAbsent(text, within="body")
 
-      Asserts that the text is not present on the current page
+      Asserts that the text is not present in the body of the current page. You can pass
+      ``within`` as some other CSS selector to narrow the assertion to within the
+      matching element(s).
 
    **Other methods and attributes**
 
@@ -51,7 +55,7 @@ followed the same pattern.
 
       Follows the link specified in the CSS selector.
 
-      You will get an exception if no links match.
+      You will get an exception if no links match
 
       For :class:`django_functest.FuncWebTestMixin`, you will get an exception if multiple
       links match and they don't have the same href.
