@@ -6,7 +6,9 @@ from django.contrib.auth import BACKEND_SESSION_KEY as AUTH_BACKEND_SESSION_KEY
 from django.contrib.auth import HASH_SESSION_KEY as AUTH_HASH_SESSION_KEY
 from django.contrib.auth import SESSION_KEY as AUTH_ID_SESSION_KEY
 from django.contrib.auth import authenticate
+from django.utils.html import escape
 from furl import furl
+from lxml import etree
 
 
 class ShortcutLoginMixin:
@@ -97,6 +99,44 @@ class CommonMixin:
         """
         self.fill({f'[name="{prefix}{k}"]': v for k, v in fields.items()})
 
+    def _assertTextPresent(self, text, pyquery_obj, within):
+        norm_text = html_norm(escape(text))
+        matching_elements = pyquery_obj.find(within)
+        if len(matching_elements) == 0:
+            self.fail(f"No elements matched the CSS selector {within!r}")
+        elif len(matching_elements) == 1:
+            # Better error message for the common case:
+            self.assertIn(
+                norm_text,
+                etree.tostring(matching_elements[0], encoding="unicode"),
+            )
+        else:
+            self.assertTrue(
+                any(norm_text in etree.tostring(elem, encoding="unicode") for elem in matching_elements),
+                "Didn't find {!r} inside any of the {} matching elements for {!r}".format(
+                    text, len(matching_elements), within
+                ),
+            )
+
+    def _assertTextAbsent(self, text, pyquery_obj, within):
+        norm_text = html_norm(escape(text))
+        matching_elements = pyquery_obj.find(within)
+        if len(matching_elements) == 1:
+            # Better error message for the common case:
+            self.assertNotIn(
+                norm_text,
+                etree.tostring(matching_elements[0], encoding="unicode"),
+            )
+        else:
+            self.assertFalse(
+                any(norm_text in etree.tostring(elem, encoding="unicode") for elem in matching_elements),
+                "Didn't find {!r} inside any of the {} matching_elements for {!r}".format(
+                    text,
+                    len(matching_elements),
+                    within,
+                ),
+            )
+
 
 class AdminLoginMixin(ShortcutLoginMixin):
     """
@@ -136,3 +176,7 @@ class BrowserSessionToken:
 
     def __repr__(self):
         return f"<BrowserSessionToken {id(self.value)}>"
+
+
+def html_norm(html):
+    return html.replace("&quot;", '"').replace("&apos;", "'").replace("&#39;", "'").replace("&#x27;", "'")
