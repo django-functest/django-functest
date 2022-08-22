@@ -1,0 +1,5 @@
+Django>=4.1
+ipython>=8.4
+django-functest
+pytest
+pytest-django

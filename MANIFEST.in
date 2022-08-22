@@ -18,6 +18,10 @@ include *.ini
 recursive-include docs *
 recursive-include src *.html *.js *.css *.py
 recursive-include tests *.html *.js *.css *.py
+recursive-include examples *.py
+recursive-include examples *.sqlite3
+recursive-include examples *.txt
+recursive-include examples *.ini
 
 prune docs/_build
 global-exclude *~
