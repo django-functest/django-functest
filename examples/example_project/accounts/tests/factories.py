@@ -37,7 +37,7 @@ def create_user(username: str = Auto, is_superuser: bool = Auto, is_staff: bool 
     username = username or next(USERNAME_SEQUENCE)
     if is_superuser is Auto:
         is_superuser = False
-    if is_superuser and is_staff is Auto:
-        is_staff = True
+    if is_staff is Auto:
+        is_staff = is_superuser
 
     return User.objects.create(username=username, is_superuser=is_superuser, is_staff=is_staff)

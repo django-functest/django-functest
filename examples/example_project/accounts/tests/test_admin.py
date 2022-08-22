@@ -1,18 +1,18 @@
-from accounts.tests.base import SeleniumTestBase, WebTestBase
-
 from django_functest import FuncBaseMixin, ShortcutLoginMixin
+
+from .base import SeleniumTestBase, WebTestBase
+from .factories import create_user
 
 
 class UserAdminBase(FuncBaseMixin, ShortcutLoginMixin):
     def test_change_self_details(self):
-        import IPython
+        user = create_user()  # noqa
+        ...  # TODO
 
-        IPython.embed()
 
-
-class UserAdminBaseWT(UserAdminBase, WebTestBase):
+class UserAdminWT(UserAdminBase, WebTestBase):
     pass
 
 
-class UserAdminBaseSL(UserAdminBase, SeleniumTestBase):
+class UserAdminSL(UserAdminBase, SeleniumTestBase):
     pass

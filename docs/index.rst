@@ -19,6 +19,7 @@ Contents:
    webtest
    utils
    pytest
+   interactive
    contributing
    authors
    history
