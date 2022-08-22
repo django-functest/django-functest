@@ -2,6 +2,13 @@
 Usage
 =====
 
+
+    Exploring django-functest makes me angry! Why? Because I've wasted so much
+    time writing low-level, boilerplate-filled tests for the past few years
+    instead of using it —
+    `jerivas <https://github.com/stephenmcd/mezzanine/issues/1012#issuecomment-666802439>`_
+
+
 There are two main ideas behind django-functest:
 
 1. Write functional tests for Django apps using a high level API.

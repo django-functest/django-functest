@@ -12,6 +12,11 @@ django-functest
 Helpers for creating high-level functional tests in Django, with a unified API
 for WebTest and Selenium tests.
 
+    Exploring django-functest makes me angry! Why? Because I've wasted so much
+    time writing low-level, boilerplate-filled tests for the past few years
+    instead of using it —
+    `jerivas <https://github.com/stephenmcd/mezzanine/issues/1012#issuecomment-666802439>`_
+
 Documentation
 -------------
 
