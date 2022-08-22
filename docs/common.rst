@@ -231,3 +231,8 @@ followed the same pattern.
       Construct an object for uploading in a normal file upload field.
       ``filename`` is a string, and the ``content`` parameter must be a
       ``bytes`` instance.
+
+
+Didn’t find what you need? If it’s something common and might be useful to
+others, `we are open to feature suggestions
+<https://github.com/django-functest/django-functest/issues>`_
