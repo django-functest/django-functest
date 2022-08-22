@@ -67,7 +67,7 @@ using the ``selenium`` marker:
    pytest accounts/tests/test_admin.py -m selenium -s --show-browser
 
 
-Notice the user of ``-s`` to ensure that pytest doesn’t capture our input, which
+Notice the use of ``-s`` to ensure that pytest doesn’t capture our input, which
 would break IPython.
 
 This will run the test, and we’ll find ourselves at an IPython prompt with a
@@ -120,7 +120,7 @@ versions:
 .. raw:: html
 
    <style type="text/css">
-   .ansi2html-content { display: inline; white-space: pre-wrap; word-wrap: break-word; border: 0;}
+   .ansi2html-content { display: inline; white-space: pre-wrap; word-wrap: break-word; border: 0; font-size: 75%;}
 
    .body_foreground { color: #AAAAAA; }
    .body_background { background-color: #000000; }
