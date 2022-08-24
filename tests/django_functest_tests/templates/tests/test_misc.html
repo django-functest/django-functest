@@ -27,5 +27,10 @@
     <p><a id="self-link-1" href=".">A link to self</a></p>
     <p><a id="self-link-2" href="?param1=val1">Another link to self</a></p>
     <p><a id="self-link-3" href="?param1=val2&amp;param2">Another</a></p>
+
+    <script>
+      // The following text shouldn't be treated as a DOM node:
+      var html = "<p id='this-is-not-a-dom-node'>Hello</p>";
+    </script>
   </body>
 </html>

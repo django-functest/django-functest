@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Delayed appearance</title>
+  </head>
+  <body>
+    <div id="id_container"></div>
+    <script>
+      window.setTimeout(function () {
+        document.getElementById("id_container").innerHTML = "<span id='new_stuff'>Hello!</span>";
+      }, {{ add_js_delay }} * 1000);
+    </script>
+  </body>
+</html>
