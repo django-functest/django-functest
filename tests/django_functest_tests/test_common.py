@@ -108,7 +108,7 @@ class CommonBase(FuncBaseMixin):
         with pytest.raises(AssertionError):
             self.assertTextPresent("Hello world", within="p.myclass")
         with pytest.raises(AssertionError, match="No elements matched the CSS selector 'p.not-a-real-class'"):
-            self.assertTextPresent("Hello world", within="p.not-a-real-class")
+            self.assertTextPresent("Hello world", within="p.not-a-real-class", wait=False)
 
     def test_assertTextAbsent_within(self):
         self.get_url("test_misc")
@@ -571,6 +571,17 @@ class FuncSeleniumCommonBase(CommonBase):
         )
         self.submit("input[name=change]")
         self._assertThingChanged()
+
+    def test_assertTextPresent_auto_wait(self):
+        self.get_literal_url(reverse("delayed_appearance") + "?add_js_delay=3")
+
+        # Should automatically wait if we pass within specifying an element not present at first:
+        self.assertTextPresent("Hello!", within="#new_stuff")
+
+    def test_assertTextPresent_no_wait(self):
+        self.get_literal_url(reverse("test_misc"))
+        with pytest.raises(TimeoutException):
+            self.assertTextPresent("Hello world", within="p.not-a-real-class")
 
 
 class TestFuncSeleniumCommonFirefox(FuncSeleniumCommonBase, FirefoxBase):

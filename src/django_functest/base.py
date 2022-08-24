@@ -17,7 +17,7 @@ class FuncBaseMixin:
         """
         raise NotImplementedError()
 
-    def assertTextPresent(self, text, within="body"):
+    def assertTextPresent(self, text, within="body", wait=True):
         """
         Asserts that the text is present within the body of the current page,
         or within an element matching the CSS selector passed as `within`.

@@ -30,7 +30,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         """
         self._assertTextAbsent(text, self._make_pq(self.last_response), within)
 
-    def assertTextPresent(self, text, within="body"):
+    def assertTextPresent(self, text, within="body", wait=True):
         """
         Asserts that the text is present within the body of the current page,
         or within an element matching the CSS selector passed as `within`.
