@@ -60,8 +60,11 @@ There are two main ideas behind django-functest:
    **same** API. This means you can write a test targeting both, and run in two
    different ways.
 
-   The fast WebTest tests can be used when you need to iterate quickly, but you can still
-   run the full tests against a browser.
+   The fast WebTest tests can be used when you need to iterate quickly, because
+   WebTest operates at the WSGI level (without a separate web server process),
+   and doesn’t load or use all the extra sutff (CSS, Javascript etc.) that makes
+   a real web browser much slower and more complicated. But you can still run
+   the same tests against a full browser.
 
 
 In addition, django-functest provides various helps to smooth things along:

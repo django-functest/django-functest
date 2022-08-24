@@ -17,6 +17,17 @@ for WebTest and Selenium tests.
     instead of using it —
     `jerivas <https://github.com/stephenmcd/mezzanine/issues/1012#issuecomment-666802439>`_
 
+What is `WebTest
+<https://docs.pylonsproject.org/projects/webtest/en/latest/index.html>`__?
+Imagine a text-based, HTML-only browser that doesn’t load CSS, Javascript etc,
+operates directly on a WSGI interface in a synchronous fashion for performance
+and robustness, and is controlled programmatically.
+
+What is `Selenium <https://www.selenium.dev/>`__? A tool that opens full browsers
+like Firefox and Chrome (with an isolated profile), and provides an API for
+controlling them.
+
+
 Documentation
 -------------
 
@@ -40,8 +51,8 @@ Features
   behaviour of entire views, or sets of views, e.g. a checkout process).
 
 * A unified API that abstracts over both `WebTest
-  <http://webtest.pythonpaste.org/en/latest/>`_ and `Selenium
-  <https://pypi.python.org/pypi/selenium>`_ - write two tests at once!
+  <http://webtest.pythonpaste.org/en/latest/>`__ and `Selenium
+  <https://pypi.python.org/pypi/selenium>`__ - write two tests at once!
 
 * Many of the gotchas and difficulties of using WebTest and Selenium ironed out
   for you.
