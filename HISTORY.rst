@@ -7,6 +7,8 @@ History
 ++++++++++++++++++
 
 * Fixed edge case with ``<script>`` parsing.
+* Added auto-waiting in :meth:`~django_functest.FuncCommonApi.assertTextPresent`
+  for Selenium tests.
 
 1.5 (2022-08-22)
 ++++++++++++++++

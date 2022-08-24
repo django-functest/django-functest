@@ -56,11 +56,13 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
 
     # Common API:
 
-    def assertTextPresent(self, text, within="body"):
+    def assertTextPresent(self, text, within="body", wait=True):
         """
         Asserts that the text is present within the body of the current page,
         or within an element matching the CSS selector passed as `within`.
         """
+        if wait:
+            self.wait_until_loaded(css_selector=within)
         return self._assertTextPresent(text, PyQuery(self._get_page_source(), parser="html"), within)
 
     def assertTextAbsent(self, text, within="body"):
@@ -466,7 +468,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         timeout=None,
     ):
         """
-        Helper function that blocks until the element with the given tag name
+        Helper function that blocks until the element with the given selector
         is found on the page.
         """
         self.wait_until(

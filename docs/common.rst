@@ -25,11 +25,15 @@ followed the same pattern.
       URLs contain a domain name and/or protocol, these are also checked. This
       means that relative URLs can be used, or protocol-relative URLs.
 
-   .. method:: assertTextPresent(text, within="body")
+   .. method:: assertTextPresent(text, within="body", wait=True)
 
       Asserts that the text is present in the body of the current page. You can pass
       ``within`` as some other CSS selector to narrow the assertion to within the
       matching element(s).
+
+      For Selenium tests, it will also wait for the specified ``within`` element
+      to appear, unless ``wait=False`` is passed. The ``wait`` parameter has no
+      effect on WebTest.
 
    .. method:: assertTextAbsent(text, within="body")
 
