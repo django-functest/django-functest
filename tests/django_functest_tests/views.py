@@ -131,6 +131,16 @@ def auto_submit_form(request):
     )
 
 
+def delayed_appearance(request):
+    return render(
+        request,
+        "tests/delayed_appearance.html",
+        {
+            "add_js_delay": request.GET.get("add_js_delay", 0),
+        },
+    )
+
+
 def list_things(request):
     things = Thing.objects.all()
     if "select_thing" in request.GET:

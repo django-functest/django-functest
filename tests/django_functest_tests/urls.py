@@ -48,6 +48,11 @@ if path is None:
             views.auto_submit_form,
             name="auto_submit_form",
         ),
+        url(
+            r"^delayed_appearance/",
+            views.delayed_appearance,
+            name="delayed_appearance",
+        ),
     ]
 else:
     urlpatterns = [
@@ -81,6 +86,11 @@ else:
             r"auto_submit_form/",
             views.auto_submit_form,
             name="auto_submit_form",
+        ),
+        path(
+            r"delayed_appearance/",
+            views.delayed_appearance,
+            name="delayed_appearance",
         ),
     ]
 

@@ -6,6 +6,8 @@ History
 1.5.1 (unreleased)
 ++++++++++++++++++
 
+* Fixed edge case with ``<script>`` parsing.
+
 1.5 (2022-08-22)
 ++++++++++++++++
 

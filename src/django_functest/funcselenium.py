@@ -61,14 +61,14 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         Asserts that the text is present within the body of the current page,
         or within an element matching the CSS selector passed as `within`.
         """
-        return self._assertTextPresent(text, PyQuery(self._get_page_source()), within)
+        return self._assertTextPresent(text, PyQuery(self._get_page_source(), parser="html"), within)
 
     def assertTextAbsent(self, text, within="body"):
         """
         Asserts that the text is not present within the body of the current page,
         or within any element matching the CSS selector passed as `within`.
         """
-        return self._assertTextAbsent(text, PyQuery(self._get_page_source()), within)
+        return self._assertTextAbsent(text, PyQuery(self._get_page_source(), parser="html"), within)
 
     def back(self):
         """

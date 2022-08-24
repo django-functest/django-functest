@@ -116,6 +116,13 @@ class CommonBase(FuncBaseMixin):
         with pytest.raises(AssertionError):
             self.assertTextAbsent("Hello world", within="p")
 
+        self.assertTextAbsent("Hello world", within="p#this-is-not-a-dom-node")
+
+    def test_assertTextAbsent_script(self):
+        # This is a test that we are parsing script tags properly.
+        self.get_literal_url(reverse("delayed_appearance") + "?add_js_delay=100")
+        self.assertTextAbsent("Hello!", within="#new_stuff")
+
     def test_current_url(self):
         self.get_url("admin:login")
         # Check it really is a full URL

@@ -3,6 +3,7 @@ from collections import defaultdict
 
 from django.conf import settings
 from django_webtest import WebTestMixin
+from pyquery.pyquery import PyQuery
 from webtest.forms import Checkbox
 
 from .base import FuncBaseMixin
@@ -27,14 +28,14 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         Asserts that the text is not present within the body of the current page,
         or within any element matching the CSS selector passed as `within`.
         """
-        self._assertTextAbsent(text, self.last_response.pyquery, within)
+        self._assertTextAbsent(text, self._make_pq(self.last_response), within)
 
     def assertTextPresent(self, text, within="body"):
         """
         Asserts that the text is present within the body of the current page,
         or within an element matching the CSS selector passed as `within`.
         """
-        self._assertTextPresent(text, self.last_response.pyquery, within)
+        self._assertTextPresent(text, self._make_pq(self.last_response), within)
 
     def back(self):
         """
@@ -355,7 +356,8 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
             self._pq_cache = {}
         if response in self._pq_cache:
             return self._pq_cache[response]
-        pq = response.pyquery
+        # Don't use `response.pyquery` because of https://github.com/Pylons/webtest/issues/245
+        pq = PyQuery(response.testbody, parser="html" if "html" in response.content_type else "xml")
         self._pq_cache[response] = pq
         return pq
 
