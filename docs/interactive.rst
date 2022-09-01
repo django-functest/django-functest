@@ -5,7 +5,19 @@ Since your website is going to be used interactively, it can be helpful to write
 your tests in a similar way to how a user views the website, rather than doing
 it “blind”. This page outlines a method for doing that.
 
-A complete example project for this setup can be found in the `examples folder
+You can also view the content of this page `as a video <https://www.youtube.com/watch?v=nEr6T2pL8Es>`_:
+
+.. raw:: html
+
+   <div style="display: flex; align-items: center; justify-content: center;">
+     <iframe width="560" height="315"
+     src="https://www.youtube.com/embed/nEr6T2pL8Es" title="YouTube video
+     player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+     encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+   </div>
+
+
+A complete example project for the setup can be found in the `examples folder
 <https://github.com/django-functest/django-functest/tree/master/examples/example_project>`_.
 
 We are going to use pytest and pytest-django, and use all the :doc:`pytest`
@@ -31,8 +43,8 @@ We start with a test that looks like this:
 
 
    class UserAdminBase(FuncBaseMixin, ShortcutLoginMixin):
-       def test_change_self_details(self):
-           ...  # TODO
+       def test_change_details(self):
+           pass
 
 
    class UserAdminWT(UserAdminBase, WebTestBase):
@@ -53,7 +65,7 @@ We now add our IPython prompt code into the base class method, so it looks like 
 
 .. code-block:: python
 
-   def test_change_self_details(self):
+   def test_change_details(self):
         import IPython; IPython.embed()
 
 
@@ -64,7 +76,7 @@ using the ``selenium`` marker:
 
 .. code-block:: shell
 
-   pytest accounts/tests/test_admin.py -m selenium -s --show-browser
+   pytest accounts/tests/test_admin.py -m selenium --show-browser -s
 
 
 Notice the use of ``-s`` to ensure that pytest doesn’t capture our input, which
@@ -88,7 +100,7 @@ refer to and interact with. We might continue like this:
 
 .. code-block:: python
 
-   self.follow_link(".field-username a:first-child")
+   self.follow_link("#result_list tbody a")
    self.fill({"#id_first_name": "Joe", "#id_last_name": "Bloggs"})
    self.submit('input[value="Save"]')
 
@@ -138,10 +150,10 @@ versions:
    plugins: django-4.5.2, django-webtest-1.9.10
    <span class="ansi1">collecting ... </span>collected 2 items
 
-   accounts/tests/test_admin.py::UserAdminWT::test_change_self_details <span class="ansi32">PASSED</span><span class="ansi32"> [ 50%]</span>
-   accounts/tests/test_admin.py::UserAdminSL::test_change_self_details <span class="ansi32">PASSED</span><span class="ansi32"> [100%]</span>
+   accounts/tests/test_admin.py::UserAdminWT::test_change_own_details  <span class="ansi32">PASSED</span><span class="ansi32"> [ 50%]</span>
+   accounts/tests/test_admin.py::UserAdminSL::test_change_own_details  <span class="ansi32">PASSED</span><span class="ansi32"> [100%]</span>
 
-   <span class="ansi32">============================== </span><span class="ansi32"></span><span class="ansi1 ansi32">2 passed</span><span class="ansi32"> in 1.87s</span><span class="ansi32"> ===============================</span>
+   <span class="ansi32">=============================== </span><span class="ansi32"></span><span class="ansi1 ansi32">2 passed</span><span class="ansi32"> in 1.87s</span><span class="ansi32"> ===============================</span>
 
    </pre>
 
