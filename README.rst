@@ -27,6 +27,10 @@ What is `Selenium <https://www.selenium.dev/>`__? A tool that opens full browser
 like Firefox and Chrome (with an isolated profile), and provides an API for
 controlling them.
 
+For an idea of what writing tests with django-functest looks like in practice,
+you might be interested in the video in our `writing tests interactively
+documentation
+<https://django-functest.readthedocs.io/en/latest/interactive.html>`_.
 
 Documentation
 -------------
