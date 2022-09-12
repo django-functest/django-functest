@@ -3,7 +3,7 @@
 History
 -------
 
-1.5.1 (unreleased)
+1.5.1 (2022-09-12)
 ++++++++++++++++++
 
 * Fixed edge case with ``<script>`` parsing.

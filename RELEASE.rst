@@ -5,6 +5,7 @@ Release process
 
   https://github.com/django-functest/django-functest/actions?query=workflow%3A%22Python+package%22+branch%3Amaster
 
+* Make sure you have pulled latest master locally.
 
 * Update HISTORY.rst, removing "(unreleased)" and adding date.
 
@@ -23,12 +24,6 @@ Release process
 
     ./release.sh
 
-* Tag the release e.g.::
-
-    git tag v0.1.0
-
 * Update the version numbers again, moving to the next release, and adding "-dev1"
 
 * Add new section to HISTORY.rst
-
-* ``git push --tags``
