@@ -11,6 +11,13 @@ from furl import furl
 from lxml import etree
 
 
+class _NotPassed:
+    pass
+
+
+NotPassed = _NotPassed()
+
+
 class ShortcutLoginMixin:
     """
     A mixin that provides a fast way of logging in and out.
@@ -93,11 +100,11 @@ class CommonMixin:
         )
         self.fill({"#" + k: v for k, v in data.items()})
 
-    def fill_by_name(self, fields, prefix=""):
+    def fill_by_name(self, fields, prefix="", scroll=NotPassed):
         """
         Same as ``fill`` except the keys are input names
         """
-        self.fill({f'[name="{prefix}{k}"]': v for k, v in fields.items()})
+        self.fill({f'[name="{prefix}{k}"]': v for k, v in fields.items()}, scroll=scroll)
 
     def _assertTextPresent(self, text, pyquery_obj, within):
         norm_text = html_norm(escape(text))
@@ -180,10 +187,3 @@ class BrowserSessionToken:
 
 def html_norm(html):
     return html.replace("&quot;", '"').replace("&apos;", "'").replace("&#39;", "'").replace("&#x27;", "'")
-
-
-class _NotPassed:
-    pass
-
-
-NotPassed = _NotPassed()

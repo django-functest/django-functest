@@ -91,22 +91,26 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         """
         return self.click(css_selector, wait_for_reload=True)
 
-    def fill(self, fields):
+    def fill(self, fields, scroll=NotPassed):
         """
         Fills form inputs using the values in fields, which is a dictionary
         of CSS selectors to values.
         """
+        if scroll is NotPassed:
+            scroll = self.auto_scroll_by_default
         for k, v in fields.items():
             e = self._find_with_timeout(css_selector=k)
-            self._fill_input(e, v)
+            self._fill_input(e, v, scroll=scroll)
 
-    def fill_by_text(self, fields):
+    def fill_by_text(self, fields, scroll=NotPassed):
         """
         Same as ``fill`` except the values are text captions. Useful for ``select`` elements.
         """
+        if scroll is NotPassed:
+            scroll = self.auto_scroll_by_default
         for selector, text in fields.items():
             elem = self._find_with_timeout(css_selector=selector)
-            self._fill_input_by_text(elem, text)
+            self._fill_input_by_text(elem, text, scroll=scroll)
 
     def get_element_attribute(self, css_selector, attribute):
         """
@@ -615,25 +619,26 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
     def _get_page_source(self):
         return self._driver.page_source
 
-    def _fill_input(self, elem, val):
+    def _fill_input(self, elem, val, scroll=True):
         if elem.tag_name == "select":
-            self._set_select_elem(elem, val)
+            self._set_select_elem(elem, val, scroll=scroll)
         elif elem.tag_name == "input" and elem.get_attribute("type") == "checkbox":
-            self._set_check_box(elem, val)
+            self._set_check_box(elem, val, scroll=scroll)
         elif elem.tag_name == "input" and elem.get_attribute("type") == "radio":
-            self._set_radio_button(elem, val)
+            self._set_radio_button(elem, val, scroll=scroll)
         elif elem.tag_name == "input" and elem.get_attribute("type") == "file":
             # val is an Upload instance
             fname = self._make_temp_file_for_upload(val)
             elem.send_keys(fname)
         else:
-            self._scroll_into_view(elem)
+            if scroll:
+                self._scroll_into_view(elem)
             elem.clear()
             elem.send_keys(self._normalize_linebreaks(val))
 
-    def _fill_input_by_text(self, elem, val):
+    def _fill_input_by_text(self, elem, val, scroll=True):
         if elem.tag_name == "select":
-            self._set_select_elem_by_text(elem, val)
+            self._set_select_elem_by_text(elem, val, scroll=scroll)
         else:
             raise SeleniumCantUseElement(f"Can't do 'fill_by_text' on elements of type {elem.tag_name}")
 
@@ -756,12 +761,13 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
     def _is_checked(self, elem):
         return elem.get_attribute("checked") == "true"
 
-    def _set_check_box(self, elem, state):
+    def _set_check_box(self, elem, state, scroll=True):
         if self._is_checked(elem) != state:
-            self._scroll_into_view(elem)
+            if scroll:
+                self._scroll_into_view(elem)
             elem.click()
 
-    def _set_radio_button(self, elem, value):
+    def _set_radio_button(self, elem, value, scroll=True):
         # The 'elem' found might be one of several (previous Selenium code will have
         # returned the first one that matched, especially if a 'name' selector was
         # used). We need to find the actual one that is has the correct value.
@@ -770,7 +776,8 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         name = elem.get_attribute("name")
         correct_elem = form_elem.find_element(By.XPATH, f'//input[@type="radio"][@name="{name}"][@value="{value}"]')
         if not self._is_checked(correct_elem):
-            self._scroll_into_view(correct_elem)
+            if scroll:
+                self._scroll_into_view(correct_elem)
             correct_elem.click()
 
     def _get_radio_button_value(self, elem):
@@ -784,14 +791,16 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             if e.get_attribute("checked"):
                 return e.get_attribute("value")
 
-    def _set_select_elem(self, elem, value):
-        self._scroll_into_view(elem)
+    def _set_select_elem(self, elem, value, scroll=True):
+        if scroll:
+            self._scroll_into_view(elem)
         s = Select(elem)
         value = value if isinstance(value, str) else str(value)
         s.select_by_value(value)
 
-    def _set_select_elem_by_text(self, elem, text):
-        self._scroll_into_view(elem)
+    def _set_select_elem_by_text(self, elem, text, scroll=True):
+        if scroll:
+            self._scroll_into_view(elem)
         s = Select(elem)
         s.select_by_visible_text(text)
 

@@ -184,11 +184,15 @@ def new_browser_session_test(request):
 
 def unscrollable(request):
     count = int(request.POST.get("count", 0))
+    name = request.POST.get("name", "")
+    item = request.POST.get("itemdropdown", "")
     return render(
         request,
         "tests/unscrollable.html",
         {
             "count": count,
             "nextcount": count + 1,
+            "name": name,
+            "item": item,
         },
     )

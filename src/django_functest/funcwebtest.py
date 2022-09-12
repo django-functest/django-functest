@@ -73,7 +73,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         final_url = urllib.parse.urljoin(self.current_url, hrefs[0])
         self.get_literal_url(final_url)
 
-    def fill(self, data):
+    def fill(self, data, scroll=NotPassed):
         """
         Fills form inputs using the values in fields, which is a dictionary
         of CSS selectors to values.
@@ -90,7 +90,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
             else:
                 form[field_name] = value
 
-    def fill_by_text(self, fields):
+    def fill_by_text(self, fields, scroll=NotPassed):
         """
         Same as ``fill`` except the values are text captions. Useful for ``select`` elements.
         """

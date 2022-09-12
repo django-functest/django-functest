@@ -276,6 +276,27 @@ class CommonBase(FuncBaseMixin):
         self.assertTextPresent(f"{self.thing2.name} is selected")
         self.assertTextAbsent(f"{self.thing3.name} is selected")
 
+    def test_fill_no_scroll(self):
+        self.get_literal_url(reverse("unscrollable"))
+
+        # scroll makes no different to WebTest, but we should
+        # still be able to specify it for compatibility
+
+        # With scroll=False
+        self.fill({"[name=name]": "Peter"}, scroll=False)
+        self.fill_by_text({"[name=itemdropdown]": "Item 2"}, scroll=False)
+        self.submit("[type=submit]")
+        self.assertTextPresent("Name submitted: Peter")
+        self.assertTextPresent("Item submitted: item-2")
+
+        # With auto_scroll_by_default=False
+        self.auto_scroll_by_default = False
+        self.fill({"[name=name]": "Annabelle"})
+        self.fill_by_text({"[name=itemdropdown]": "Item 2"})
+        self.submit("[type=submit]")
+        self.assertTextPresent("Name submitted: Annabelle")
+        self.assertTextPresent("Item submitted: item-2")
+
     def test_submit(self):
         self.get_url("edit_thing", thing_id=self.thing.id)
         self.submit("button[name=clear]")

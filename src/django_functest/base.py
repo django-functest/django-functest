@@ -53,7 +53,7 @@ class FuncBaseMixin:
         """
         raise NotImplementedError()
 
-    def fill(self, fields):
+    def fill(self, fields, scroll=NotPassed):
         """
         Fills form inputs using the values in fields, which is a dictionary
         of CSS selectors to values.
@@ -66,13 +66,13 @@ class FuncBaseMixin:
         """
         raise NotImplementedError()
 
-    def fill_by_name(self, fields):
+    def fill_by_name(self, fields, scroll=NotPassed):
         """
         Same as ``fill`` except the keys are input names
         """
         raise NotImplementedError()
 
-    def fill_by_text(self, fields):
+    def fill_by_text(self, fields, scroll=NotPassed):
         """
         Same as ``fill`` except the values are text captions. Useful for ``select`` elements.
         """

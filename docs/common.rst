@@ -65,7 +65,7 @@ followed the same pattern.
       links match and they don't have the same href.
 
 
-   .. method:: fill(data_dict)
+   .. method:: fill(data_dict, scroll=NotPassed)
 
       Fills form inputs using the values in ``data_dict``. The keys are CSS
       selectors, and the values are the values for the inputs. Works for text
@@ -86,6 +86,10 @@ followed the same pattern.
       :class:`~django_functest.FuncSeleniumMixin` due to the way Selenium finds
       elements.
 
+      For Selenium, you can specify whether scrolling to bring the element into
+      view should be done first, which defaults to the value of
+      :attr:`~django_functest.FuncSeleniumMixin.auto_scroll_by_default`.
+
    .. method:: fill_by_id(data_dict)
 
       Same as :meth:`fill` except the keys are element IDs. **Deprecated** —
@@ -99,7 +103,7 @@ followed the same pattern.
    .. method:: fill_by_text(data_dict)
 
       Same as :meth:`fill`, except the values are text captions. This can be
-      used only for ``select`` elements.
+      used only for ``<select>`` elements.
 
    .. method:: get_element_attribute(css_selector, attribute)
 
@@ -211,8 +215,8 @@ followed the same pattern.
       ``wait_for_reload=False`` and other tweaks. It does nothing when running
       WebTest tests.
 
-      For Selenium, you can specify whether we should attempt to scroll, which
-      defaults to the value of
+      For Selenium, you can specify whether scrolling to bring the element into
+      view should be done first, which defaults to the value of
       :attr:`~django_functest.FuncSeleniumMixin.auto_scroll_by_default`.
 
       For :class:`~django_functest.FuncWebTestMixin`, ``auto_follow=True``
