@@ -9,6 +9,8 @@ History
 * Fixed edge case with ``<script>`` parsing.
 * Added auto-waiting in :meth:`~django_functest.FuncCommonApi.assertTextPresent`
   for Selenium tests.
+* Added ``scroll`` parameter to :meth:`~django_functest.FuncCommonApi.submit`
+  and the :attr:`~django_functest.FuncSeleniumMixin.auto_scroll_by_default` attribute.
 
 1.5 (2022-08-22)
 ++++++++++++++++

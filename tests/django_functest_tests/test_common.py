@@ -282,6 +282,21 @@ class CommonBase(FuncBaseMixin):
         thing = self.refresh_thing()
         assert thing.name == ""
 
+    def test_submit_no_scroll(self):
+        self.get_literal_url(reverse("unscrollable"))
+
+        # scroll makes no different to WebTest, but we should
+        # still be able to specify it for compatibility
+
+        # With scroll=False to submit
+        self.submit("[type=submit]", scroll=False)
+        self.assertTextPresent("Submitted so far: 1")
+
+        # With auto_scroll_by_default=False
+        self.auto_scroll_by_default = False
+        self.submit("[type=submit]")
+        self.assertTextPresent("Submitted so far: 2")
+
     def test_submit_form(self):
         self.get_url("auto_submit_form")
         self.assertTextPresent("Method used: GET", within="#method")

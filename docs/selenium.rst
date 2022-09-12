@@ -12,14 +12,19 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
    **Configuration**
 
    These are class attributes and class methods that determine how the browser
-   will be set up and run. It is easiest to override the class attribute, but
-   the class method exists also for more involved needs. Note that most of these
-   are used when ``setUpClass`` is called, and most of the related methods
-   are therefore classmethods. Some are called within ``setUp``
+   will be set up and run, and defaults for how some methods behave. It is
+   easiest to override the class attribute, but the class method exists also for
+   more involved needs. Note that most of these are used when ``setUpClass`` is
+   called, and most of the related methods are therefore classmethods. Some are
+   called within ``setUp``, and some are used later when different methods are
+   called. For these latter ones, setting ``self.<attribute>`` within the test
+   body will be effective.
 
    It is usually a good idea to set up a ``FuncSeleniumMixin`` sub-class in your
    project, to be used as a base-class for your tests, and set these
    configuration values on it.
+
+   Values that apply after test setup can be changed
 
    .. attribute:: browser_window_size
 
@@ -42,6 +47,17 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
       Controls which Selenium 'driver' i.e. browser will be used. Defaults to ``"Firefox"``.
       You can also use ``"Chrome"`` if Chrome and chromedriver are installed, and ``"PhantomJS"``
       if PhantomJS is installed.
+
+   .. attribute:: auto_scroll_by_default
+
+      Controls whether :meth:`~django_functest.FuncCommonApi.submit` will
+      automatically attempt to scroll to the element in order to click it.
+
+      Defaults to ``True``.
+
+      This default behaviour is usually desirable, but depending on your
+      styling, scrolling may not work, and Selenium may still be able to
+      interact with the controls.
 
    .. method:: display_browser_window
 

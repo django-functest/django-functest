@@ -1,3 +1,6 @@
+from .utils import NotPassed
+
+
 class FuncBaseMixin:
     """
     Abstract base class that exists only to provide autocomplete help.
@@ -143,7 +146,7 @@ class FuncBaseMixin:
         """
         raise NotImplementedError()
 
-    def submit(self, css_selector, wait_for_reload=True, auto_follow=None, window_closes=False):
+    def submit(self, css_selector, wait_for_reload=True, auto_follow=None, window_closes=False, scroll=NotPassed):
         """
         Submit the form. css_selector should refer to a form, or a button/input to use
         to submit the form.

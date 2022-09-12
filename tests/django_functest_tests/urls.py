@@ -53,6 +53,11 @@ if path is None:
             views.delayed_appearance,
             name="delayed_appearance",
         ),
+        url(
+            r"^unscrollable/",
+            views.unscrollable,
+            name="unscrollable",
+        ),
     ]
 else:
     urlpatterns = [
@@ -91,6 +96,11 @@ else:
             r"delayed_appearance/",
             views.delayed_appearance,
             name="delayed_appearance",
+        ),
+        path(
+            r"unscrollable/",
+            views.unscrollable,
+            name="unscrollable",
         ),
     ]
 

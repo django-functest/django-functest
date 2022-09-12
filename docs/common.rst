@@ -188,7 +188,7 @@ followed the same pattern.
 
       Returns a tuple (old_session_token, new_session_token).
 
-   .. method:: submit(css_selector, wait_for_reload=True, auto_follow=True, window_closes=False)
+   .. method:: submit(css_selector, wait_for_reload=True, auto_follow=True, window_closes=False, scroll=NotPassed)
 
       Submits a form via the button specified in ``css_selector``, or via the
       form specified in ``css_selector``.
@@ -210,6 +210,10 @@ followed the same pattern.
       experience long timeouts with Chrome. This implies
       ``wait_for_reload=False`` and other tweaks. It does nothing when running
       WebTest tests.
+
+      For Selenium, you can specify whether we should attempt to scroll, which
+      defaults to the value of
+      :attr:`~django_functest.FuncSeleniumMixin.auto_scroll_by_default`.
 
       For :class:`~django_functest.FuncWebTestMixin`, ``auto_follow=True``
       causes redirects to be followed automatically (which always happens with

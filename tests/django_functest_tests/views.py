@@ -180,3 +180,15 @@ def new_browser_session_test(request):
             "message": message,
         },
     )
+
+
+def unscrollable(request):
+    count = int(request.POST.get("count", 0))
+    return render(
+        request,
+        "tests/unscrollable.html",
+        {
+            "count": count,
+            "nextcount": count + 1,
+        },
+    )

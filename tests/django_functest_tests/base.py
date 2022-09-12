@@ -54,6 +54,7 @@ class SeleniumBaseMixin:
 
 
 @unittest.skipIf(not firefox_available, "Firefox not available, skipping")
+@pytest.mark.firefox
 class FirefoxBase(HideBrowserMixin, SeleniumBaseMixin, FuncSeleniumMixin, MyLiveServerTestCase):
     driver_name = "Firefox"
 
@@ -70,6 +71,7 @@ class FirefoxBase(HideBrowserMixin, SeleniumBaseMixin, FuncSeleniumMixin, MyLive
 
 
 @unittest.skipIf(not chrome_available, "Chrome not available, skipping")
+@pytest.mark.chrome
 class ChromeBase(
     HideBrowserMixin,
     SeleniumBaseMixin,

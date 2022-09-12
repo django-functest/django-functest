@@ -15,7 +15,7 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 
 from .base import FuncBaseMixin
 from .exceptions import SeleniumCantUseElement
-from .utils import BrowserSessionToken, CommonMixin, get_session_store
+from .utils import BrowserSessionToken, CommonMixin, NotPassed, get_session_store
 
 try:
     from django.urls import reverse
@@ -190,12 +190,20 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
 
         raise RuntimeError("Session not saved correctly")
 
-    def submit(self, css_selector, wait_for_reload=True, auto_follow=None, window_closes=False):
+    def submit(self, css_selector, wait_for_reload=True, auto_follow=None, window_closes=False, scroll=NotPassed):
         """
         Submit the form. css_selector should refer to a form, or a button/input to use
         to submit the form.
         """
-        self.click(css_selector, wait_for_reload=wait_for_reload, window_closes=window_closes, _expect_form=True)
+        if scroll is NotPassed:
+            scroll = self.auto_scroll_by_default
+        self.click(
+            css_selector,
+            wait_for_reload=wait_for_reload,
+            window_closes=window_closes,
+            _expect_form=True,
+            scroll=scroll,
+        )
 
     def value(self, css_selector):
         """
@@ -221,6 +229,8 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
     driver_name = "Firefox"  # Sensible default, works most places
 
     page_load_timeout = 20  # seconds
+
+    auto_scroll_by_default = True
 
     def get_browser_window_size(self):
         """
@@ -710,15 +720,15 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         # http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
         return self.execute_script(
             """return [window.innerWidth,
-                                              window.innerHeight,
-                                              document.documentElement.scrollWidth,
-                                              document.documentElement.scrollHeight];"""
+                       window.innerHeight,
+                       document.documentElement.scrollWidth,
+                       document.documentElement.scrollHeight];"""
         )
 
     def _scroll_position(self):
         return self.execute_script(
             """return [document.documentElement.scrollTop,
-                                              document.documentElement.scrollLeft];"""
+                       document.documentElement.scrollLeft];"""
         )
 
     def _is_center_visible(self, elem):

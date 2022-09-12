@@ -8,7 +8,7 @@ from webtest.forms import Checkbox
 
 from .base import FuncBaseMixin
 from .exceptions import WebTestCantUseElement, WebTestMultipleElementsException, WebTestNoSuchElementException
-from .utils import BrowserSessionToken, CommonMixin, get_session_store
+from .utils import BrowserSessionToken, CommonMixin, NotPassed, get_session_store
 
 try:
     from django.urls import reverse
@@ -186,7 +186,7 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         self.app = session_token.value
         return (BrowserSessionToken(last_app), BrowserSessionToken(self.app))
 
-    def submit(self, css_selector, wait_for_reload=None, auto_follow=True, window_closes=None):
+    def submit(self, css_selector, wait_for_reload=None, auto_follow=True, window_closes=None, scroll=NotPassed):
         """
         Submit the form. css_selector should refer to a form, or a button/input to use
         to submit the form.

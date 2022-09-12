@@ -180,3 +180,10 @@ class BrowserSessionToken:
 
 def html_norm(html):
     return html.replace("&quot;", '"').replace("&apos;", "'").replace("&#39;", "'").replace("&#x27;", "'")
+
+
+class _NotPassed:
+    pass
+
+
+NotPassed = _NotPassed()
