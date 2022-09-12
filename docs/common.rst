@@ -86,9 +86,10 @@ followed the same pattern.
       :class:`~django_functest.FuncSeleniumMixin` due to the way Selenium finds
       elements.
 
-      For Selenium, you can specify whether scrolling to bring the element into
-      view should be done first, which defaults to the value of
-      :attr:`~django_functest.FuncSeleniumMixin.auto_scroll_by_default`.
+      For Selenium, you can specify whether to scroll first (to bring the
+      element into view), which defaults to the value of
+      :attr:`~django_functest.FuncSeleniumMixin.auto_scroll_by_default`. This
+      parameter has no effect for WebTest.
 
    .. method:: fill_by_id(data_dict)
 
@@ -215,9 +216,10 @@ followed the same pattern.
       ``wait_for_reload=False`` and other tweaks. It does nothing when running
       WebTest tests.
 
-      For Selenium, you can specify whether scrolling to bring the element into
-      view should be done first, which defaults to the value of
-      :attr:`~django_functest.FuncSeleniumMixin.auto_scroll_by_default`.
+      For Selenium, you can specify whether to scroll first (to bring the
+      element into view), which defaults to the value of
+      :attr:`~django_functest.FuncSeleniumMixin.auto_scroll_by_default`. This
+      parameter has no effect for WebTest.
 
       For :class:`~django_functest.FuncWebTestMixin`, ``auto_follow=True``
       causes redirects to be followed automatically (which always happens with
