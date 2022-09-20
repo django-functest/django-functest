@@ -58,6 +58,11 @@ if path is None:
             views.unscrollable,
             name="unscrollable",
         ),
+        url(
+            r"with_confirm",
+            views.with_confirm,
+            name="with_confirm",
+        ),
     ]
 else:
     urlpatterns = [
@@ -101,6 +106,11 @@ else:
             r"unscrollable/",
             views.unscrollable,
             name="unscrollable",
+        ),
+        path(
+            r"with_confirm",
+            views.with_confirm,
+            name="with_confirm",
         ),
     ]
 

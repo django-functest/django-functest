@@ -75,6 +75,20 @@ class FuncSeleniumSpecificBase(AdminLoginMixin, FuncBaseMixin):
         self.click("[name=disappears]", double=True)
         self.assertTextPresent("Pressed x 1")
 
+    def test_alert_handling_accept(self):
+        self.get_url("with_confirm")
+        self.assertTextPresent("Some text to be deleted")
+        self.click("button", expect_alert=True)
+        self.accept_alert()
+        self.assertTextAbsent("Some text to be deleted")
+
+    def test_alert_handling_dismiss(self):
+        self.get_url("with_confirm")
+        self.assertTextPresent("Some text to be deleted")
+        self.click("button", expect_alert=True)
+        self.dismiss_alert()
+        self.assertTextPresent("Some text to be deleted")
+
     def test_execute_script(self):
         self.get_url("test_misc")
         assert self.execute_script("return 1 + 1;") == 2
