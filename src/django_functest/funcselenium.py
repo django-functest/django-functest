@@ -467,7 +467,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         Helper function that blocks the execution of the tests until the
         specified callback returns a value that is not falsy. This function can
         be called, for example, after clicking a link or submitting a form.
-        See the other public methods that call this function for more details.
+        The callback must accept a single parameter which will be the Selenium driver instance.
         """
         if timeout is None:
             timeout = self.get_default_timeout()

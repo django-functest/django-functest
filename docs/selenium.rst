@@ -182,3 +182,18 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
    .. method:: wait_until_loaded(css_selector)
 
       Waits until an element matching the CSS selector appears.
+
+
+Missing something?
+------------------
+
+The above may not be enough for your needs. In that case:
+
+- the ``self._driver`` attribute on the test class instance contains the
+  `Selenium driver/browser instance
+  <https://www.selenium.dev/selenium/docs/api/py/index.html>`_ which you can use
+  for lower level interactions.
+
+- feel free to `open a ticket
+  <https://github.com/django-functest/django-functest/issues>`_ for feature
+  requests, or to contribute back your utilities.
