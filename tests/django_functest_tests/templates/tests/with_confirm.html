@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>With confirm</title>
+  </head>
+  <body>
+    <div id="mydiv">Some text to be deleted</div>
+    <button onclick="javascript: if (window.confirm('Proceed?')) { document.querySelector('#mydiv').remove() }">Delete</button>
+  </body>
+</html>

@@ -296,6 +296,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         double=False,
         scroll=True,
         window_closes=False,
+        expect_alert=False,
         _expect_form=False,
     ):
         """
@@ -342,8 +343,20 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             except NoSuchWindowException:
                 # legitimate sometimes e.g. when window closes
                 pass
-        if not window_closes:
+        if not window_closes and not expect_alert:
             self._wait_until_finished()
+
+    def accept_alert(self):
+        """
+        Chooses "OK" (or similar) on standard, browser-provided alert/confirm dialogue.
+        """
+        self._driver.switch_to.alert.accept()
+
+    def dismiss_alert(self):
+        """
+        Chooses "OK" (or similar) on standard, browser-provided confirm dialogue.
+        """
+        self._driver.switch_to.alert.dismiss()
 
     def execute_script(self, script, *args):
         """
@@ -467,7 +480,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         Helper function that blocks the execution of the tests until the
         specified callback returns a value that is not falsy. This function can
         be called, for example, after clicking a link or submitting a form.
-        See the other public methods that call this function for more details.
+        The callback must accept a single parameter which will be the Selenium driver instance.
         """
         if timeout is None:
             timeout = self.get_default_timeout()

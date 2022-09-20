@@ -196,3 +196,7 @@ def unscrollable(request):
             "item": item,
         },
     )
+
+
+def with_confirm(request):
+    return render(request, "tests/with_confirm.html", {})

@@ -92,13 +92,13 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
 
    **Other attributes and methods**
 
-   .. method:: click(css_selector=None, xpath=None, text=None, text_parent_id=None, wait_for_reload=False, double=False, scroll=True, window_closes=False)
+   .. method:: click(css_selector=None, xpath=None, text=None, text_parent_id=None, wait_for_reload=False, double=False, scroll=True, window_closes=False, expect_alert=True)
 
       Clicks the button or control specified by the CSS selector e.g.::
 
         self.click("input.default")
 
-      Alternatively, ``xpath`` or ``text`` can be provided as keyowrd arguments,
+      Alternatively, ``xpath`` or ``text`` can be provided as keyword arguments,
       instead of a CSS selector e.g.::
 
         self.click(xpath='//a[contains(text(), "kitten")]')
@@ -117,13 +117,24 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
       ``double_click`` action chain, which doesn't actually trigger single click
       events.
 
+      If you are expecting the click to produce a standard browser “alert” or
+      “confirm” dialog box, you should pass ``expect_alert=True``.
+
       See also the notes in :meth:`~django_functest.FuncCommonApi.submit`
       regarding ``wait_for_reload`` and ``window_closes`` (noting that the
       default values are different).
 
+   .. method:: accept_alert()
+
+      Chooses "OK" (or similar) on standard, browser-provided alert/confirm dialogue.
+
+   .. method:: dismiss_alert()
+
+      Chooses "Cancel" (or similar) on standard, browser-provided confirm dialogue.
+
    .. method:: execute_script(script, *args)
 
-      Executes the suppplied Javascript in the browser and returns the results.
+      Executes the supplied Javascript in the browser and returns the results.
 
       If you need to pass arguments, you can receive them in the script using
       ``arguments`` e.g.::
@@ -182,3 +193,18 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
    .. method:: wait_until_loaded(css_selector)
 
       Waits until an element matching the CSS selector appears.
+
+
+Missing something?
+------------------
+
+The above may not be enough for your needs. In that case:
+
+- the ``self._driver`` attribute on the test class instance contains the
+  `Selenium driver/browser instance
+  <https://www.selenium.dev/selenium/docs/api/py/index.html>`_ which you can use
+  for lower level interactions.
+
+- feel free to `open a ticket
+  <https://github.com/django-functest/django-functest/issues>`_ for feature
+  requests, or to contribute back your utilities.
