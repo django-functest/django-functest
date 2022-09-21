@@ -186,9 +186,28 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
 
    .. method:: wait_until(callback, timeout=None)
 
-      Waits until the callback returns ``True``, with a timeout that defaults
-      to the :attr:`default_timeout`. The callback must accept a single
-      parameter which will be the driver instance.
+      Waits until the callback returns ``True``, with a timeout that defaults to
+      the :attr:`default_timeout`. The callback must accept a single parameter
+      which will be the Selenium driver instance (which you may not need to
+      use).
+
+      If the timeout is reached, a Selenium ``TimeoutException`` will be raised.
+
+      Example::
+
+        self.wait_until(lambda driver: self.is_element_present("#my-id"))
+
+      Often it is useful to wait until a specific assertion passes. You can do
+      this conveniently with the provided method ``assertion_passes`` which
+      converts an assertion method (plus arguments) into a callable that returns
+      True on success. For example::
+
+        self.wait_until(self.assertion_passes(self.assertTextPresent, "Hello!", within="#my-id"))
+
+      This will call ``self.assertTextPresent("Hello!", within="#my-id")``
+      repeatedly until it passes i.e. no assertion is raised, or the timeout is
+      reached.
+
 
    .. method:: wait_until_loaded(css_selector)
 

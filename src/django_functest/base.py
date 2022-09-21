@@ -13,6 +13,16 @@ class FuncBaseMixin:
     # However, some code autocomplete tools such as Jedi do not import modules
     # to find docstrings, they do their own parsing. In this case the docstring
     # has to be on the overridden method itself to be found.
+    def assertion_passes(self, a_callable, *args, **kwargs):
+        """
+        Given a callable which may raise an AssertionError, plus optional arguments to pass
+        to it,  returns a callable that wraps it and returns True if no AssertionError
+        is raised, False otherwise.
+
+        Useful for converting assertion methods into callables that can be passed
+        to `wait_until`.
+        """
+        raise NotImplementedError()
 
     def assertUrlsEqual(self, url, other_url=None):
         """

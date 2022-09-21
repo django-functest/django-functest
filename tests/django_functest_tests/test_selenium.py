@@ -2,7 +2,7 @@ import os
 
 import pytest
 from django.contrib.auth import get_user_model
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 from django_functest import AdminLoginMixin, FuncBaseMixin
 
@@ -134,6 +134,21 @@ class FuncSeleniumSpecificBase(AdminLoginMixin, FuncBaseMixin):
         finally:
             if fname is not None:
                 os.unlink(fname)
+
+    def test_wait_until(self):
+        self.get_literal_url(reverse("delayed_appearance") + "?add_js_delay=2")
+        self.wait_until(lambda driver: self.is_element_present("#new_stuff"))
+        self.assertTextPresent("Hello!", within="#id_container")
+
+    def test_wait_until_timeout(self):
+        self.get_literal_url(reverse("delayed_appearance") + "?add_js_delay=100")
+        with pytest.raises(TimeoutException):
+            self.wait_until(lambda driver: self.is_element_present("#new_stuff"), timeout=1)
+
+    def test_wait_until_assertion_passes(self):
+        self.get_literal_url(reverse("delayed_appearance") + "?add_js_delay=2")
+        self.wait_until(self.assertion_passes(self.assertTextPresent, "Hello!", within="#id_container"))
+        self.assertTextPresent("Hello!", within="#id_container")
 
 
 class TestFuncSeleniumSpecificFirefox(FuncSeleniumSpecificBase, FirefoxBase):
