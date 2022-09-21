@@ -75,6 +75,27 @@ def get_session_store(session_key=None):
 
 
 class CommonMixin:
+    def assertion_passes(self, a_callable, *args, **kwargs):
+        """
+        Given a callable which may raise an AssertionError, plus optional arguments to pass
+        to it,  returns a callable that wraps it and returns True if no AssertionError
+        is raised, False otherwise.
+
+        Useful for converting assertion methods into callables that can be passed
+        to `wait_until`.
+        """
+
+        # We make wrapper accept and ignore any args due to the use case, where
+        # typically `driver` will be passed as an argument (see `wait_until`)
+        def wrapper(*wrapper_args, **wrapper_kwargs):
+            try:
+                a_callable(*args, **kwargs)
+            except AssertionError:
+                return False
+            return True
+
+        return wrapper
+
     def assertUrlsEqual(self, url, other_url=None):
         """
         Asserts that the URLs match. Empty protocol or domain are ignored.

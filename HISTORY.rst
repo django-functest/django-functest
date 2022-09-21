@@ -10,6 +10,9 @@ History
   plus :meth:`~django_functest.FuncSeleniumMixin.accept_alert` and
   :meth:`~django_functest.FuncSeleniumMixin.dismiss_alert`
 
+* Added ``assertion_passes`` utility as a convenience for using with
+  :meth:`~django_functest.FuncSeleniumMixin.wait_until`
+
 
 1.5.1 (2022-09-12)
 ++++++++++++++++++
