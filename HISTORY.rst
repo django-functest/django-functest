@@ -3,7 +3,7 @@
 History
 -------
 
-1.5.2 (unreleased)
+1.5.2 (2022-09-21)
 ++++++++++++++++++
 
 * Added ``expect_alert`` to :meth:`~django_functest.FuncSeleniumMixin.click`,
