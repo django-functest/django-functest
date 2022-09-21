@@ -5,7 +5,7 @@ Release process
 
   https://github.com/django-functest/django-functest/actions?query=workflow%3A%22Python+package%22+branch%3Amaster
 
-* Make sure you have pulled latest master locally.
+* Make sure you have pulled latest master locally and are on the master branch.
 
 * Update HISTORY.rst, removing "(unreleased)" and adding date.
 
