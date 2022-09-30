@@ -2,6 +2,7 @@ import django
 from django.test import testcases
 
 if django.VERSION < (2,):
+    # TODO - we should remove this, since we don't support Django < 2.0 any more
 
     try:
         from django.core.servers.basehttp import ThreadedWSGIServer

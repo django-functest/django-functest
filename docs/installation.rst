@@ -20,6 +20,9 @@ When running tests, you will also need to have ``localhost`` in your
 Dependencies
 ============
 
+Python 3.7 and later is supported.
+Django 2.0 and later is supported.
+
 Python dependencies are automatically installed, including the Python
 ``selenium`` package. However, due the nature of Selenium, if you are writing
 Selenium tests (i.e. if you are not simply using the WebTest wrapper),
