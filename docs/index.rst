@@ -18,6 +18,7 @@ Contents:
    selenium
    webtest
    utils
+   tips
    pytest
    interactive
    contributing
