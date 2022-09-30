@@ -30,11 +30,16 @@ jobs:
           django-version: 4.0.1
         - python-version: "3.10"
           django-version: 4.0.1
+        - python-version: "3.10"
+          django-version: 4.1.1
         - python-version: 3.7
           django-version: 3.2.11
           extra-run-args: --signed-cookies
         - python-version: 3.9
           django-version: 4.0.1
+          extra-run-args: --signed-cookies
+        - python-version: "3.10"
+          django-version: 4.1.1
           extra-run-args: --signed-cookies
 
     steps:
