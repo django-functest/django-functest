@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Long page</title>
+  </head>
+  <body>
+    {% for item in items %}
+      <div>Item {{ item }}</div>
+    {% endfor %}
+
+    {% if mybutton_was_pressed %}
+      <p>mybutton was pressed</p>
+    {% endif %}
+
+    <form method="GET" action="">
+      <input type="submit" name="mybutton" value="Submit">
+      <input type="hidden" name="count" value="{{ count }}">
+    </form>
+  </body>
+</html>

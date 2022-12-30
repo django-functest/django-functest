@@ -277,7 +277,7 @@ class CommonBase(FuncBaseMixin):
         self.assertTextAbsent(f"{self.thing3.name} is selected")
 
     def test_fill_no_scroll(self):
-        self.get_literal_url(reverse("unscrollable"))
+        self.get_literal_url(reverse("overflowing"))
 
         # scroll makes no different to WebTest, but we should
         # still be able to specify it for compatibility
@@ -304,7 +304,7 @@ class CommonBase(FuncBaseMixin):
         assert thing.name == ""
 
     def test_submit_no_scroll(self):
-        self.get_literal_url(reverse("unscrollable"))
+        self.get_literal_url(reverse("overflowing"))
 
         # scroll makes no different to WebTest, but we should
         # still be able to specify it for compatibility

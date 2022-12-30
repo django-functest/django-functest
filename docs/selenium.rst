@@ -24,7 +24,7 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
    project, to be used as a base-class for your tests, and set these
    configuration values on it.
 
-   Values that apply after test setup can be changed
+   Values that apply after test setup can be changed.
 
    .. attribute:: browser_window_size
 
@@ -58,6 +58,16 @@ The class ``FuncSeleniumMixin`` has some Selenium/full browser specific methods,
       This default behaviour is usually desirable, but depending on your
       styling, scrolling may not work, and Selenium may still be able to
       interact with the controls.
+
+   .. attribute:: scroll_method
+
+      Defines the method to be used for scrolling. Defaults to ``"auto"`` which
+      uses the most reliable known method.
+
+      Other values:
+
+      ``legacyWindowScrollTo`` — a legacy method based on ``window.scrollTo``
+
 
    .. method:: display_browser_window
 

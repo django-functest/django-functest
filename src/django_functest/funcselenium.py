@@ -236,6 +236,8 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
 
     auto_scroll_by_default = True
 
+    scroll_method = "auto"
+
     def get_browser_window_size(self):
         """
         Configuration method: returns the desired browser window height that
@@ -697,7 +699,20 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         self.addCleanup(rmfile)
         return fname
 
-    def _scroll_into_view(self, elem, attempts=0):
+    def _scroll_into_view(self, elem):
+        if self.scroll_method == "auto":
+            return self._scroll_into_view_element_method(elem)
+        elif self.scroll_method == "legacyWindowScrollTo":
+            return self._scroll_into_view_legacyWindowScrollTo(elem)
+        else:
+            raise AssertionError(f"Unsupported scroll method {self.scroll_method}")
+
+    def _scroll_into_view_element_method(self, elem):
+        self._driver.execute_script("arguments[0].scrollIntoView()", elem)
+
+    def _scroll_into_view_legacyWindowScrollTo(self, elem, attempts=0):
+        # Legacy method for backwards compat
+
         if self._is_center_visible(elem):
             return
 
@@ -727,7 +742,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             # Probably in the middle of another scroll. Wait and try again.
             if attempts < 10:
                 time.sleep(0.1)
-                self._scroll_into_view(elem, attempts=attempts + 1)
+                self._scroll_into_view_legacyWindowScrollTo(elem, attempts=attempts + 1)
             else:
                 logger.warning("Can't scroll to (%s, %s)", scroll_to_x, scroll_to_y)
 
