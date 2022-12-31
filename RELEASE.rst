@@ -9,9 +9,6 @@ Release process
 
 * Update HISTORY.rst, removing "(unreleased)" and adding date.
 
-* From the last test run on CI, add version numbers of Firefox/Chrome etc. into
-  the table in installation.rst.
-
 * Update the version number, removing the ``-dev1`` part if present
 
   * setup.py

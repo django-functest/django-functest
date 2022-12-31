@@ -36,39 +36,9 @@ the browser to use.
 In addition to needing web browsers installed, you often need additional driver
 programs that speak the WebDriver protocol. These programs are not 100% complete
 with each other, and have their own bugs and incompatibilities depending on
-their version, and the version of the browser. Our policy is to try to test
-against the latest version of the browser and latest version of the driver at
-the time of release - see table below.
-
-Tested browser versions:
-
-+-------------------+---------------------+----------------------------+
-| django-functest   | Firefox             | Chrome                     |
-+===================+=====================+============================+
-| 1.5.2             | Firefox 104         | Chrome 105                 |
-|                   | geckodriver 0.31.0  | chromedriver 105           |
-+-------------------+---------------------+----------------------------+
-| 1.5.1             | Firefox 104         | Chrome 105                 |
-|                   | geckodriver 0.31.0  | chromedriver 105           |
-+-------------------+---------------------+----------------------------+
-| 1.5               | Firefox 103         | Chrome 104                 |
-|                   | geckodriver 0.31.0  | chromedriver 104           |
-+-------------------+---------------------+----------------------------+
-| 1.4               | Firefox 98.0.2      | Chrome 100.0.4896.75       |
-|                   | geckodriver 0.30.0  | chromedriver 100.0.4896.60 |
-+-------------------+---------------------+----------------------------+
-| 1.3               | Firefox 96.0        | Chrome 98.0                |
-|                   | geckodriver 0.30.0  | chromedriver 98.0.4758.80  |
-+-------------------+---------------------+----------------------------+
-| 1.2               | Firefox 96.0        | Chrome 97.0                |
-|                   | geckodriver 0.30.0  | chromedriver 97.0.4692.71  |
-+-------------------+---------------------+----------------------------+
-| 1.1.1             | Firefox 92.0        | Chrome 94                  |
-|                   | geckodriver 0.30.0  | chromedriver 94.0.4606.41  |
-+-------------------+---------------------+----------------------------+
-| 1.1.0             | Firefox 84          | Chrome 87                  |
-|                   | geckodriver 0.28.0  | chromedriver 87.0.4280.88  |
-+-------------------+---------------------+----------------------------+
+their version, and the version of the browser. Our policy is to test against the
+latest version of the browser and latest version of the driver at the time of
+release.
 
 Browser specific notes below:
 
