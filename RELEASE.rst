@@ -11,7 +11,6 @@ Release process
 
 * Update the version number, removing the ``-dev1`` part if present
 
-  * setup.py
   * django_functest/__init__.py
   * docs/conf.py
 
