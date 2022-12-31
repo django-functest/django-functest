@@ -3,6 +3,14 @@
 History
 -------
 
+1.5.3 (2022-12-30)
+++++++++++++++++++
+
+* Added a more robust scroll method based on `Element.scrollIntoView
+  <https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView>`_.
+  The old method can be used instead by setting ``scroll_method =
+  "legacyWindowScrollTo"`` on a test case.
+
 1.5.2 (2022-09-21)
 ++++++++++++++++++
 

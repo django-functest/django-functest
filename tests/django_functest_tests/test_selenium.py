@@ -150,6 +150,18 @@ class FuncSeleniumSpecificBase(AdminLoginMixin, FuncBaseMixin):
         self.wait_until(self.assertion_passes(self.assertTextPresent, "Hello!", within="#id_container"))
         self.assertTextPresent("Hello!", within="#id_container")
 
+    def test_scroll_method_legacy(self):
+        self.scroll_method = "legacyWindowScrollTo"
+        self.get_literal_url(reverse("long_page") + "?count=1000")
+        self.submit('[name="mybutton"]')
+        self.assertTextPresent("mybutton was pressed")
+
+    def test_scroll_method_auto(self):
+        self.scroll_method = "auto"
+        self.get_literal_url(reverse("long_page") + "?count=1000")
+        self.submit('[name="mybutton"]')
+        self.assertTextPresent("mybutton was pressed")
+
 
 class TestFuncSeleniumSpecificFirefox(FuncSeleniumSpecificBase, FirefoxBase):
     pass

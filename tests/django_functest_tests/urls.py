@@ -54,9 +54,14 @@ if path is None:
             name="delayed_appearance",
         ),
         url(
-            r"^unscrollable/",
-            views.unscrollable,
-            name="unscrollable",
+            r"^overflowing/",
+            views.overflowing,
+            name="overflowing",
+        ),
+        url(
+            r"^long_page/",
+            views.long_page,
+            name="long_page",
         ),
         url(
             r"with_confirm",
@@ -103,9 +108,14 @@ else:
             name="delayed_appearance",
         ),
         path(
-            r"unscrollable/",
-            views.unscrollable,
-            name="unscrollable",
+            r"overflowing/",
+            views.overflowing,
+            name="overflowing",
+        ),
+        path(
+            r"long_page/",
+            views.long_page,
+            name="long_page",
         ),
         path(
             r"with_confirm",

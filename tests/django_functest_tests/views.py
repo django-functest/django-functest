@@ -182,13 +182,26 @@ def new_browser_session_test(request):
     )
 
 
-def unscrollable(request):
+def long_page(request):
+    count = int(request.GET.get("count", 0))
+    return render(
+        request,
+        "tests/long_page.html",
+        {
+            "items": list(range(1, count + 1)),
+            "mybutton_was_pressed": "mybutton" in request.GET,
+            "count": count,
+        },
+    )
+
+
+def overflowing(request):
     count = int(request.POST.get("count", 0))
     name = request.POST.get("name", "")
     item = request.POST.get("itemdropdown", "")
     return render(
         request,
-        "tests/unscrollable.html",
+        "tests/overflowing.html",
         {
             "count": count,
             "nextcount": count + 1,
