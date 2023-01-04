@@ -3,7 +3,7 @@
 History
 -------
 
-1.5.3 (2022-12-30)
+1.5.3 (2023-01-04)
 ++++++++++++++++++
 
 * Added a more robust scroll method based on `Element.scrollIntoView
