@@ -17,7 +17,7 @@ built in. When this is not sufficient, however, it’s tempting do a bit of::
   time.sleep(0.2)  # Should be enough…
 
 
-This works great until you run the test on CI or on a busy machine and it take
+This works great until you run the test on CI or on a busy machine and it takes
 205ms instead of 200ms. You don’t really want to add 10 second delay to be
 **really** sure, so you end with a flaky test suite that fails randomly, and
 life is miserable.
@@ -39,6 +39,11 @@ Or for the data to be saved in the DB::
 If these fail, they fail with a timeout, which means they wait a long time
 before failing. This is a bit annoying, but it’s usually better than the
 alternative.
+
+Some of the builtin positive assertions automatically insert waits for you — for
+example meth:`~django_functest.FuncCommonApi.assertTextPresent` will
+automatically wait for the specified element (``body`` by default) to be
+present.
 
 
 Use FuncBaseMixin
