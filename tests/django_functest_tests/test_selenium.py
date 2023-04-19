@@ -1,4 +1,5 @@
 import os
+from functools import wraps
 
 import pytest
 from django.contrib.auth import get_user_model
@@ -162,9 +163,55 @@ class FuncSeleniumSpecificBase(AdminLoginMixin, FuncBaseMixin):
         self.submit('[name="mybutton"]')
         self.assertTextPresent("mybutton was pressed")
 
+    def test_fill_with_shadow_root(self):
+        self.get_url("web_components")
+        self.fill({("my-input#id-query", "input"): "My query text"})
+        self.submit('[type="submit"]')
+        self.assertTextPresent("Submitted query: My query text")
+
+    def test_click_with_shadow_root(self):
+        self.get_url("web_components")
+        self.submit(["my-submit", "button"])
+        self.assertTextPresent("my-submit was pressed")
+
+    def test_element_utils_with_shadow_root(self):
+        self.get_url("web_components")
+        assert self.is_element_present(("my-div", "div.my-div-inner"))
+        assert not self.is_element_present(("my-div", "my-div"))  # Nested my-div is in real DOM, not shadow DOM
+
+        assert self.is_element_displayed(("my-div", "div.my-div-inner"))
+
+        assert self.get_element_inner_text(("my-div", "div > h3")) == "my-div heading"
+        assert self.get_element_inner_text(("my-div my-div", "div > h3")) == "my-div heading"
+
+        assert self.get_element_attribute(("my-div", "div"), "class") == "my-div-inner"
+
+
+def wrap(func):
+    """
+    Returns function with a wrapper
+    """
+    # Can be useful for badly behaved decorators that don't themselves wrap the
+    # callable and return a new one, but modify the original directly, like
+    # pytest.mark.xfail
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+
+    return wrapper
+
 
 class TestFuncSeleniumSpecificFirefox(FuncSeleniumSpecificBase, FirefoxBase):
-    pass
+    # Finding elements from shadow_root in Firefox currently fails:
+    # https://github.com/mozilla/geckodriver/issues/2005
+    # From https://bugzilla.mozilla.org/show_bug.cgi?id=1700097 it may be implemented
+    # in Firefox 113 and related geckodriver
+
+    test_fill_with_shadow_root = pytest.mark.xfail(wrap(FuncSeleniumSpecificBase.test_fill_with_shadow_root))
+    test_click_with_shadow_root = pytest.mark.xfail(wrap(FuncSeleniumSpecificBase.test_click_with_shadow_root))
+    test_element_utils_with_shadow_root = pytest.mark.xfail(
+        wrap(FuncSeleniumSpecificBase.test_element_utils_with_shadow_root)
+    )
 
 
 class TestFuncSeleniumSpecificChrome(FuncSeleniumSpecificBase, ChromeBase):

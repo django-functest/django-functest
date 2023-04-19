@@ -213,3 +213,7 @@ def overflowing(request):
 
 def with_confirm(request):
     return render(request, "tests/with_confirm.html", {})
+
+
+def web_components(request):
+    return render(request, "tests/web_components.html", {})

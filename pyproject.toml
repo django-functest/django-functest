@@ -11,3 +11,6 @@ profile = "black"
 multi_line_output = 3
 skip = ["node_modules", ".git", ".tox", "build"]
 known_first_party = ["django_functest"]
+
+[tool.ruff]
+line-length = 120

@@ -17,6 +17,7 @@ Contents:
    common
    selenium
    webtest
+   shadow_dom
    utils
    tips
    pytest

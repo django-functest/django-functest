@@ -3,6 +3,11 @@
 History
 -------
 
+1.5.4 (unreleased)
+++++++++++++++++++
+
+* Added some support for :doc:`shadow_dom`.
+
 1.5.3 (2023-01-04)
 ++++++++++++++++++
 
