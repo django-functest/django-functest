@@ -31,4 +31,5 @@ urlpatterns = [
     path(r"overflowing/", views.overflowing, name="overflowing"),
     path(r"long_page/", views.long_page, name="long_page"),
     path(r"with_confirm", views.with_confirm, name="with_confirm"),
+    path(r"web_components/", views.web_components, name="web_components"),
 ]

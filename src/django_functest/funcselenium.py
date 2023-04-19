@@ -11,6 +11,7 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException, StaleElementReferenceException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.command import Command
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
 from .base import FuncBaseMixin
@@ -118,7 +119,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         or None if there is no such element or attribute.
         """
         try:
-            element = self._driver.find_element(By.CSS_SELECTOR, css_selector)
+            element = self._find(css_selector=css_selector)
         except NoSuchElementException:
             return None
         return element.get_dom_attribute(attribute)
@@ -129,7 +130,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         the css_selector, or None if there is none.
         """
         try:
-            element = self._driver.find_element(By.CSS_SELECTOR, css_selector)
+            element = self._find(css_selector=css_selector)
         except NoSuchElementException:
             return None
         return element.text
@@ -156,7 +157,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         False otherwise.
         """
         try:
-            self._driver.find_element(By.CSS_SELECTOR, css_selector)
+            self._find(css_selector)
         except NoSuchElementException:
             return False
         return True
@@ -380,7 +381,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         present and visible on the page.
         """
         try:
-            elem = self._driver.find_element(By.CSS_SELECTOR, css_selector)
+            elem = self._find(css_selector=css_selector)
         except NoSuchElementException:
             return False
         return elem.is_displayed()
@@ -567,8 +568,16 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             return self._cls_driver
 
     def _get_finder(self, css_selector=None, xpath=None, text=None, text_parent_id=None):
+        def _find_by_css(driver):
+            css_selectors = [css_selector] if isinstance(css_selector, str) else list(css_selector)
+            first_selector, *remaining_selectors = css_selectors
+            element = driver.find_element(By.CSS_SELECTOR, first_selector)
+            for selector in remaining_selectors:
+                element = _get_shadow_root(element).find_element(By.CSS_SELECTOR, selector)
+            return element
+
         if css_selector is not None:
-            return lambda driver: driver.find_element(By.CSS_SELECTOR, css_selector)
+            return _find_by_css
         if xpath is not None:
             return lambda driver: driver.find_element(By.XPATH, xpath)
         if text is not None:
@@ -840,3 +849,10 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         # Linux)
         text = text.replace("\r\n", "\n")
         return text
+
+
+def _get_shadow_root(element):
+    # Workaround the fact that `element.shadow_root` throws assertion error for Firefox.
+    # (finding elements still doesn't work at time of writing, but we don't want to wait
+    # for a Selenium release to get this fixed, when a geckodriver release may fix it).
+    return element._execute(Command.GET_SHADOW_ROOT)["value"]

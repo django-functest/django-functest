@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Web components and shadow DOMs</title>
+    <script>
+      class MyInput extends HTMLElement {
+        static formAssociated = true;
+        constructor() {
+          super();
+          const shadow = this.attachShadow({ mode: 'open' });
+          const wrapper = document.createElement('div');
+          this.input = document.createElement('input');
+          const name = this.getAttribute('name');
+          this.input.setAttribute('part', 'input');
+          if (name) {
+            this.input.setAttribute('name',  name);
+          }
+          wrapper.appendChild(this.input);
+          shadow.appendChild(wrapper);
+          this.internals = this.attachInternals();
+          this.input.addEventListener(
+            "input",
+            (event) => {
+              // update value that form has access to
+              this.internals.setFormValue(event.target.value);
+            });
+        }
+      }
+
+      class MySubmit extends HTMLElement {
+        static formAssociated = true;
+        constructor() {
+          super();
+          const shadow = this.attachShadow({ mode: 'open' });
+          this.internals = this.attachInternals();
+          this.shadow = shadow;
+        }
+
+        connectedCallback() {
+          setTimeout(() => {  // Wait for child elements
+            const span = document.createElement('span');
+            const button = document.createElement('button');
+            button.innerHTML = this.innerHTML;
+            this.shadow.appendChild(span);
+            span.appendChild(button);
+            button.addEventListener(
+              "click",
+              (event) => {
+                this.internals.setFormValue(event.target.value);
+                const form = this.closest('form');
+                if (form) {
+                  form.submit();
+                };
+              });
+          });
+        }
+      }
+
+      class MyDiv extends HTMLElement {
+        constructor() {
+          super();
+
+          const template = document.getElementById('my-div-template');
+          const templateContent = template.content;
+
+          this.attachShadow({mode: 'open'}).appendChild(
+            templateContent.cloneNode(true)
+          );
+        }
+      };
+
+      customElements.define('my-input', MyInput);
+      customElements.define('my-submit', MySubmit);
+      customElements.define('my-div', MyDiv);
+
+    </script>
+  </head>
+  <body>
+    <form method="GET" action="">
+      <my-input id="id-query" name="query"></my-input>
+      <input type="submit" name="normal-submit" value="Submit">
+      <my-submit id="id-my-submit" name="my-submit">My Submit</my-submit>
+    </form>
+    {% if 'query' in request.GET %}
+      <p>Submitted query: {{ request.GET.query }}</p>
+    {% endif %}
+
+    {% if 'my-submit' in request.GET %}
+      <p>my-submit was pressed</p>
+    {% endif %}
+
+
+    <h2>Nested</h2>
+
+    <template id="my-div-template">
+      <style>
+        .my-div-inner {
+          border: 1px solid #888;
+          padding: 5px;
+          margin: 5px;
+        }
+      </style>
+      <div class="my-div-inner">
+        <h3>my-div heading</h3>
+        <slot name="contents"></slot>
+      </div>
+    </template>
+
+    <my-div>
+      <div slot="contents">
+        <p>my-div slot text</p>
+        <my-div>
+          <div slot="contents">
+            my-div nested slot text
+          </div>
+        </my-div>
+      </div>
+    </my-div>
+
+
+  </body>
+</html>
