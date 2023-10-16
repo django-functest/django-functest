@@ -11,6 +11,7 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, NoSuchWindowException, StaleElementReferenceException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.command import Command
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
@@ -532,7 +533,12 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             if hasattr(options, "headless"):
                 options.headless = True
             else:
-                logger.warn(f"Cannot set headless mode for webdriver {driver_name}")
+                if isinstance(options, webdriver.ChromeOptions):
+                    options.add_argument("--headless=new")
+                elif isinstance(options, webdriver.FirefoxOptions):
+                    options.add_argument("--headless")
+                else:
+                    logger.warning(f"Cannot set headless mode for webdriver {driver_name}")
             if options is not None:
                 kwargs["options"] = options
         driver = getattr(webdriver, driver_name)(**kwargs)
@@ -657,7 +663,13 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         else:
             if scroll:
                 self._scroll_into_view(elem)
-            elem.clear()
+            if elem.get_attribute("value"):
+                # We avoid 'elem.clear()' as it fires events unhelpfully.
+                # Alternative methods from:
+                # https://stackoverflow.com/questions/7732125/clear-text-from-textarea-with-selenium
+                elem.send_keys(Keys.CONTROL + "a")
+                elem.send_keys(Keys.DELETE)
+
             elem.send_keys(self._normalize_linebreaks(val))
 
     def _fill_input_by_text(self, elem, val, scroll=True):
