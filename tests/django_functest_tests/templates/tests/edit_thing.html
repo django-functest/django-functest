@@ -31,6 +31,8 @@
     <input type="text" style="display:none;" name="badinput2" id="id_badinput2" value="Some value">
 
 
+    <textarea id="id_onchange_log"></textarea>
+
     <script>
       var clickCount = 0;
       document.getElementById("id_check_button").onclick = function (event) {
@@ -63,6 +65,12 @@
         document.getElementById("id_disappears").remove();
       };
 
+      document.querySelectorAll('form input').forEach((input) => {
+        input.addEventListener("change", (ev) => {
+          const textarea = document.getElementById("id_onchange_log");
+          textarea.value = textarea.value + ev.target.id + ",";
+        });
+      });
     </script>
 
     {% if add_js_delay %}

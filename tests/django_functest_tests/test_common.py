@@ -153,6 +153,21 @@ class CommonBase(FuncBaseMixin):
         self.submit("input[name=change]")
         self._assertThingChanged()
 
+    def test_fill_twice(self):
+        self.get_url("edit_thing", thing_id=self.thing.id)
+        # This is really testing that fill clears before filling.
+        for i in range(1, 3):
+            self.fill(
+                {
+                    "#id_name": f"New name{i}",
+                    "#id_description": f"New description{i}",
+                }
+            )
+        self.submit("input[name=change]")
+        thing = self.refresh_thing()
+        assert thing.name == "New name2"
+        assert thing.description == "New description2"
+
     def test_fill_by_id(self):
         self.get_url("edit_thing", thing_id=self.thing.id)
         self.fill_by_id(
@@ -585,6 +600,20 @@ class FuncSeleniumCommonBase(CommonBase):
         )
         self.submit("input[name=change]")
         self._assertThingChanged()
+
+    def test_fill_onchange(self):
+        # tests that onchange is fired once for each element when
+        # we use fill.
+        self.get_url("edit_thing", thing_id=self.thing.id)
+        self.fill(
+            {
+                "#id_name": "New name",
+                "#id_big": False,
+            }
+        )
+        assert (
+            self._driver.execute_script('return document.querySelector("#id_onchange_log").value') == "id_name,id_big,"
+        )
 
     def test_submit_no_wait_for_reload(self):
         self.get_url("edit_thing", thing_id=self.thing.id)
