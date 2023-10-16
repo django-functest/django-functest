@@ -7,6 +7,7 @@ History
 ++++++++++++++++++
 
 * Fixed bug with ``fill()`` causing ``onchange`` event to trigger twice.
+* Fixed headless mode for latest Selenium with Firefox/Chrome
 
 1.5.4 (2023-04-19)
 ++++++++++++++++++
