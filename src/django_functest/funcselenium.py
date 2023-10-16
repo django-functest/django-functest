@@ -533,7 +533,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             if hasattr(options, "headless"):
                 options.headless = True
             else:
-                logger.warn(f"Cannot set headless mode for webdriver {driver_name}")
+                logger.warning(f"Cannot set headless mode for webdriver {driver_name}")
             if options is not None:
                 kwargs["options"] = options
         driver = getattr(webdriver, driver_name)(**kwargs)
