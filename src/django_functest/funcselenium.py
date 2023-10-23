@@ -667,7 +667,10 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
                 # We avoid 'elem.clear()' as it fires events unhelpfully.
                 # Alternative methods from:
                 # https://stackoverflow.com/questions/7732125/clear-text-from-textarea-with-selenium
-                elem.send_keys(Keys.CONTROL + "a")
+                # Note CONTROL + 'a' then BACKSPACE doesn't work on MacOS as
+                # the key is called COMMAND, hence HOME/SHIFT + END
+                elem.send_keys(Keys.HOME)
+                elem.send_keys(Keys.SHIFT, Keys.END)
                 elem.send_keys(Keys.DELETE)
 
             elem.send_keys(self._normalize_linebreaks(val))
