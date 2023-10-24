@@ -55,11 +55,11 @@ followed the same pattern.
 
       The current full URL
 
-   .. method:: follow_link(css_selector)
+   .. method:: follow_link(css_selector=None, text=None)
 
-      Follows the link specified in the CSS selector.
+      Follows the link specified in the CSS selector or the specified text.
 
-      You will get an exception if no links match
+      You will get an exception if no links match.
 
       For :class:`django_functest.FuncWebTestMixin`, you will get an exception if multiple
       links match and they don't have the same href.

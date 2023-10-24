@@ -57,9 +57,9 @@ class FuncBaseMixin:
         """
         raise NotImplementedError()
 
-    def follow_link(self, css_selector):
+    def follow_link(self, css_selector=None, text=None):
         """
-        Follows the link specified in the CSS selector.
+        Follows the link specified by CSS in css_selector= or matching the text in text=
         """
         raise NotImplementedError()
 

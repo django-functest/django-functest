@@ -50,13 +50,26 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         """
         return self.last_response.request.url
 
-    def follow_link(self, css_selector):
+    def follow_link(self, css_selector=None, text=None):
         """
-        Follows the link specified in the CSS selector.
+        Follows the link specified by CSS in css_selector= or matching the text in text=
         """
-        elems = self._make_pq(self.last_response).find(css_selector)
-        if len(elems) == 0:
-            raise WebTestNoSuchElementException(f"Can't find element matching '{css_selector}'")
+        if css_selector is not None:
+            elems = self._make_pq(self.last_response).find(css_selector)
+            if len(elems) == 0:
+                raise WebTestNoSuchElementException(f"Can't find element matching '{css_selector}'")
+        elif text is not None:
+            # cssselect (via PyQuery) handles the implementation of :contains()
+            # and doesn't do any escaping, so we escape here
+            escaped_text = text.replace('"', '\\"')
+            css_expr = f'a:contains("{escaped_text}")'
+
+            elems = self._make_pq(self.last_response).find(css_expr)
+
+            if len(elems) == 0:
+                raise WebTestNoSuchElementException(f"Can't find a link with the text '{text}'")
+        else:
+            raise ValueError("follow_link requires either a text= or css_selector= argument")
 
         hrefs = []
         for e in elems:

@@ -8,6 +8,7 @@
         {% for thing in things %}
           <p><input type="checkbox" name="select_thing" value="{{ thing.id }}" {% if thing in selected_things %}checked{% endif %}></p>
           <p><a class="edit" href="{% url "edit_thing" thing_id=thing.id %}">Edit {{ thing.name }}</a></p>
+          <p><a class="edit" href="{% url "edit_thing" thing_id=thing.id %}">Edit {{ thing.name }} "with quotes"</a></p>
         {% endfor %}
       </div>
       <input type="submit" name="select" value="select">
