@@ -131,6 +131,26 @@ See `CONTRIBUTING.rst <CONTRIBUTING.rst>`_ for information about running the tes
 contributing to django-functest.
 
 
+Building on Mac OS
+------------------
+
+While [this lxml bug](https://bugs.launchpad.net/lxml/+bug/1949271) is in
+effect `lxml` cannot handle certain unicode characters in HTML (or XML!)
+documents on Mac OS, including the emoji used in one of the files in the test
+suite.
+
+Therefore, if you are affected by this bug, you will find that certain tests
+fail with the error `lxml.etree.ParserError: Document is empty`.
+
+You will also find that `lxml`'s own test suite fails on your machine.
+
+A workaround is to compile `libxml2` yourself, which `lxml` will take care of for you.
+To do this, run the following:
+
+```
+STATICBUILD=true python -m pip install lxml --force-reinstall --no-binary=:all:
+```
+
 Paid support
 ------------
 
