@@ -54,7 +54,9 @@ class FuncWebTestMixin(WebTestMixin, CommonMixin, FuncBaseMixin):
         """
         Follows the link specified by CSS in css_selector= or matching the text in text=
         """
-        if css_selector is not None:
+        if css_selector is not None and text is not None:
+            raise ValueError("pass only one of text= or css_selector= to follow_link")
+        elif css_selector is not None:
             elems = self._make_pq(self.last_response).find(css_selector)
             if len(elems) == 0:
                 raise WebTestNoSuchElementException(f"Can't find element matching '{css_selector}'")

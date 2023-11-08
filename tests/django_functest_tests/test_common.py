@@ -384,6 +384,11 @@ class CommonBase(FuncBaseMixin):
         with pytest.raises(ValueError, match="either a text= or css_selector="):
             self.follow_link(None)
 
+    def test_follow_link_both_specified(self):
+        self.get_url("list_things")
+        with pytest.raises(ValueError, match="only one of"):
+            self.follow_link(css_selector="x", text="y")
+
     def test_follow_link_path_relative(self):
         self.get_url("test_misc")
         self.follow_link('a[href="."]')

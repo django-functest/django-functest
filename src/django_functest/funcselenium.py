@@ -91,7 +91,9 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         """
         Follows the link specified by CSS in css_selector= or matching the text in text=
         """
-        if css_selector is not None:
+        if css_selector is not None and text is not None:
+            raise ValueError("pass only one of text= or css_selector= to follow_link")
+        elif css_selector is not None:
             return self.click(css_selector=css_selector, wait_for_reload=True)
         elif text is not None:
             return self.click(link_text=text, wait_for_reload=True)
