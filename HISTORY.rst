@@ -8,6 +8,7 @@ History
 
 * Fixed bug with ``fill()`` causing ``onchange`` event to trigger twice.
 * Fixed headless mode for latest Selenium with Firefox/Chrome
+* Avoid depending on Keys.CONTROL as it means something different on MacOS, thanks @duncanjbrown.
 
 1.5.4 (2023-04-19)
 ++++++++++++++++++
