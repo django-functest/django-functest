@@ -3,7 +3,7 @@
 History
 -------
 
-1.5.5 (unreleased)
+1.5.5 (2023-12-05)
 ++++++++++++++++++
 
 * Fixed bug with ``fill()`` causing ``onchange`` event to trigger twice.
