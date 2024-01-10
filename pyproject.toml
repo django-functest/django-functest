@@ -5,12 +5,13 @@ line-length = 120
 target-version = ['py39']
 
 
-[tool.isort]
-line_length = 120
-profile = "black"
-multi_line_output = 3
-skip = ["node_modules", ".git", ".tox", "build"]
-known_first_party = ["django_functest"]
 
 [tool.ruff]
 line-length = 120
+
+extend-select = [
+  "UP",  # enable pyupgrade
+  "I",  # enable isort
+  "FLY",  # enable flynt
+]
+target-version = 'py310'

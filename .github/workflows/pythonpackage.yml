@@ -87,6 +87,6 @@ jobs:
         key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('requirements*.txt') }}
     - name: Install dependencies
       run: |
-        cat requirements-dev.txt | grep pre-commit | xargs pip install
+        pip install pre-commit
     - name: pre-commit linters
       run: pre-commit run --all-files --show-diff-on-failure --color=always

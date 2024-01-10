@@ -141,9 +141,7 @@ class CommonMixin:
         else:
             self.assertTrue(
                 any(norm_text in etree.tostring(elem, encoding="unicode") for elem in matching_elements),
-                "Didn't find {!r} inside any of the {} matching elements for {!r}".format(
-                    text, len(matching_elements), within
-                ),
+                f"Didn't find {text!r} inside any of the {len(matching_elements)} matching elements for {within!r}",
             )
 
     def _assertTextAbsent(self, text, pyquery_obj, within):
@@ -158,11 +156,7 @@ class CommonMixin:
         else:
             self.assertFalse(
                 any(norm_text in etree.tostring(elem, encoding="unicode") for elem in matching_elements),
-                "Didn't find {!r} inside any of the {} matching_elements for {!r}".format(
-                    text,
-                    len(matching_elements),
-                    within,
-                ),
+                f"Didn't find {text!r} inside any of the {len(matching_elements)} matching_elements for {within!r}",
             )
 
 

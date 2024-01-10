@@ -1,6 +1,4 @@
 import pytest
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
-
 from django_functest import FuncBaseMixin, Upload
 from django_functest.exceptions import (
     SeleniumCantUseElement,
@@ -8,6 +6,7 @@ from django_functest.exceptions import (
     WebTestMultipleElementsException,
     WebTestNoSuchElementException,
 )
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 from .base import ChromeBase, FirefoxBase, WebTestBase
 from .models import Thing
@@ -537,7 +536,6 @@ class CommonBase(FuncBaseMixin):
 
 
 class TestFuncWebTestCommon(CommonBase, WebTestBase):
-
     ElementNotFoundException = WebTestNoSuchElementException
     TextNotFoundException = ValueError
     ElementUnusableException = WebTestCantUseElement
@@ -609,7 +607,6 @@ class TestFuncWebTestCommon(CommonBase, WebTestBase):
 
 
 class FuncSeleniumCommonBase(CommonBase):
-
     ElementNotFoundException = TimeoutException
     TextNotFoundException = NoSuchElementException
     ElementUnusableException = SeleniumCantUseElement

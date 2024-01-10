@@ -2,7 +2,6 @@ import conftest
 import pytest
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import TestCase
-
 from django_functest import FuncSeleniumMixin, FuncWebTestMixin
 
 

@@ -3,7 +3,6 @@ from unittest import TestCase
 
 import pytest
 from django.contrib.auth import get_user_model
-
 from django_functest import AdminLoginMixin, FuncBaseMixin, FuncSeleniumMixin, FuncWebTestMixin, ShortcutLoginMixin
 
 from .base import ChromeBase, FirefoxBase, WebTestBase

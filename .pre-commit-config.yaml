@@ -1,17 +1,14 @@
 repos:
-  - repo: 'https://github.com/pre-commit/pre-commit-hooks'
-    rev: v3.2.0
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
-  - repo: 'https://github.com/pycqa/flake8'
-    rev: 3.8.4
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.11
     hooks:
-      - id: flake8
-  - repo: 'https://github.com/pre-commit/mirrors-isort'
-    rev: v5.7.0
-    hooks:
-      - id: isort
+      - id: ruff
+        args: [ --fix, --exit-non-zero-on-fix ]
   - repo: 'https://github.com/rtts/djhtml'
     rev: v1.4.9
     hooks:
@@ -19,31 +16,18 @@ repos:
         entry: djhtml -t 2 -i
         language_version: python3.9
   - repo: 'https://github.com/ikamensh/flynt/'
-    rev: '0.76'
+    rev: '1.0.1'
     hooks:
       - id: flynt
         language_version: python3.9
   - repo: 'https://github.com/asottile/pyupgrade'
-    rev: v2.31.0
+    rev: v3.15.0
     hooks:
       - id: pyupgrade
         entry: pyupgrade --py3-plus --py36-plus --keep-runtime-typing
         language_version: python3.9
-  - repo: 'https://github.com/myint/autoflake'
-    rev: v1.4
-    hooks:
-      - id: autoflake
-        args:
-          - '--remove-all-unused-imports'
-          - '-i'
-        language_version: python3.9
-  - repo: 'https://github.com/pre-commit/mirrors-autopep8'
-    rev: v1.6.0
-    hooks:
-      - id: autopep8
-        language_version: python3.9
   - repo: 'https://github.com/psf/black'
-    rev: 22.6.0
+    rev: 23.12.1
     hooks:
       - id: black
         language_version: python3.9

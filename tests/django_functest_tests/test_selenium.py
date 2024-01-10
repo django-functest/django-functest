@@ -3,9 +3,8 @@ from functools import wraps
 
 import pytest
 from django.contrib.auth import get_user_model
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
-
 from django_functest import AdminLoginMixin, FuncBaseMixin
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 from .base import ChromeBase, FirefoxBase
 from .models import Thing
@@ -191,6 +190,7 @@ def wrap(func):
     """
     Returns function with a wrapper
     """
+
     # Can be useful for badly behaved decorators that don't themselves wrap the
     # callable and return a new one, but modify the original directly, like
     # pytest.mark.xfail

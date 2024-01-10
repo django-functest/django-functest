@@ -3,7 +3,6 @@ flake8==3.8.4
 isort==4.2.5
 check-manifest==0.46
 black==22.6.0
-pre-commit==2.18.1
 pytest==7.0.0
 pytest-django==4.5.2
 pytest-cov==3.0.0
