@@ -351,10 +351,43 @@ class CommonBase(FuncBaseMixin):
         self.follow_link("a.edit")
         self.assertUrlsEqual(reverse("edit_thing", kwargs={"thing_id": self.thing.id}))
 
-    def test_follow_link_not_found(self):
+    # this has been the default behaviour for the first positional argument but
+    # now that it's optional as we have text=, write the explicit css_selector
+    # version into the contract expressed by this test
+    def test_follow_link_css_selector(self):
+        self.get_url("list_things")
+        self.follow_link(css_selector="a.edit")
+        self.assertUrlsEqual(reverse("edit_thing", kwargs={"thing_id": self.thing.id}))
+
+    def test_follow_link_text(self):
+        self.get_url("list_things")
+        self.follow_link(text="Edit Rock")
+        self.assertUrlsEqual(reverse("edit_thing", kwargs={"thing_id": self.thing.id}))
+
+    def test_follow_link_text_with_quotes(self):
+        self.get_url("list_things")
+        self.follow_link(text='Edit Rock "with quotes"')
+        self.assertUrlsEqual(reverse("edit_thing", kwargs={"thing_id": self.thing.id}))
+
+    def test_follow_link_css_not_found(self):
         self.get_url("list_things")
         with pytest.raises(self.ElementNotFoundException):
             self.follow_link("a.foobar")
+
+    def test_follow_link_text_not_found(self):
+        self.get_url("list_things")
+        with pytest.raises(self.ElementNotFoundException):
+            self.follow_link(text="this text is not on the page")
+
+    def test_follow_link_unspecified(self):
+        self.get_url("list_things")
+        with pytest.raises(ValueError, match="either a text= or css_selector="):
+            self.follow_link(None)
+
+    def test_follow_link_both_specified(self):
+        self.get_url("list_things")
+        with pytest.raises(ValueError, match="only one of"):
+            self.follow_link(css_selector="x", text="y")
 
     def test_follow_link_path_relative(self):
         self.get_url("test_misc")

@@ -87,11 +87,18 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         """
         return self._driver.current_url
 
-    def follow_link(self, css_selector):
+    def follow_link(self, css_selector=None, text=None):
         """
-        Follows the link specified in the CSS selector.
+        Follows the link specified by CSS in css_selector= or matching the text in text=
         """
-        return self.click(css_selector, wait_for_reload=True)
+        if css_selector is not None and text is not None:
+            raise ValueError("pass only one of text= or css_selector= to follow_link")
+        elif css_selector is not None:
+            return self.click(css_selector=css_selector, wait_for_reload=True)
+        elif text is not None:
+            return self.click(link_text=text, wait_for_reload=True)
+        else:
+            raise ValueError("follow_link requires either a text= or css_selector= argument")
 
     def fill(self, fields, scroll=NotPassed):
         """
@@ -295,6 +302,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         xpath=None,
         text=None,
         text_parent_id=None,
+        link_text=None,
         wait_for_reload=False,
         wait_timeout=None,
         double=False,
@@ -319,6 +327,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             xpath=xpath,
             text=text,
             text_parent_id=text_parent_id,
+            link_text=link_text,
             timeout=wait_timeout,
         )
         if _expect_form and elem.tag_name == "form":
@@ -496,6 +505,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         xpath=None,
         text=None,
         text_parent_id=None,
+        link_text=None,
         timeout=None,
     ):
         """
@@ -508,6 +518,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
                 xpath=xpath,
                 text=text,
                 text_parent_id=text_parent_id,
+                link_text=link_text,
             ),
             timeout=timeout,
         )
@@ -573,7 +584,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         else:
             return self._cls_driver
 
-    def _get_finder(self, css_selector=None, xpath=None, text=None, text_parent_id=None):
+    def _get_finder(self, css_selector=None, xpath=None, text=None, text_parent_id=None, link_text=None):
         def _find_by_css(driver):
             css_selectors = [css_selector] if isinstance(css_selector, str) else list(css_selector)
             first_selector, *remaining_selectors = css_selectors
@@ -593,6 +604,8 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
                 prefix = ""
             _xpath = prefix + f'//*[contains(text(), "{text}")]'
             return lambda driver: driver.find_element(By.XPATH, _xpath)
+        if link_text is not None:
+            return lambda driver: driver.find_element(By.PARTIAL_LINK_TEXT, link_text)
         raise AssertionError("No selector passed in")
 
     def _get_url_raw(self, url):
@@ -681,11 +694,12 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         else:
             raise SeleniumCantUseElement(f"Can't do 'fill_by_text' on elements of type {elem.tag_name}")
 
-    def _find(self, css_selector=None, xpath=None, text=None, text_parent_id=None):
+    def _find(self, css_selector=None, xpath=None, text=None, link_text=None, text_parent_id=None):
         return self._get_finder(
             css_selector=css_selector,
             xpath=xpath,
             text=text,
+            link_text=link_text,
             text_parent_id=text_parent_id,
         )(self._driver)
 
@@ -695,6 +709,7 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
         xpath=None,
         text=None,
         text_parent_id=None,
+        link_text=None,
         timeout=None,
     ):
         if timeout != 0:
@@ -703,12 +718,14 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
                 xpath=xpath,
                 text=text,
                 text_parent_id=text_parent_id,
+                link_text=link_text,
                 timeout=timeout,
             )
         return self._find(
             css_selector=css_selector,
             xpath=xpath,
             text=text,
+            link_text=link_text,
             text_parent_id=text_parent_id,
         )
 
