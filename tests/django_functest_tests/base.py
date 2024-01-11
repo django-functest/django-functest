@@ -5,7 +5,6 @@ import conftest
 import pytest
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import TestCase, override_settings
-
 from django_functest import FuncSeleniumMixin, FuncWebTestMixin, MultiThreadedLiveServerMixin
 
 # Getting some errors that seem related to this:

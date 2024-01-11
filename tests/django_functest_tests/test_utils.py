@@ -3,7 +3,6 @@ from unittest import TestCase
 
 import pytest
 from django.contrib.auth import get_user_model
-
 from django_functest import AdminLoginMixin, FuncBaseMixin, FuncSeleniumMixin, FuncWebTestMixin, ShortcutLoginMixin
 
 from .base import ChromeBase, FirefoxBase, WebTestBase
@@ -72,20 +71,20 @@ class AdminLoginBase(AdminLoginMixin):
 
     def test_logout_succeeds(self):
         self.shortcut_login(username="admin", password="password")
-        self.do_logout(shortcut=True)
+        self.do_logout(shortcut=False)
         self.get_url("admin:index")
         self.assertUrlsEqual(LOGGED_OUT_URL)
 
     def test_logout_shortcut_succeeds(self):
         self.shortcut_login(username="admin", password="password")
-        self.do_logout(shortcut=False)
+        self.do_logout(shortcut=True)
         self.get_url("admin:index")
         self.assertUrlsEqual(LOGGED_OUT_URL)
 
     def test_shortcut_session_data(self):
         self.do_login(username="admin", password="password", shortcut=False)
         logged_in_session_data = self.get_session_data()
-        self.get_url("admin:logout")
+        self.do_logout(shortcut=False)
         logged_out_session_data = self.get_session_data()
         assert not logged_out_session_data
 

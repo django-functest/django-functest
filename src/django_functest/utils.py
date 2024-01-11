@@ -1,6 +1,7 @@
 import warnings
 from importlib import import_module
 
+import django
 from django.conf import settings
 from django.contrib.auth import BACKEND_SESSION_KEY as AUTH_BACKEND_SESSION_KEY
 from django.contrib.auth import HASH_SESSION_KEY as AUTH_HASH_SESSION_KEY
@@ -141,9 +142,7 @@ class CommonMixin:
         else:
             self.assertTrue(
                 any(norm_text in etree.tostring(elem, encoding="unicode") for elem in matching_elements),
-                "Didn't find {!r} inside any of the {} matching elements for {!r}".format(
-                    text, len(matching_elements), within
-                ),
+                f"Didn't find {text!r} inside any of the {len(matching_elements)} matching elements for {within!r}",
             )
 
     def _assertTextAbsent(self, text, pyquery_obj, within):
@@ -158,11 +157,7 @@ class CommonMixin:
         else:
             self.assertFalse(
                 any(norm_text in etree.tostring(elem, encoding="unicode") for elem in matching_elements),
-                "Didn't find {!r} inside any of the {} matching_elements for {!r}".format(
-                    text,
-                    len(matching_elements),
-                    within,
-                ),
+                f"Didn't find {text!r} inside any of the {len(matching_elements)} matching_elements for {within!r}",
             )
 
 
@@ -190,7 +185,11 @@ class AdminLoginMixin(ShortcutLoginMixin):
             self.shortcut_logout()
             return
 
-        self.get_url("admin:logout")
+        if django.VERSION < (5,):
+            self.get_url("admin:logout")
+        else:
+            self.get_url("admin:index")
+            self.submit("#logout-form button")
 
 
 class BrowserSessionToken:

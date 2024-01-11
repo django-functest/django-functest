@@ -2,7 +2,6 @@ import django
 from django.test import testcases
 
 if django.VERSION < (2,):
-
     try:
         from django.core.servers.basehttp import ThreadedWSGIServer
     except ImportError:
