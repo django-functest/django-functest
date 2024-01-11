@@ -3,12 +3,19 @@
 History
 -------
 
+1.6 (2024-01-11)
+++++++++++++++++
+
+* :meth:`~django_functest.FuncCommonApi.follow_link` now accepts ``text=`` argument, thanks @duncanjbrown
+* Fixed bug in :meth: :meth:`~django_functest.AdminLoginMixin.do_logout` for Django >= 5
+
+
 1.5.5 (2023-12-05)
 ++++++++++++++++++
 
-* Fixed bug with ``fill()`` causing ``onchange`` event to trigger twice.
+* Fixed bug with :meth:`~django_functest.FuncCommonApi.fill` causing ``onchange`` event to trigger twice.
 * Fixed headless mode for latest Selenium with Firefox/Chrome
-* Avoid depending on Keys.CONTROL as it means something different on MacOS, thanks @duncanjbrown.
+* Avoid depending on ``Keys.CONTROL`` as it means something different on MacOS, thanks @duncanjbrown.
 
 1.5.4 (2023-04-19)
 ++++++++++++++++++

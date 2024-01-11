@@ -57,7 +57,8 @@ followed the same pattern.
 
    .. method:: follow_link(css_selector=None, text=None)
 
-      Follows the link specified in the CSS selector or the specified text.
+      Follows the link specified in the CSS selector, or a link matching the
+      specified link text.
 
       You will get an exception if no links match.
 
