@@ -84,7 +84,7 @@ class AdminLoginBase(AdminLoginMixin):
     def test_shortcut_session_data(self):
         self.do_login(username="admin", password="password", shortcut=False)
         logged_in_session_data = self.get_session_data()
-        self.get_url("admin:logout")
+        self.do_logout(shortcut=False)
         logged_out_session_data = self.get_session_data()
         assert not logged_out_session_data
 

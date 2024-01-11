@@ -1,6 +1,7 @@
 import warnings
 from importlib import import_module
 
+import django
 from django.conf import settings
 from django.contrib.auth import BACKEND_SESSION_KEY as AUTH_BACKEND_SESSION_KEY
 from django.contrib.auth import HASH_SESSION_KEY as AUTH_HASH_SESSION_KEY
@@ -184,7 +185,11 @@ class AdminLoginMixin(ShortcutLoginMixin):
             self.shortcut_logout()
             return
 
-        self.get_url("admin:logout")
+        if django.VERSION < (5,):
+            self.get_url("admin:logout")
+        else:
+            self.get_url("admin:index")
+            self.submit("#logout-form button")
 
 
 class BrowserSessionToken:
