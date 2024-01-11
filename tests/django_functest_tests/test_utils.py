@@ -71,13 +71,13 @@ class AdminLoginBase(AdminLoginMixin):
 
     def test_logout_succeeds(self):
         self.shortcut_login(username="admin", password="password")
-        self.do_logout(shortcut=True)
+        self.do_logout(shortcut=False)
         self.get_url("admin:index")
         self.assertUrlsEqual(LOGGED_OUT_URL)
 
     def test_logout_shortcut_succeeds(self):
         self.shortcut_login(username="admin", password="password")
-        self.do_logout(shortcut=False)
+        self.do_logout(shortcut=True)
         self.get_url("admin:index")
         self.assertUrlsEqual(LOGGED_OUT_URL)
 
