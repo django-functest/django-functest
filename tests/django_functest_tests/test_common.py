@@ -159,13 +159,13 @@ class CommonBase(FuncBaseMixin):
             self.fill(
                 {
                     "#id_name": f"New name{i}",
-                    "#id_description": f"New description{i}",
+                    "#id_description": f"New description{i}\r\nAnother line",
                 }
             )
         self.submit("input[name=change]")
         thing = self.refresh_thing()
         assert thing.name == "New name2"
-        assert thing.description == "New description2"
+        assert thing.description == "New description2\r\nAnother line"
 
     def test_fill_by_id(self):
         self.get_url("edit_thing", thing_id=self.thing.id)
