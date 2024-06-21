@@ -134,7 +134,7 @@ contributing to django-functest.
 Building on Mac OS
 ------------------
 
-While [this lxml bug](https://bugs.launchpad.net/lxml/+bug/1949271) is in
+While `this lxml bug <https://bugs.launchpad.net/lxml/+bug/1949271>`_ is in
 effect `lxml` cannot handle certain unicode characters in HTML (or XML!)
 documents on Mac OS, including the emoji used in one of the files in the test
 suite.
