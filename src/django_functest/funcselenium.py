@@ -693,8 +693,6 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
                 else:
                     elem.send_keys(Keys.CONTROL + "a")
 
-                # Note CONTROL + 'a' then BACKSPACE doesn't work on MacOS as
-                # the key is called COMMAND, hence HOME/SHIFT + END
                 elem.send_keys(Keys.DELETE)
 
             elem.send_keys(self._normalize_linebreaks(val))
