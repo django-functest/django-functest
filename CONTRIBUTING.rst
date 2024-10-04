@@ -99,7 +99,7 @@ development.
 
    * Firefox and `geckodriver <https://github.com/mozilla/geckodriver>`_.
 
-   * `chromedriver <https://sites.google.com/a/chromium.org/chromedriver>`_
+   * `chromedriver <https://googlechromelabs.github.io/chrome-for-testing/>`_ (and `older releases <https://developer.chrome.com/docs/chromedriver/downloads>`_)
 
 6. Commit your changes and push your branch to GitHub::
 
