@@ -1,5 +1,6 @@
 import logging
 import os.path
+import platform
 import random
 import tempfile
 import time
@@ -680,10 +681,20 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
                 # We avoid 'elem.clear()' as it fires events unhelpfully.
                 # Alternative methods from:
                 # https://stackoverflow.com/questions/7732125/clear-text-from-textarea-with-selenium
+
+                if platform.system() == "Darwin":
+                    # Ctrl-A doesn't work on MacOS apparently,
+                    # we have to use COMMAND.
+                    # The following should work, but is untested.
+                    elem.send_keys(Keys.COMMAND + "a")
+                    # See:
+                    #   - https://github.com/django-functest/django-functest/pull/50
+                    #   - https://github.com/django-functest/django-functest/issues/55
+                else:
+                    elem.send_keys(Keys.CONTROL + "a")
+
                 # Note CONTROL + 'a' then BACKSPACE doesn't work on MacOS as
                 # the key is called COMMAND, hence HOME/SHIFT + END
-                elem.send_keys(Keys.HOME)
-                elem.send_keys(Keys.SHIFT, Keys.END)
                 elem.send_keys(Keys.DELETE)
 
             elem.send_keys(self._normalize_linebreaks(val))

@@ -93,6 +93,7 @@ jobs:
       with:
         path: |
           ~/.cache/pip
+
           ~/.cache/pre-commit
         key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('requirements*.txt') }}
     - name: Install dependencies
