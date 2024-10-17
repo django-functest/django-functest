@@ -47,3 +47,5 @@ docs/_build
 # Tests
 tmp_static/
 tests/uploads
+
+uv.lock
