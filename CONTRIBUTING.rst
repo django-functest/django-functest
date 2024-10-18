@@ -65,14 +65,11 @@ development.
      $ git clone git@github.com:your_name_here/django-functest.git
 
 3. Create a virtualenv for the project, and then install django-functest into it
-   locally for development::
+   locally for development. We recommend doing this with uv::
 
      $ cd django-functest/
-     $ pip install -e .
-
-   You also need to install testing and development tools::
-
-     $ pip install -r requirements-dev.txt
+     $ uv venv
+     $ uv sync
 
 4. Create a branch for local development::
 

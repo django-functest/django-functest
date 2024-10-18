@@ -56,21 +56,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+    - name: Set up Python ${{ matrix.python-version }} with uv
+      uses: drivendataorg/setup-python-uv-action@main
       with:
         python-version: ${{ matrix.python-version }}
-    - uses: actions/cache@v2
-      with:
-        path: |
-          ~/.cache/pip
-          ~/.cache/pre-commit
-        key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('requirements*.txt') }}
+        cache: packages
+        cache-dependency-path: >-
+          pyproject.toml
     - name: Install dependencies
       run: |
-        pip install Django==${{ matrix.django-version }}
-        pip install -r requirements-dev.txt
-        pip install -e .
+        uv pip install Django==${{ matrix.django-version }}
+        uv sync
     - name: Versions
       run: |
         firefox --version
@@ -79,25 +75,22 @@ jobs:
         chromedriver --version
     - name: Tests
       run: |
-        pytest ${{ matrix.extra-run-args }}
+        uv run pytest ${{ matrix.extra-run-args }}
 
   linters:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: drivendataorg/setup-python-uv-action@main
       with:
         python-version: 3.9
-    - uses: actions/cache@v2
-      with:
-        path: |
-          ~/.cache/pip
-
-          ~/.cache/pre-commit
-        key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('requirements*.txt') }}
+        cache: packages
+        cache-dependency-path: >-
+          pyproject.toml
     - name: Install dependencies
       run: |
-        pip install pre-commit
+        uv pip install pre-commit
     - name: pre-commit linters
-      run: pre-commit run --all-files --show-diff-on-failure --color=always
+      run:
+        uv run pre-commit run --all-files --show-diff-on-failure --color=always

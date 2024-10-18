@@ -1,4 +1,5 @@
 import os
+import time
 from functools import wraps
 
 import pytest
@@ -116,6 +117,7 @@ class FuncSeleniumSpecificBase(AdminLoginMixin, FuncBaseMixin):
         self.switch_window(new_window)
         self.submit("input[name=_save]", window_closes=True)
         self.switch_window(old_window)
+        time.sleep(0.5)
         self.submit("input[name=_save]")
 
         User = get_user_model()

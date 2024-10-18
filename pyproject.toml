@@ -1,9 +1,73 @@
+[build-system]
+requires = ["setuptools>=61.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-functest"
+description = "Helpers for creating functional tests in Django, with a unified API for WebTest and Selenium tests."
+authors = [{name = "Luke Plant", email = "L.Plant.98@cantab.net"}]
+license = {text = "BSD"}
+keywords = ["django-functest"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Django",
+    "Framework :: Django :: 2.0",
+    "Framework :: Django :: 2.1",
+    "Framework :: Django :: 2.2",
+    "Framework :: Django :: 3.0",
+    "Framework :: Django :: 3.1",
+    "Framework :: Django :: 3.2",
+    "Framework :: Django :: 4.0",
+    "Framework :: Django :: 4.1",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "django-webtest>=1.9.11",
+    "WebTest>=3",
+    "selenium>=4",
+    "furl>=2",
+    "pyquery>=1.2.10",
+    "Django>=2.0",
+]
+dynamic = ["version"]
+
+[project.readme]
+file = "README.rst"
+content-type = "text/x-rst"
+
+[project.urls]
+Homepage = "https://github.com/django-functest/django-functest"
+
+[tool.setuptools]
+packages = ["django_functest"]
+package-dir = {django_functest = "src/django_functest"}
+include-package-data = true
+zip-safe = false
+
+[tool.setuptools.dynamic]
+version = {attr = "django_functest.__version__"}
+
+[tool.flake8]
+exclude = ".tox,.git,docs,migrations,dist,build,downloads"
+ignore = "E123,E128,E731,FI10,FI12,FI15,FI16,FI17,FI50,FI51,FI52,FI53,FI54,FI55,FI56,FI57,FI18,W504"
+max-line-length = "119"
 
 [tool.black]
 line-length = 120
 # required-version = '22.3.0' # see https://github.com/psf/black/issues/2493
-target-version = ['py39']
-
+target-version = ['py310']
 
 
 [tool.ruff]
@@ -15,3 +79,12 @@ extend-select = [
   "FLY",  # enable flynt
 ]
 target-version = 'py310'
+
+[tool.uv]
+dev-dependencies = [
+    "check-manifest>=0.50",
+    "pytest>=7.4.4",
+    "pytest-cov>=4.1.0",
+    "pytest-django>=4.5.2",
+    "tox>=4.8.0",
+]
