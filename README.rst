@@ -40,7 +40,7 @@ The full documentation is at https://django-functest.readthedocs.org.
 Installation
 ------------
 
-Python 3.7 and later, Django 2.0 and later are required.
+Python 3.8 and later, Django 2.2 and later are required.
 
 ::
 
