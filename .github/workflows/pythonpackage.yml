@@ -14,10 +14,6 @@ jobs:
       matrix:
         # Sync with tox.ini
         include:
-        - python-version: 3.7
-          django-version: 2.0.13
-        - python-version: 3.7
-          django-version: 2.1.15
         - python-version: 3.8
           django-version: 2.2.26
         - python-version: 3.8
@@ -38,7 +34,9 @@ jobs:
           django-version: 4.2.9
         - python-version: "3.12"
           django-version: 5.0
-        - python-version: 3.7
+        - python-version: "3.13"
+          django-version: "5.2.5"
+        - python-version: 3.8
           django-version: 3.2.23
           extra-run-args: --signed-cookies
         - python-version: 3.9
