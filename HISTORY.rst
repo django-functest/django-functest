@@ -8,6 +8,8 @@ History
 
 * Fixed bug with multi-line text not being cleared when using ``fill()``. This
   was a regression caused by a fix made for MacOS, see issues #50 and #55.
+* Improved robustness of :meth:`~django_functest.FuncSeleniumMixin.is_element_displayed`
+
 
 1.6 (2024-01-11)
 ++++++++++++++++

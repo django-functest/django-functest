@@ -395,7 +395,10 @@ class FuncSeleniumMixin(CommonMixin, FuncBaseMixin):
             elem = self._find(css_selector=css_selector)
         except NoSuchElementException:
             return False
-        return elem.is_displayed()
+        try:
+            return elem.is_displayed()
+        except StaleElementReferenceException:
+            return False
 
     def new_browser_session(self):
         """
