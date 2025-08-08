@@ -83,6 +83,7 @@ target-version = 'py310'
 [tool.uv]
 dev-dependencies = [
     "check-manifest>=0.50",
+    "pre-commit>=2.21.0",
     "pytest>=7.4.4",
     "pytest-cov>=4.1.0",
     "pytest-django>=4.5.2",
