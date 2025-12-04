@@ -1,5 +1,6 @@
 #!/bin/sh
 
+uv sync
 test $(git rev-parse --abbrev-ref HEAD | tr -d '\n') = 'master' || { echo "Must be on master branch"; exit 1; }
 uv run check-manifest || exit 1
 
