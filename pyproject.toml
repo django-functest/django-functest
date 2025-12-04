@@ -89,4 +89,5 @@ dev-dependencies = [
     "pytest-cov>=4.1.0",
     "pytest-django>=4.5.2",
     "tox>=4.8.0",
+    "tox-uv>=1.13.1",
 ]
